@@ -1,0 +1,20 @@
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install netcat for the health check
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends netcat-traditional && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY requirements.consumer.txt .
+RUN pip install --no-cache-dir -r requirements.consumer.txt
+
+# Copy application files
+COPY weather_consumer.py .
+COPY start_consumer.sh .
+
+RUN chmod +x /app/start_consumer.sh
+
+CMD ["/app/start_consumer.sh"]

@@ -7,6 +7,7 @@ services:
       - "2181:2181"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+      - TZ=Asia/Ho_Chi_Minh
     volumes:
       - zookeeper_data:/bitnami/zookeeper
     networks:
@@ -27,8 +28,28 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_KRAFT_CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk
+      - TZ=Asia/Ho_Chi_Minh
     volumes:
       - kafka_data:/bitnami/kafka
+    networks:
+      - weather-network
+
+  influxdb:
+    image: influxdb:2.7
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password123
+      - DOCKER_INFLUXDB_INIT_ORG=my-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=weather
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-token
+      - INFLUX_ORG=my-org
+      - INFLUX_TOKEN=my-token
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
     networks:
       - weather-network
 
@@ -38,11 +59,34 @@ services:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_TOPIC=weather-data
       - WEATHER_API_KEY=ea8aa08895454e78b10145125253003
+      - TZ=Asia/Ho_Chi_Minh
     depends_on:
       - kafka
     restart: on-failure:10
     networks:
       - weather-network
+
+  weather-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile.consumer
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC=weather-data
+      - KAFKA_GROUP_ID=weather-influxdb-consumer
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=my-token
+      - INFLUXDB_ORG=my-org
+      - INFLUXDB_BUCKET=weather
+      - TZ=Asia/Ho_Chi_Minh
+    depends_on:
+      - kafka
+      - influxdb
+    restart: on-failure:10
+    networks:
+      - weather-network
+
+
 
 networks:
   weather-network:
@@ -52,4 +96,6 @@ volumes:
   zookeeper_data:
     driver: local
   kafka_data:
+    driver: local
+  influxdb_data:
     driver: local
