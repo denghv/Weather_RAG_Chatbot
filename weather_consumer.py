@@ -72,7 +72,7 @@ def create_influxdb_client():
 def weather_data_to_point(weather_data):
     """
     Convert weather data to InfluxDB point in line protocol format.
-    Example output format: weather,location=Hanoi condition="Partly cloudy",temp_c=26.2,pm2_5=154.66,pm10=155.585
+    Example output format: weather,location=Hanoi condition="Partly cloudy",temp_c=26.2,pm2_5=154.66,pm10=155.585,uv=4.2
     """
     try:
         # Extract location name
@@ -82,9 +82,18 @@ def weather_data_to_point(weather_data):
         current = weather_data.get('current', {})
         temp_c = current.get('temp_c')
         condition_text = current.get('condition', {}).get('text', '')
+        uv_index = current.get('uv')  # Extract UV index
         
         # Extract air quality data if available
         air_quality = current.get('air_quality', {})
+        
+        # Log air quality data for debugging
+        if not air_quality or len(air_quality) == 0:
+            logger.warning(f"No air quality data found for {location}")
+            logger.debug(f"Current weather data: {current}")
+        else:
+            logger.info(f"Air quality data found for {location}: {air_quality}")
+            
         pm2_5 = air_quality.get('pm2_5')
         pm10 = air_quality.get('pm10')
         
@@ -98,13 +107,15 @@ def weather_data_to_point(weather_data):
             point = point.field("condition", condition_text)
         if temp_c is not None:
             point = point.field("temp_c", float(temp_c))
+        if uv_index is not None:
+            point = point.field("uv", float(uv_index))
         if pm2_5 is not None:
             point = point.field("pm2_5", float(pm2_5))
         if pm10 is not None:
             point = point.field("pm10", float(pm10))
         
         # Log the line protocol format for debugging
-        logger.debug(f"Line protocol: weather,location={location} condition=\"{condition_text}\",temp_c={temp_c},pm2_5={pm2_5 or 'null'},pm10={pm10 or 'null'}")
+        logger.debug(f"Line protocol: weather,location={location} condition=\"{condition_text}\",temp_c={temp_c},uv={uv_index or 'null'},pm2_5={pm2_5 or 'null'},pm10={pm10 or 'null'}")
         
         return point
     except Exception as e:

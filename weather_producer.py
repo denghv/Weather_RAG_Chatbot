@@ -53,13 +53,21 @@ def fetch_weather_data(province):
     params = {
         'key': WEATHER_API_KEY,
         'q': province,
-        'aqi': 'no'
+        'aqi': 'yes'  # Request air quality data
     }
     
     try:
         response = requests.get(WEATHER_API_URL, params=params)
         response.raise_for_status()
-        return response.json()
+        data = response.json()
+        
+        # Log air quality data if available
+        if 'current' in data and 'air_quality' in data['current']:
+            logger.info(f"Received air quality data for {province}: {data['current']['air_quality']}")
+        else:
+            logger.warning(f"No air quality data received for {province}")
+            
+        return data
     except requests.exceptions.RequestException as e:
         logger.error(f"Error fetching weather data for {province}: {e}")
         return None

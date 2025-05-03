@@ -67,6 +67,20 @@ A system for collecting weather data from 63 provinces in Vietnam using WeatherA
    influx query 'from(bucket:"weather") |> range(start: -1d) |> filter(fn: (r) => r._measurement == "weather" and r._field == "pm2_5" and r.location == "Ho Chi Minh City")'
    ```
 
+### Handling Timezone in Queries
+
+InfluxDB stores all timestamps in UTC internally. To convert timestamps to Asia/Ho_Chi_Minh timezone (UTC+7) in your queries, use the `timeShift()` function:
+
+```bash
+# Add 7 hours to convert from UTC to Asia/Ho_Chi_Minh timezone
+influx query 'from(bucket:"weather") 
+  |> range(start: -1h) 
+  |> filter(fn: (r) => r._measurement == "weather") 
+  |> timeShift(duration: 7h, columns: ["_time"])'
+```
+
+This will display timestamps in your local timezone instead of UTC. Note that the data itself is stored correctly with the proper timestamps - it's just being displayed in UTC format when you query it directly from InfluxDB without the timeShift function.
+
 ## Configuration
 
 You can modify the following environment variables in the docker-compose.yml file:
