@@ -1,0 +1,4 @@
+flask==2.3.3
+influxdb-client==1.38.0
+openai==0.28.1
+pytz==2023.3
