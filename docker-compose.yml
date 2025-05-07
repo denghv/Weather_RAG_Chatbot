@@ -105,6 +105,82 @@ services:
     networks:
       - weather-network
 
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=weather-hadoop
+      - TZ=Asia/Ho_Chi_Minh
+    env_file:
+      - ./hadoop.env
+    networks:
+      - weather-network
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    volumes:
+      - hadoop_datanode:/hadoop/dfs/data
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870
+      - TZ=Asia/Ho_Chi_Minh
+    env_file:
+      - ./hadoop.env
+    depends_on:
+      - namenode
+    networks:
+      - weather-network
+
+  spark-master:
+    image: bde2020/spark-master:3.3.0-hadoop3.3
+    container_name: spark-master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    networks:
+      - weather-network
+
+  spark-worker:
+    image: bde2020/spark-worker:3.3.0-hadoop3.3
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=2G
+      - TZ=Asia/Ho_Chi_Minh
+    networks:
+      - weather-network
+
+  spark-streaming:
+    build:
+      context: ./spark-streaming
+    container_name: spark-streaming
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_TOPIC=weather-data
+      - HDFS_URL=hdfs://namenode:8020
+      - HDFS_PATH=/weather-data
+      - CHECKPOINT_LOCATION=/checkpoints/weather-data
+      - BATCH_INTERVAL_SECONDS=60
+      - PROVINCE_COUNT=10
+      - TZ=Asia/Ho_Chi_Minh
+    depends_on:
+      - kafka
+      - namenode
+      - datanode
+      - spark-master
+    networks:
+      - weather-network
+
 networks:
   weather-network:
     driver: bridge
@@ -115,4 +191,8 @@ volumes:
   kafka_data:
     driver: local
   influxdb_data:
+    driver: local
+  hadoop_namenode:
+    driver: local
+  hadoop_datanode:
     driver: local
