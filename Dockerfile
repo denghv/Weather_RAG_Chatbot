@@ -14,8 +14,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application files
 COPY weather_producer.py .
 COPY provinces.py .
-COPY start.sh .
 
-RUN chmod +x /app/start.sh
-
-CMD ["/app/start.sh"]
+# Run the Python script directly
+CMD ["python", "weather_producer.py"]

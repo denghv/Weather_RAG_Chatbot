@@ -13,8 +13,6 @@ RUN pip install --no-cache-dir -r requirements.consumer.txt
 
 # Copy application files
 COPY weather_consumer.py .
-COPY start_consumer.sh .
 
-RUN chmod +x /app/start_consumer.sh
-
-CMD ["/app/start_consumer.sh"]
+# Run the Python script directly
+CMD ["python", "weather_consumer.py"]

@@ -109,6 +109,15 @@ def weather_data_to_point(weather_data):
             point = point.field("temp_c", float(temp_c))
         if uv_index is not None:
             point = point.field("uv", float(uv_index))
+        # Add the requested additional fields
+        if 'wind_kph' in current and current['wind_kph'] is not None:
+            point = point.field("wind_kph", float(current['wind_kph']))
+        if 'precip_mm' in current and current['precip_mm'] is not None:
+            point = point.field("precip_mm", float(current['precip_mm']))
+        if 'humidity' in current and current['humidity'] is not None:
+            point = point.field("humidity", int(current['humidity']))
+        if 'cloud' in current and current['cloud'] is not None:
+            point = point.field("cloud", int(current['cloud']))
         if pm2_5 is not None:
             point = point.field("pm2_5", float(pm2_5))
         if pm10 is not None:
