@@ -3,3 +3,4 @@ influxdb-client==1.38.0
 openai==0.28.1
 pytz==2023.3
 flask-socketio==5.3.6
+numpy==1.24.3

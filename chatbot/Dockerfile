@@ -9,6 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application files
 COPY chatbot/app.py .
 COPY chatbot/weather_alerts.py .
+COPY chatbot/forecast_handler.py .
 COPY chatbot/templates/ ./templates/
 COPY chatbot/location_mapping.py .
 

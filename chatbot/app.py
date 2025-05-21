@@ -45,7 +45,7 @@ def extract_entities_with_chatgpt(question):
     """Use ChatGPT to extract location and time information from the question"""
     
     prompt = f"""
-    Trích xuất thông tin về địa điểm và thời gian từ câu hỏi sau về thời tiết ở Việt Nam.
+    Trích xuất thông tin về địa điểm, thời gian và dự báo từ câu hỏi sau về thời tiết ở Việt Nam.
     Câu hỏi: "{question}"
     
     Các địa điểm hợp lệ là 63 tỉnh thành của Việt Nam: {', '.join(VIETNAM_PROVINCES)}
@@ -53,11 +53,13 @@ def extract_entities_with_chatgpt(question):
     Trả về một đối tượng JSON với cấu trúc ví dụ như sau:
     {{
         "locations": ["Địa điểm 1", "Địa điểm 2"], // Danh sách các địa điểm được đề cập trong câu hỏi
-        "time_reference": "current" // Một trong các giá trị: current (hiện tại), today (hôm nay), yesterday (hôm qua), specific_date (ngày cụ thể)
+        "time_reference": "current", // Một trong các giá trị: current (hiện tại), today (hôm nay), yesterday (hôm qua), specific_date (ngày cụ thể), future (tương lai)
+        "is_forecast": false // true nếu câu hỏi liên quan đến dự báo thời tiết trong tương lai, false nếu hỏi về thời tiết hiện tại hoặc quá khứ
     }}
     
     Nếu không tìm thấy địa điểm hợp lệ, trả về danh sách trống cho locations.
     Nếu không tìm thấy tham chiếu thời gian, giả định là "current".
+    Nếu câu hỏi chứa các từ khóa như "dự báo", "dự đoán", "sẽ", "mai", "tuần tới", "ngày mai", "sắp tới", "sắp", "tới", "sẽ như thế nào", "thế nào", "ra sao", hoặc các từ ngữ tương tự về thời tiết trong tương lai, hãy đặt is_forecast = true và time_reference = "future".
     """
     
     try:
@@ -94,14 +96,23 @@ def generate_influxdb_query(entities):
     """Generate InfluxDB query based on extracted entities"""
     locations = entities.get("locations", [])
     time_reference = entities.get("time_reference", "current")
+    is_forecast = entities.get("is_forecast", False)
     
-    # Default query for current weather
-    query = """
-    from(bucket: "weather")
+    # Determine which bucket to use based on whether this is a forecast query
+    bucket = "weather_forecast" if is_forecast else "weather"
+    
+    # Generate query with the appropriate bucket
+    query = f"""
+    from(bucket: "{bucket}")
     """
     
     # Add time range based on reference
-    if time_reference == "current" or time_reference == "now":
+    if is_forecast or time_reference == "future":
+        # For forecast data, get the next 7 days
+        query += """
+        |> range(start: now(), stop: now() + 7d)
+        """
+    elif time_reference == "current" or time_reference == "now":
         # Get data from the last 3 hours
         query += """
         |> range(start: -3h)
@@ -187,7 +198,7 @@ def format_weather_data(weather_data):
     if not weather_data:
         return {}
     
-    # Group data by location
+    # Group data by location and time
     grouped_data = {}
     for item in weather_data:
         location = item.get("location", "Unknown")
@@ -195,10 +206,17 @@ def format_weather_data(weather_data):
         field = item.get("field")
         value = item.get("value")
         
-        if location not in grouped_data:
-            grouped_data[location] = {"time": time, "data": {}}
+        # Format time as string
+        time_str = time.strftime("%Y-%m-%d %H:%M:%S") if time else "Unknown"
         
-        grouped_data[location]["data"][field] = value
+        if location not in grouped_data:
+            grouped_data[location] = {}
+            
+        if time_str not in grouped_data[location]:
+            grouped_data[location][time_str] = {}
+        
+        # Store the field value
+        grouped_data[location][time_str][field] = value
     
     return grouped_data
 
@@ -280,67 +298,81 @@ def get_pm10_warning(pm10):
 def generate_response_with_chatgpt(question, weather_data):
     """Generate a natural language response using ChatGPT"""
     if not weather_data:
-        return "Tôi không tìm thấy dữ liệu thời tiết phù hợp với câu hỏi của bạn. Vui lòng thử lại với một địa điểm cụ thể ở Việt Nam."
+        return "Xin lỗi, tôi không tìm thấy dữ liệu thời tiết cho địa điểm và thời gian bạn yêu cầu."
+    
+    # Determine if this is forecast data by checking for forecast-specific fields
+    is_forecast = False
+    for location_data in weather_data.values():
+        for time_data in location_data.values():
+            if 'max_temp' in time_data or 'min_temp' in time_data or 'condition' in time_data:
+                is_forecast = True
+                break
     
     # Format weather data for the prompt
     weather_info = ""
     warnings = []
     
-    for location, info in weather_data.items():
-        time_str = info["time"].strftime("%Y-%m-%d %H:%M:%S")
-        data = info["data"]
+    for location, data in weather_data.items():
+        weather_info += f"Thời tiết tại {location}:\n"
         
-        weather_info += f"Địa điểm: {location}, Thời gian: {time_str}\n"
-        
-        if "condition" in data:
-            weather_info += f"- Điều kiện thời tiết: {data['condition']}\n"
-        if "temp_c" in data:
-            temp_c = data['temp_c']
-            weather_info += f"- Nhiệt độ: {temp_c}°C\n"
+        for time, measurements in data.items():
+            weather_info += f"  Thời gian: {time}\n"
             
-            # Get temperature warning
-            warning = get_temperature_warning(temp_c)
-            if warning:
-                warnings.append(f"**{location}**: {warning}")
+            for key, value in measurements.items():
+                if key == 'temp_c' or key == 'max_temp':
+                    temp_label = 'Nhiệt độ' if key == 'temp_c' else 'Nhiệt độ cao nhất'
+                    weather_info += f"  {temp_label}: {value}°C\n"
+                    
+                    # Add temperature warning if needed
+                    warning = get_temperature_warning(value)
+                    if warning:
+                        warnings.append(f"*{location}*: {warning}")
                 
-        if "pm2_5" in data:
-            pm25_val = data['pm2_5']
-            weather_info += f"- Chỉ số PM2.5: {pm25_val} μg/m³\n"
+                elif key == 'min_temp':
+                    weather_info += f"  Nhiệt độ thấp nhất: {value}°C\n"
+                        
+                elif key == 'humidity':
+                    weather_info += f"  Độ ẩm: {value}%\n"
+                elif key == 'wind_kph':
+                    weather_info += f"  Tốc độ gió: {value} km/h\n"
+                elif key == 'precip_mm' or key == 'rainfall':
+                    rain_label = 'Lượng mưa' if key == 'precip_mm' else 'Lượng mưa dự báo'
+                    weather_info += f"  {rain_label}: {value} mm\n"
+                elif key == 'cloud' or key == 'cloud_cover':
+                    weather_info += f"  Độ che phủ mây: {value}%\n"
+                elif key == 'condition':
+                    weather_info += f"  Điều kiện thời tiết: {value}\n"
+                elif key == 'pm2_5':
+                    weather_info += f"  PM2.5: {value} µg/m³\n"
+                    
+                    # Add air quality warning if needed
+                    warning = get_pm25_warning(value)
+                    if warning:
+                        warnings.append(f"*{location}*: {warning}")
+                        
+                elif key == 'pm10':
+                    weather_info += f"  PM10: {value} µg/m³\n"
+                    
+                    # Add air quality warning if needed
+                    warning = get_pm10_warning(value)
+                    if warning:
+                        warnings.append(f"*{location}*: {warning}")
             
-            # Get PM2.5 warning
-            warning = get_pm25_warning(pm25_val)
-            if warning:
-                warnings.append(f"**{location}**: {warning}")
-                
-        if "pm10" in data:
-            pm10_val = data['pm10']
-            weather_info += f"- Chỉ số PM10: {pm10_val} μg/m³\n"
-            
-            # Get PM10 warning
-            warning = get_pm10_warning(pm10_val)
-            if warning:
-                warnings.append(f"**{location}**: {warning}")
-                
-        if "uv" in data:
-            weather_info += f"- Chỉ số UV: {data['uv']}\n"
-        
-        weather_info += "\n"
+            weather_info += "\n"
     
-    # Add warnings to the prompt
-    warnings_text = "\n\n".join(warnings) if warnings else ""
-    if warnings_text:
-        warnings_section = f"\n\nCảnh báo thời tiết:\n{warnings_text}\n\n"
-    else:
-        warnings_section = ""
+    # Add warnings to the prompt if any
+    warnings_text = ""
+    if warnings:
+        warnings_text = "\n".join(warnings)
     
     prompt = f"""
-    Dựa trên câu hỏi của người dùng và dữ liệu thời tiết được cung cấp, hãy tạo một câu trả lời tự nhiên và hữu ích.
+    Dựa trên câu hỏi của người dùng và dữ liệu thời tiết được cung cấp, hãy tạo một câu trả lời tự nhiên và hữư ích.
     
     Câu hỏi: "{question}"
     
     Dữ liệu thời tiết:
     {weather_info}
-    {warnings_section}
+    {warnings_text}
     Trả lời bằng tiếng Việt, cung cấp thông tin hữu ích và dễ hiểu. Nếu người dùng chỉ hỏi nhiệt độ thì trả lời nhiệt độ và lời khuyên liên quan, nếu hỏi về gì thì chỉ cần trả lời về tiêu chí đó không cần trả lời đầy đủ. Nếu có chỉ số chất lượng không khí, hãy giải thích ý nghĩa của nó (ví dụ: tốt, trung bình, kém, v.v.).
     
     Luôn đưa ra cảnh báo thời tiết nếu có, dựa trên nhiệt độ của các địa điểm.
@@ -387,19 +419,34 @@ def process_question(question):
     if not entities["locations"]:
         return "Vui lòng chỉ định một địa điểm cụ thể ở Việt Nam để tôi có thể cung cấp thông tin thời tiết."
     
-    # Generate and execute query
-    query = generate_influxdb_query(entities)
-    print(f"Generated query: {query}")
+    # Check if this is a forecast query
+    is_forecast = entities.get("is_forecast", False)
     
-    weather_data = execute_query(query)
-    print(f"Query results: {weather_data}")
+    if is_forecast:
+        # Import forecast handler here to avoid circular imports
+        from forecast_handler import get_forecast_data, format_forecast_response
+        
+        # Get forecast data for the requested locations
+        forecast_data = get_forecast_data(entities["locations"])
+        print(f"Forecast data: {forecast_data}")
+        
+        # Format the forecast response
+        response = format_forecast_response(forecast_data, question)
+    else:
+        # For current weather, use the existing flow
+        query = generate_influxdb_query(entities)
+        print(f"Generated query: {query}")
+        
+        weather_data = execute_query(query)
+        print(f"Query results: {weather_data}")
+        
+        # Format data
+        formatted_data = format_weather_data(weather_data)
+        print(f"Formatted data: {formatted_data}")
+        
+        # Generate response
+        response = generate_response_with_chatgpt(question, formatted_data)
     
-    # Format data
-    formatted_data = format_weather_data(weather_data)
-    print(f"Formatted data: {formatted_data}")
-    
-    # Generate response
-    response = generate_response_with_chatgpt(question, formatted_data)
     return response
 
 @socketio.on('connect')
