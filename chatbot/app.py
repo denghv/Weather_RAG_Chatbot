@@ -538,10 +538,86 @@ def process_question(question):
     
     if is_forecast:
         # Import forecast handler here to avoid circular imports
-        from forecast_handler import get_forecast_data, format_forecast_response
+        from forecast_handler import get_forecast_data, format_forecast_response, is_date_in_valid_range
+        import re
+        from datetime import datetime, timedelta
         
-        # Get forecast data for the requested locations
-        forecast_data = get_forecast_data(entities["locations"])
+        # Determine specific day for forecast based on the question
+        specific_day = None
+        specific_date = None
+        time_reference = entities.get("time_reference", "")
+        
+        # Check for specific date patterns in the question (dd/mm or dd/mm/yyyy)
+        date_patterns = [
+            r'(\d{1,2})[/-](\d{1,2})(?:[/-](\d{2,4}))?',  # dd/mm or dd/mm/yyyy
+            r'ngày\s+(\d{1,2})\s+tháng\s+(\d{1,2})(?:\s+năm\s+(\d{2,4}))?'  # ngày dd tháng mm (năm yyyy)
+        ]
+        
+        current_date = datetime.now().date()
+        found_specific_date = False
+        
+        for pattern in date_patterns:
+            matches = re.findall(pattern, question)
+            if matches:
+                for match in matches:
+                    try:
+                        if len(match) >= 2:
+                            day = int(match[0])
+                            month = int(match[1])
+                            year = int(match[2]) if len(match) > 2 and match[2] else current_date.year
+                            
+                            # Handle 2-digit year
+                            if year < 100:
+                                year += 2000
+                                
+                            specific_date = datetime(year, month, day).date()
+                            found_specific_date = True
+                            break
+                    except (ValueError, IndexError):
+                        continue
+                if found_specific_date:
+                    break
+        
+        # If specific date found, check if it's in valid range (today to 7 days ahead)
+        if found_specific_date:
+            if is_date_in_valid_range(specific_date):
+                # Calculate days from today
+                days_from_today = (specific_date - current_date).days
+                if days_from_today == 1:
+                    specific_day = 'tomorrow'
+                else:
+                    specific_day = f'{days_from_today}days'
+            else:
+                # Date is out of valid range
+                locations_str = ", ".join(entities["locations"])
+                return f"Xin lỗi, tôi chỉ có thể cung cấp thông tin về thời tiết cho {locations_str} từ ngày hôm nay và dự báo cho 7 ngày tới."
+        else:
+            # Check for relative day references if no specific date found
+            if "ngày mai" in question.lower() or "tomorrow" in time_reference.lower():
+                specific_day = 'tomorrow'
+            elif any(term in question.lower() for term in ["2 ngày", "hai ngày", "2 hôm"]):
+                specific_day = '2days'
+            elif any(term in question.lower() for term in ["3 ngày", "ba ngày", "3 hôm"]):
+                specific_day = '3days'
+            elif any(term in question.lower() for term in ["4 ngày", "bốn ngày", "4 hôm"]):
+                specific_day = '4days'
+            elif any(term in question.lower() for term in ["5 ngày", "năm ngày", "5 hôm"]):
+                specific_day = '5days'
+            elif any(term in question.lower() for term in ["6 ngày", "sáu ngày", "6 hôm"]):
+                specific_day = '6days'
+            elif any(term in question.lower() for term in ["7 ngày", "bảy ngày", "một tuần", "7 hôm"]):
+                specific_day = '7days'
+            
+            # Check for past time references
+            if "hôm qua" in question.lower() or "yesterday" in time_reference.lower() or "tuần trước" in question.lower():
+                locations_str = ", ".join(entities["locations"])
+                return f"Xin lỗi, tôi chỉ có thể cung cấp thông tin về thời tiết cho {locations_str} từ ngày hôm nay và dự báo cho 7 ngày tới."
+        
+        print(f"Specific day for forecast: {specific_day}")
+        print(f"Specific date requested: {specific_date}")
+        
+        # Get forecast data for the requested locations and specific day
+        forecast_data = get_forecast_data(entities["locations"], specific_day=specific_day)
         print(f"Forecast data: {forecast_data}")
         
         # Format the forecast response
