@@ -11748,3 +11748,926 @@ Testing forecast for Can Tho
 2025-05-22 01:06:41,070 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.5°C, Min=26.2°C, Rain=0.0mm
 2025-05-22 01:06:45,160 - weather_forecast_service - ERROR - Error writing forecast to InfluxDB: <urllib3.connection.HTTPConnection object at 0x000002095060D7B0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it
 2025-05-22 01:06:45,162 - weather_forecast_service - INFO - Forecast completed in 20.60 seconds. Sleeping for 99.40 seconds.
+2025-05-22 01:08:24,565 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:08:24.565503
+2025-05-22 01:08:24,565 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:08:25,265 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:08:25,797 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.1°C, Min=30.2°C, Rain=0.0mm
+2025-05-22 01:08:26,387 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=39.0°C, Min=30.8°C, Rain=14.9mm
+2025-05-22 01:08:26,927 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=39.2°C, Min=29.6°C, Rain=0.0mm
+2025-05-22 01:08:27,628 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=39.8°C, Min=27.6°C, Rain=0.0mm
+2025-05-22 01:08:28,164 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=40.8°C, Min=30.9°C, Rain=3.1mm
+2025-05-22 01:08:28,721 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=40.6°C, Min=27.7°C, Rain=0.0mm
+2025-05-22 01:08:28,722 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:08:29,198 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:08:29,758 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.6°C, Min=27.0°C, Rain=2.3mm
+2025-05-22 01:08:30,407 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.6°C, Min=27.2°C, Rain=4.9mm
+2025-05-22 01:08:31,154 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.2°C, Min=26.0°C, Rain=7.2mm
+2025-05-22 01:08:31,780 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.8°C, Min=26.8°C, Rain=6.6mm
+2025-05-22 01:08:32,338 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.3°C, Min=27.1°C, Rain=7.5mm
+2025-05-22 01:08:32,999 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.8°C, Min=26.1°C, Rain=6.2mm
+2025-05-22 01:08:33,000 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:08:33,747 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:08:34,375 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.3°C, Min=28.5°C, Rain=0.2mm
+2025-05-22 01:08:34,941 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.0°C, Min=28.8°C, Rain=0.1mm
+2025-05-22 01:08:35,525 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.6°C, Min=29.7°C, Rain=0.1mm
+2025-05-22 01:08:36,005 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.3°C, Min=26.6°C, Rain=0.3mm
+2025-05-22 01:08:36,689 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.5°C, Min=28.6°C, Rain=0.1mm
+2025-05-22 01:08:37,382 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.7°C, Min=29.7°C, Rain=0.1mm
+2025-05-22 01:08:37,383 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:08:37,942 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:08:38,636 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.1°C, Min=25.6°C, Rain=0.3mm
+2025-05-22 01:08:39,131 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=34.3°C, Min=25.3°C, Rain=0.3mm
+2025-05-22 01:08:39,692 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.0°C, Min=24.6°C, Rain=0.2mm
+2025-05-22 01:08:40,165 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.5°C, Min=26.2°C, Rain=0.3mm
+2025-05-22 01:08:40,689 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.1°C, Min=25.9°C, Rain=0.2mm
+2025-05-22 01:08:41,175 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.8°C, Min=24.0°C, Rain=0.1mm
+2025-05-22 01:08:41,179 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:08:41,778 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:08:42,310 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.6°C, Min=25.1°C, Rain=2.3mm
+2025-05-22 01:08:42,897 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.1°C, Min=25.1°C, Rain=3.2mm
+2025-05-22 01:08:43,429 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.4°C, Min=26.3°C, Rain=0.7mm
+2025-05-22 01:08:44,017 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.5°C, Min=26.9°C, Rain=4.9mm
+2025-05-22 01:08:44,567 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.6°C, Min=25.7°C, Rain=2.8mm
+2025-05-22 01:08:45,193 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=31.9°C, Min=23.7°C, Rain=0.0mm
+2025-05-22 01:08:45,194 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:08:45,710 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:08:46,302 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.0°C, Min=25.1°C, Rain=1.7mm
+2025-05-22 01:08:46,754 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.3°C, Min=24.9°C, Rain=2.6mm
+2025-05-22 01:08:47,304 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.8°C, Min=25.3°C, Rain=3.4mm
+2025-05-22 01:08:47,800 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=29.6°C, Min=24.4°C, Rain=0.0mm
+2025-05-22 01:08:48,309 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=35.4°C, Min=27.0°C, Rain=4.6mm
+2025-05-22 01:08:48,904 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=28.6°C, Min=24.8°C, Rain=0.0mm
+2025-05-22 01:08:48,958 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:08:48,959 - weather_forecast_service - INFO - Forecast completed in 24.39 seconds. Sleeping for 95.61 seconds.
+2025-05-22 01:10:24,576 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:10:24.576531
+2025-05-22 01:10:24,576 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:10:25,141 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:10:25,740 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.2°C, Min=29.5°C, Rain=0.0mm
+2025-05-22 01:10:26,187 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.3°C, Min=31.0°C, Rain=11.4mm
+2025-05-22 01:10:26,689 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.3°C, Min=29.5°C, Rain=0.0mm
+2025-05-22 01:10:27,280 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=38.3°C, Min=27.8°C, Rain=0.0mm
+2025-05-22 01:10:27,833 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.1°C, Min=29.7°C, Rain=11.5mm
+2025-05-22 01:10:28,412 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.1°C, Min=33.4°C, Rain=0.0mm
+2025-05-22 01:10:28,413 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:10:28,922 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:10:29,486 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.9°C, Min=27.7°C, Rain=3.9mm
+2025-05-22 01:10:29,984 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.4°C, Min=26.5°C, Rain=1.5mm
+2025-05-22 01:10:30,934 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.7°C, Min=27.2°C, Rain=6.5mm
+2025-05-22 01:10:31,889 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.4°C, Min=25.7°C, Rain=6.1mm
+2025-05-22 01:10:33,413 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.4°C, Min=31.5°C, Rain=0.0mm
+2025-05-22 01:10:34,836 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=31.7°C, Min=29.2°C, Rain=9.3mm
+2025-05-22 01:10:34,837 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:10:35,715 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:10:37,255 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.4°C, Min=28.7°C, Rain=0.2mm
+2025-05-22 01:10:38,773 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.0°C, Min=28.6°C, Rain=0.1mm
+2025-05-22 01:10:40,637 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.8°C, Min=29.8°C, Rain=0.3mm
+2025-05-22 01:10:41,418 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.6°C, Min=26.5°C, Rain=0.2mm
+2025-05-22 01:10:42,331 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.8°C, Min=30.1°C, Rain=0.0mm
+2025-05-22 01:10:43,219 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=31.2°C, Min=29.8°C, Rain=0.0mm
+2025-05-22 01:10:43,219 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:10:43,965 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:10:44,716 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.9°C, Min=25.3°C, Rain=0.2mm
+2025-05-22 01:10:45,723 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.7°C, Min=25.1°C, Rain=0.3mm
+2025-05-22 01:10:46,605 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.2°C, Min=24.8°C, Rain=0.4mm
+2025-05-22 01:10:47,351 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.6°C, Min=23.5°C, Rain=0.1mm
+2025-05-22 01:10:48,233 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.5°C, Min=26.6°C, Rain=0.1mm
+2025-05-22 01:10:49,061 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=37.6°C, Min=23.3°C, Rain=0.3mm
+2025-05-22 01:10:49,061 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:10:49,880 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:10:50,812 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.1°C, Min=25.4°C, Rain=2.1mm
+2025-05-22 01:10:51,769 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.8°C, Min=23.7°C, Rain=3.6mm
+2025-05-22 01:10:52,798 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.7°C, Min=24.8°C, Rain=1.5mm
+2025-05-22 01:10:53,872 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.1°C, Min=25.9°C, Rain=0.0mm
+2025-05-22 01:10:54,901 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.0°C, Min=24.0°C, Rain=3.7mm
+2025-05-22 01:10:55,889 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.5°C, Min=23.9°C, Rain=6.1mm
+2025-05-22 01:10:55,898 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:10:57,393 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:10:58,398 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.9°C, Min=24.7°C, Rain=2.8mm
+2025-05-22 01:10:59,232 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.9°C, Min=25.1°C, Rain=2.3mm
+2025-05-22 01:11:00,303 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.5°C, Min=25.7°C, Rain=1.5mm
+2025-05-22 01:11:01,353 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.0°C, Min=26.8°C, Rain=3.0mm
+2025-05-22 01:11:02,366 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.5°C, Min=27.7°C, Rain=8.0mm
+2025-05-22 01:11:03,414 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=29.7°C, Min=23.3°C, Rain=2.2mm
+2025-05-22 01:11:03,711 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:11:03,711 - weather_forecast_service - INFO - Forecast completed in 39.13 seconds. Sleeping for 80.87 seconds.
+2025-05-22 01:12:24,583 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:12:24.583144
+2025-05-22 01:12:24,583 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:12:25,193 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:12:25,803 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.3°C, Min=29.5°C, Rain=0.0mm
+2025-05-22 01:12:26,448 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=37.4°C, Min=29.7°C, Rain=10.6mm
+2025-05-22 01:12:27,066 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=38.5°C, Min=29.7°C, Rain=0.0mm
+2025-05-22 01:12:27,652 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=37.2°C, Min=30.0°C, Rain=0.0mm
+2025-05-22 01:12:28,271 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=40.6°C, Min=30.3°C, Rain=6.2mm
+2025-05-22 01:12:28,839 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.1°C, Min=34.0°C, Rain=0.0mm
+2025-05-22 01:12:28,839 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:12:29,373 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:12:29,854 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.8°C, Min=26.8°C, Rain=3.4mm
+2025-05-22 01:12:30,440 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=33.2°C, Min=27.4°C, Rain=1.8mm
+2025-05-22 01:12:30,944 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.3°C, Min=27.1°C, Rain=5.0mm
+2025-05-22 01:12:31,475 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.4°C, Min=28.2°C, Rain=0.1mm
+2025-05-22 01:12:31,981 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.3°C, Min=25.6°C, Rain=2.2mm
+2025-05-22 01:12:32,536 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.4°C, Min=27.8°C, Rain=0.7mm
+2025-05-22 01:12:32,537 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:12:33,074 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:12:33,528 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.4°C, Min=28.4°C, Rain=0.2mm
+2025-05-22 01:12:34,133 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.1°C, Min=29.1°C, Rain=0.1mm
+2025-05-22 01:12:34,649 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=34.9°C, Min=29.3°C, Rain=0.3mm
+2025-05-22 01:12:35,321 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.9°C, Min=28.9°C, Rain=0.0mm
+2025-05-22 01:12:35,966 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=35.1°C, Min=27.2°C, Rain=0.5mm
+2025-05-22 01:12:36,528 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.2°C, Min=30.0°C, Rain=0.1mm
+2025-05-22 01:12:36,528 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:12:36,957 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:12:37,415 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.6°C, Min=25.3°C, Rain=0.1mm
+2025-05-22 01:12:37,871 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.8°C, Min=26.2°C, Rain=0.3mm
+2025-05-22 01:12:38,331 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=37.4°C, Min=26.2°C, Rain=0.2mm
+2025-05-22 01:12:38,713 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.5°C, Min=25.3°C, Rain=0.1mm
+2025-05-22 01:12:39,283 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.3°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:12:39,714 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=37.2°C, Min=23.2°C, Rain=0.4mm
+2025-05-22 01:12:39,715 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:12:40,140 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:12:40,587 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.4°C, Min=24.7°C, Rain=3.2mm
+2025-05-22 01:12:40,987 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.7°C, Min=25.2°C, Rain=0.3mm
+2025-05-22 01:12:41,375 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.9°C, Min=25.5°C, Rain=4.2mm
+2025-05-22 01:12:41,767 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=30.2°C, Min=26.0°C, Rain=3.0mm
+2025-05-22 01:12:42,156 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=30.1°C, Min=25.8°C, Rain=5.2mm
+2025-05-22 01:12:42,563 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=30.8°C, Min=26.8°C, Rain=0.9mm
+2025-05-22 01:12:42,564 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:12:42,939 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:12:43,412 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.7°C, Min=25.3°C, Rain=1.9mm
+2025-05-22 01:12:44,049 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.4°C, Min=25.3°C, Rain=3.6mm
+2025-05-22 01:12:44,705 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.6°C, Min=25.7°C, Rain=3.2mm
+2025-05-22 01:12:45,114 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.0°C, Min=29.0°C, Rain=2.5mm
+2025-05-22 01:12:45,737 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.8°C, Min=25.8°C, Rain=6.5mm
+2025-05-22 01:12:46,367 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=29.8°C, Min=28.8°C, Rain=1.2mm
+2025-05-22 01:12:46,413 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:12:46,414 - weather_forecast_service - INFO - Forecast completed in 21.83 seconds. Sleeping for 98.17 seconds.
+2025-05-22 01:14:24,585 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:14:24.585355
+2025-05-22 01:14:24,585 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:14:25,071 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:14:25,489 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.0°C, Min=30.3°C, Rain=0.0mm
+2025-05-22 01:14:25,896 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=37.6°C, Min=29.8°C, Rain=10.3mm
+2025-05-22 01:14:26,296 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.4°C, Min=28.8°C, Rain=0.0mm
+2025-05-22 01:14:26,692 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=38.0°C, Min=27.1°C, Rain=0.0mm
+2025-05-22 01:14:27,159 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.0°C, Min=30.2°C, Rain=0.0mm
+2025-05-22 01:14:27,574 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=37.2°C, Min=31.0°C, Rain=0.0mm
+2025-05-22 01:14:27,575 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:14:28,098 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:14:28,500 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=33.4°C, Min=27.2°C, Rain=1.4mm
+2025-05-22 01:14:28,889 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.8°C, Min=26.6°C, Rain=3.2mm
+2025-05-22 01:14:29,301 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.1°C, Min=26.9°C, Rain=2.8mm
+2025-05-22 01:14:29,690 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.0°C, Min=24.7°C, Rain=6.8mm
+2025-05-22 01:14:30,090 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.1°C, Min=24.1°C, Rain=7.0mm
+2025-05-22 01:14:30,707 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.7°C, Min=28.4°C, Rain=0.0mm
+2025-05-22 01:14:30,708 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:14:31,225 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:14:31,710 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.7°C, Min=28.2°C, Rain=0.2mm
+2025-05-22 01:14:32,212 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.0°C, Min=28.4°C, Rain=0.1mm
+2025-05-22 01:14:32,786 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.0°C, Min=28.0°C, Rain=0.2mm
+2025-05-22 01:14:33,227 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.2°C, Min=28.3°C, Rain=0.0mm
+2025-05-22 01:14:33,620 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.1°C, Min=30.3°C, Rain=0.2mm
+2025-05-22 01:14:34,039 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.6°C, Min=30.1°C, Rain=0.1mm
+2025-05-22 01:14:34,040 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:14:34,425 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:14:34,805 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.4°C, Min=25.6°C, Rain=0.2mm
+2025-05-22 01:14:35,175 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.9°C, Min=25.7°C, Rain=0.2mm
+2025-05-22 01:14:35,584 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=37.0°C, Min=24.3°C, Rain=0.0mm
+2025-05-22 01:14:35,990 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.8°C, Min=25.2°C, Rain=0.7mm
+2025-05-22 01:14:36,369 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.9°C, Min=23.8°C, Rain=0.6mm
+2025-05-22 01:14:36,730 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.0°C, Min=25.3°C, Rain=0.0mm
+2025-05-22 01:14:36,731 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:14:37,145 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:14:37,553 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.7°C, Min=25.2°C, Rain=3.7mm
+2025-05-22 01:14:37,985 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.2°C, Min=24.6°C, Rain=3.0mm
+2025-05-22 01:14:38,418 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.6°C, Min=25.5°C, Rain=2.7mm
+2025-05-22 01:14:38,926 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.1°C, Min=23.9°C, Rain=2.0mm
+2025-05-22 01:14:39,395 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.9°C, Min=23.0°C, Rain=0.9mm
+2025-05-22 01:14:39,826 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=30.7°C, Min=24.6°C, Rain=5.8mm
+2025-05-22 01:14:39,827 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:14:40,206 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:14:40,782 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.0°C, Min=25.1°C, Rain=2.7mm
+2025-05-22 01:14:41,208 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.3°C, Min=24.6°C, Rain=2.5mm
+2025-05-22 01:14:41,625 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.7°C, Min=25.9°C, Rain=1.2mm
+2025-05-22 01:14:42,032 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.4°C, Min=26.9°C, Rain=2.6mm
+2025-05-22 01:14:42,423 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.1°C, Min=25.3°C, Rain=1.6mm
+2025-05-22 01:14:42,948 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.0°C, Min=25.8°C, Rain=0.8mm
+2025-05-22 01:14:43,044 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:14:43,045 - weather_forecast_service - INFO - Forecast completed in 18.46 seconds. Sleeping for 101.54 seconds.
+2025-05-22 01:16:24,590 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:16:24.590160
+2025-05-22 01:16:24,593 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:16:24,982 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:16:25,362 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.4°C, Min=30.6°C, Rain=0.0mm
+2025-05-22 01:16:25,801 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.9°C, Min=30.5°C, Rain=5.4mm
+2025-05-22 01:16:26,180 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=39.7°C, Min=29.0°C, Rain=0.0mm
+2025-05-22 01:16:26,558 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=37.4°C, Min=31.5°C, Rain=0.0mm
+2025-05-22 01:16:26,952 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=37.6°C, Min=32.9°C, Rain=6.3mm
+2025-05-22 01:16:27,339 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=39.9°C, Min=31.4°C, Rain=0.0mm
+2025-05-22 01:16:27,340 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:16:27,797 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:16:28,186 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.6°C, Min=26.7°C, Rain=4.9mm
+2025-05-22 01:16:28,559 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.3°C, Min=26.5°C, Rain=3.9mm
+2025-05-22 01:16:29,094 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.7°C, Min=26.2°C, Rain=1.7mm
+2025-05-22 01:16:29,457 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.4°C, Min=28.4°C, Rain=8.8mm
+2025-05-22 01:16:29,921 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.8°C, Min=25.9°C, Rain=0.0mm
+2025-05-22 01:16:30,453 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.7°C, Min=27.6°C, Rain=4.4mm
+2025-05-22 01:16:30,454 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:16:30,948 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:16:31,406 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=34.6°C, Min=29.1°C, Rain=0.2mm
+2025-05-22 01:16:31,877 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=34.6°C, Min=28.4°C, Rain=0.1mm
+2025-05-22 01:16:32,265 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=34.9°C, Min=28.4°C, Rain=0.2mm
+2025-05-22 01:16:32,711 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.0°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:16:33,119 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.7°C, Min=30.0°C, Rain=0.2mm
+2025-05-22 01:16:33,512 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.3°C, Min=29.8°C, Rain=0.1mm
+2025-05-22 01:16:33,513 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:16:33,882 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:16:34,240 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.7°C, Min=24.8°C, Rain=0.2mm
+2025-05-22 01:16:34,605 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.9°C, Min=24.6°C, Rain=0.0mm
+2025-05-22 01:16:34,960 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=37.8°C, Min=24.9°C, Rain=0.3mm
+2025-05-22 01:16:35,339 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.0°C, Min=25.6°C, Rain=0.2mm
+2025-05-22 01:16:35,894 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=37.2°C, Min=25.2°C, Rain=0.0mm
+2025-05-22 01:16:36,350 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.4°C, Min=24.9°C, Rain=0.6mm
+2025-05-22 01:16:36,351 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:16:36,776 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:16:37,209 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.7°C, Min=24.7°C, Rain=2.4mm
+2025-05-22 01:16:37,621 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=30.1°C, Min=26.0°C, Rain=2.4mm
+2025-05-22 01:16:38,103 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.5°C, Min=24.9°C, Rain=4.9mm
+2025-05-22 01:16:38,500 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.8°C, Min=26.4°C, Rain=2.4mm
+2025-05-22 01:16:38,913 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.5°C, Min=24.0°C, Rain=4.1mm
+2025-05-22 01:16:39,356 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.3°C, Min=24.9°C, Rain=4.7mm
+2025-05-22 01:16:39,356 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:16:39,760 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:16:40,121 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.8°C, Min=25.2°C, Rain=1.5mm
+2025-05-22 01:16:40,674 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.2°C, Min=24.4°C, Rain=2.5mm
+2025-05-22 01:16:41,335 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.2°C, Min=25.2°C, Rain=3.4mm
+2025-05-22 01:16:41,702 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=30.7°C, Min=27.0°C, Rain=5.4mm
+2025-05-22 01:16:42,253 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.5°C, Min=24.9°C, Rain=2.4mm
+2025-05-22 01:16:42,677 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=30.5°C, Min=23.6°C, Rain=1.4mm
+2025-05-22 01:16:42,702 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:16:42,702 - weather_forecast_service - INFO - Forecast completed in 18.11 seconds. Sleeping for 101.89 seconds.
+2025-05-22 01:18:24,597 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:18:24.597496
+2025-05-22 01:18:24,598 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:18:26,563 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:18:27,896 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.4°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:18:28,424 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.7°C, Min=29.7°C, Rain=29.5mm
+2025-05-22 01:18:28,840 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=37.0°C, Min=30.6°C, Rain=0.0mm
+2025-05-22 01:18:29,244 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=38.8°C, Min=29.2°C, Rain=0.0mm
+2025-05-22 01:18:29,664 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.8°C, Min=26.7°C, Rain=1.1mm
+2025-05-22 01:18:30,085 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=37.3°C, Min=27.6°C, Rain=0.0mm
+2025-05-22 01:18:30,085 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:18:30,551 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:18:31,107 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=33.6°C, Min=26.9°C, Rain=3.4mm
+2025-05-22 01:18:31,594 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.8°C, Min=27.5°C, Rain=5.1mm
+2025-05-22 01:18:32,069 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.2°C, Min=26.2°C, Rain=0.8mm
+2025-05-22 01:18:32,522 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.2°C, Min=26.2°C, Rain=1.2mm
+2025-05-22 01:18:33,087 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.0°C, Min=28.0°C, Rain=2.4mm
+2025-05-22 01:18:33,466 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.7°C, Min=28.1°C, Rain=5.0mm
+2025-05-22 01:18:33,467 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:18:33,918 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:18:34,385 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.0°C, Min=28.6°C, Rain=0.2mm
+2025-05-22 01:18:34,747 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=33.9°C, Min=29.0°C, Rain=0.3mm
+2025-05-22 01:18:35,194 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.1°C, Min=31.2°C, Rain=0.1mm
+2025-05-22 01:18:35,647 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.3°C, Min=28.8°C, Rain=0.2mm
+2025-05-22 01:18:36,113 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.5°C, Min=27.7°C, Rain=0.3mm
+2025-05-22 01:18:36,544 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.7°C, Min=34.3°C, Rain=0.1mm
+2025-05-22 01:18:36,545 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:18:36,981 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:18:37,396 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.1°C, Min=25.1°C, Rain=0.2mm
+2025-05-22 01:18:37,907 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.0°C, Min=24.4°C, Rain=0.1mm
+2025-05-22 01:18:38,362 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.4°C, Min=24.6°C, Rain=0.3mm
+2025-05-22 01:18:38,843 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=37.9°C, Min=26.0°C, Rain=0.3mm
+2025-05-22 01:18:39,334 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=37.2°C, Min=24.1°C, Rain=0.0mm
+2025-05-22 01:18:39,802 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.1°C, Min=23.6°C, Rain=0.5mm
+2025-05-22 01:18:39,803 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:18:40,326 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:18:41,051 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.9°C, Min=25.2°C, Rain=1.0mm
+2025-05-22 01:18:41,511 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.1°C, Min=23.5°C, Rain=2.7mm
+2025-05-22 01:18:41,932 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.9°C, Min=23.9°C, Rain=3.0mm
+2025-05-22 01:18:42,398 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.2°C, Min=21.9°C, Rain=3.6mm
+2025-05-22 01:18:42,858 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.3°C, Min=28.0°C, Rain=0.4mm
+2025-05-22 01:18:43,317 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=29.6°C, Min=23.8°C, Rain=0.0mm
+2025-05-22 01:18:43,317 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:18:43,703 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:18:44,326 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.0°C, Min=25.6°C, Rain=2.7mm
+2025-05-22 01:18:44,753 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=30.3°C, Min=25.3°C, Rain=2.7mm
+2025-05-22 01:18:45,192 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.6°C, Min=25.6°C, Rain=0.8mm
+2025-05-22 01:18:46,086 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.4°C, Min=26.5°C, Rain=5.9mm
+2025-05-22 01:18:46,594 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=30.2°C, Min=24.0°C, Rain=0.0mm
+2025-05-22 01:18:46,991 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.5°C, Min=22.9°C, Rain=3.3mm
+2025-05-22 01:18:47,064 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:18:47,064 - weather_forecast_service - INFO - Forecast completed in 22.47 seconds. Sleeping for 97.53 seconds.
+2025-05-22 01:20:24,601 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:20:24.601393
+2025-05-22 01:20:24,602 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:20:25,178 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:20:25,606 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.3°C, Min=30.1°C, Rain=0.0mm
+2025-05-22 01:20:26,350 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.3°C, Min=29.8°C, Rain=15.9mm
+2025-05-22 01:20:26,799 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.5°C, Min=30.1°C, Rain=0.0mm
+2025-05-22 01:20:27,245 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.9°C, Min=28.9°C, Rain=0.0mm
+2025-05-22 01:20:27,714 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=37.9°C, Min=29.7°C, Rain=36.8mm
+2025-05-22 01:20:28,132 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.4°C, Min=30.2°C, Rain=0.0mm
+2025-05-22 01:20:28,132 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:20:28,596 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:20:28,991 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=33.5°C, Min=27.4°C, Rain=3.7mm
+2025-05-22 01:20:29,362 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=33.4°C, Min=26.7°C, Rain=2.8mm
+2025-05-22 01:20:29,788 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.4°C, Min=26.8°C, Rain=4.6mm
+2025-05-22 01:20:30,156 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.4°C, Min=29.9°C, Rain=7.3mm
+2025-05-22 01:20:30,761 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.5°C, Min=25.1°C, Rain=2.6mm
+2025-05-22 01:20:31,441 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.0°C, Min=26.8°C, Rain=0.0mm
+2025-05-22 01:20:31,441 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:20:32,098 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:20:32,578 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.1°C, Min=28.2°C, Rain=0.2mm
+2025-05-22 01:20:33,024 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.5°C, Min=29.9°C, Rain=0.2mm
+2025-05-22 01:20:33,415 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.2°C, Min=29.7°C, Rain=0.0mm
+2025-05-22 01:20:33,840 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.0°C, Min=30.0°C, Rain=0.3mm
+2025-05-22 01:20:34,280 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.9°C, Min=30.1°C, Rain=0.0mm
+2025-05-22 01:20:34,697 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.9°C, Min=29.2°C, Rain=0.1mm
+2025-05-22 01:20:34,697 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:20:35,399 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:20:35,976 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.7°C, Min=25.1°C, Rain=0.2mm
+2025-05-22 01:20:36,829 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:20:37,367 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.6°C, Min=25.8°C, Rain=0.2mm
+2025-05-22 01:20:38,102 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.0°C, Min=24.1°C, Rain=0.3mm
+2025-05-22 01:20:38,565 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.1°C, Min=24.7°C, Rain=0.2mm
+2025-05-22 01:20:39,147 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.3°C, Min=26.0°C, Rain=0.5mm
+2025-05-22 01:20:39,148 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:20:39,673 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:20:40,211 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.6°C, Min=25.5°C, Rain=2.9mm
+2025-05-22 01:20:40,701 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.9°C, Min=25.4°C, Rain=2.3mm
+2025-05-22 01:20:41,177 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.5°C, Min=25.8°C, Rain=2.9mm
+2025-05-22 01:20:41,653 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.1°C, Min=23.3°C, Rain=3.6mm
+2025-05-22 01:20:42,155 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=30.3°C, Min=24.4°C, Rain=3.8mm
+2025-05-22 01:20:42,595 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=30.5°C, Min=25.4°C, Rain=1.2mm
+2025-05-22 01:20:42,596 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:20:43,002 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:20:43,444 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.6°C, Min=25.0°C, Rain=2.7mm
+2025-05-22 01:20:43,995 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.3°C, Min=26.4°C, Rain=2.5mm
+2025-05-22 01:20:44,413 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.5°C, Min=27.1°C, Rain=1.1mm
+2025-05-22 01:20:44,813 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.3°C, Min=25.7°C, Rain=1.7mm
+2025-05-22 01:20:45,343 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.0°C, Min=22.7°C, Rain=0.0mm
+2025-05-22 01:20:45,865 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.2°C, Min=23.9°C, Rain=3.3mm
+2025-05-22 01:20:45,959 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:20:45,959 - weather_forecast_service - INFO - Forecast completed in 21.36 seconds. Sleeping for 98.64 seconds.
+2025-05-22 01:22:24,604 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:22:24.604712
+2025-05-22 01:22:24,606 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:22:27,595 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:22:28,633 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.2°C, Min=29.3°C, Rain=0.0mm
+2025-05-22 01:22:29,316 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=39.0°C, Min=30.9°C, Rain=35.6mm
+2025-05-22 01:22:30,208 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=37.0°C, Min=29.6°C, Rain=0.0mm
+2025-05-22 01:22:31,413 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=39.8°C, Min=30.3°C, Rain=0.0mm
+2025-05-22 01:22:32,941 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.1°C, Min=30.7°C, Rain=16.5mm
+2025-05-22 01:22:34,819 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=37.1°C, Min=30.4°C, Rain=0.0mm
+2025-05-22 01:22:34,819 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:22:35,349 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:22:35,907 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=33.1°C, Min=27.0°C, Rain=3.6mm
+2025-05-22 01:22:37,000 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.3°C, Min=26.0°C, Rain=6.0mm
+2025-05-22 01:22:37,707 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.7°C, Min=26.1°C, Rain=4.0mm
+2025-05-22 01:22:38,318 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.1°C, Min=28.8°C, Rain=3.9mm
+2025-05-22 01:22:39,059 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.1°C, Min=25.2°C, Rain=9.1mm
+2025-05-22 01:22:39,734 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.5°C, Min=25.9°C, Rain=6.6mm
+2025-05-22 01:22:39,734 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:22:40,935 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:22:41,741 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.2°C, Min=28.6°C, Rain=0.2mm
+2025-05-22 01:22:42,345 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.5°C, Min=29.3°C, Rain=0.2mm
+2025-05-22 01:22:43,044 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=34.4°C, Min=28.4°C, Rain=0.2mm
+2025-05-22 01:22:43,639 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.0°C, Min=27.6°C, Rain=0.0mm
+2025-05-22 01:22:44,328 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.2°C, Min=28.4°C, Rain=0.2mm
+2025-05-22 01:22:44,978 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.3°C, Min=28.1°C, Rain=0.1mm
+2025-05-22 01:22:44,978 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:22:45,772 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:22:46,838 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.2°C, Min=24.5°C, Rain=0.3mm
+2025-05-22 01:22:48,293 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.7°C, Min=25.3°C, Rain=0.2mm
+2025-05-22 01:22:49,817 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.4°C, Min=25.9°C, Rain=0.2mm
+2025-05-22 01:22:50,787 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.9°C, Min=24.0°C, Rain=0.3mm
+2025-05-22 01:22:51,572 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.1°C, Min=24.1°C, Rain=0.2mm
+2025-05-22 01:22:52,121 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=37.4°C, Min=27.1°C, Rain=0.5mm
+2025-05-22 01:22:52,121 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:22:52,733 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:22:53,365 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.5°C, Min=24.9°C, Rain=2.4mm
+2025-05-22 01:22:54,008 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.2°C, Min=24.4°C, Rain=1.4mm
+2025-05-22 01:22:55,050 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.8°C, Min=24.2°C, Rain=2.4mm
+2025-05-22 01:22:56,726 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.1°C, Min=22.8°C, Rain=3.1mm
+2025-05-22 01:22:57,647 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.4°C, Min=26.8°C, Rain=0.0mm
+2025-05-22 01:22:58,197 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=28.3°C, Min=31.3°C, Rain=3.5mm
+2025-05-22 01:22:58,198 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:22:58,659 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:22:59,089 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.9mm
+2025-05-22 01:22:59,568 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.1°C, Min=24.9°C, Rain=3.7mm
+2025-05-22 01:22:59,990 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.3°C, Min=24.6°C, Rain=2.1mm
+2025-05-22 01:23:00,503 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.1°C, Min=25.3°C, Rain=1.2mm
+2025-05-22 01:23:01,063 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=28.7°C, Min=24.6°C, Rain=3.9mm
+2025-05-22 01:23:01,665 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=27.1°C, Min=27.0°C, Rain=5.1mm
+2025-05-22 01:23:01,757 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:23:01,758 - weather_forecast_service - INFO - Forecast completed in 37.15 seconds. Sleeping for 82.85 seconds.
+2025-05-22 01:24:24,611 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:24:24.611043
+2025-05-22 01:24:24,611 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:24:25,673 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:24:26,565 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=37.7°C, Min=30.0°C, Rain=0.0mm
+2025-05-22 01:24:27,652 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=37.8°C, Min=30.0°C, Rain=19.9mm
+2025-05-22 01:24:28,651 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=39.3°C, Min=30.4°C, Rain=0.0mm
+2025-05-22 01:24:29,288 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.7°C, Min=30.8°C, Rain=0.0mm
+2025-05-22 01:24:29,889 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.8°C, Min=29.2°C, Rain=3.5mm
+2025-05-22 01:24:30,544 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.5°C, Min=30.1°C, Rain=0.0mm
+2025-05-22 01:24:30,544 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:24:31,222 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:24:31,706 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=33.2°C, Min=27.1°C, Rain=4.7mm
+2025-05-22 01:24:32,300 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=33.1°C, Min=27.0°C, Rain=3.6mm
+2025-05-22 01:24:32,843 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.7°C, Min=27.4°C, Rain=5.9mm
+2025-05-22 01:24:33,837 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.6°C, Min=26.1°C, Rain=1.4mm
+2025-05-22 01:24:34,525 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.9°C, Min=30.0°C, Rain=1.3mm
+2025-05-22 01:24:35,399 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.4°C, Min=29.1°C, Rain=0.0mm
+2025-05-22 01:24:35,400 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:24:36,126 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:24:36,894 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.2°C, Min=29.3°C, Rain=0.1mm
+2025-05-22 01:24:37,517 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.4mm
+2025-05-22 01:24:39,137 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.7°C, Min=27.9°C, Rain=0.3mm
+2025-05-22 01:24:40,763 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.4°C, Min=30.2°C, Rain=0.3mm
+2025-05-22 01:24:41,801 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.0°C, Min=27.2°C, Rain=0.1mm
+2025-05-22 01:24:42,936 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.8°C, Min=27.1°C, Rain=0.6mm
+2025-05-22 01:24:42,937 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:24:43,994 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:24:45,254 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:24:47,058 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.4°C, Min=24.1°C, Rain=0.2mm
+2025-05-22 01:24:48,432 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.1°C, Min=25.2°C, Rain=0.0mm
+2025-05-22 01:24:49,978 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.6°C, Min=25.2°C, Rain=0.5mm
+2025-05-22 01:24:50,944 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.8°C, Min=26.7°C, Rain=0.0mm
+2025-05-22 01:24:51,705 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.7°C, Min=23.0°C, Rain=0.0mm
+2025-05-22 01:24:51,705 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:24:53,021 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:24:54,456 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.0°C, Min=24.8°C, Rain=2.6mm
+2025-05-22 01:24:55,469 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=30.9°C, Min=25.4°C, Rain=2.5mm
+2025-05-22 01:24:56,576 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.3°C, Min=24.9°C, Rain=0.0mm
+2025-05-22 01:24:58,055 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=29.8°C, Min=24.6°C, Rain=3.1mm
+2025-05-22 01:24:59,554 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=29.7°C, Min=24.5°C, Rain=1.5mm
+2025-05-22 01:25:00,905 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=31.3°C, Min=25.3°C, Rain=4.5mm
+2025-05-22 01:25:00,906 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:25:01,721 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:25:02,398 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.9°C, Min=25.5°C, Rain=3.0mm
+2025-05-22 01:25:03,211 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.0°C, Min=25.1°C, Rain=2.6mm
+2025-05-22 01:25:03,971 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.8°C, Min=25.3°C, Rain=2.9mm
+2025-05-22 01:25:05,110 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=30.1°C, Min=22.5°C, Rain=2.4mm
+2025-05-22 01:25:05,706 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.2°C, Min=24.1°C, Rain=2.8mm
+2025-05-22 01:25:06,410 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.4°C, Min=26.4°C, Rain=2.0mm
+2025-05-22 01:25:06,502 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:25:06,503 - weather_forecast_service - INFO - Forecast completed in 41.89 seconds. Sleeping for 78.11 seconds.
+2025-05-22 01:26:24,612 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:26:24.612286
+2025-05-22 01:26:24,612 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:26:25,034 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:26:25,645 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.5°C, Min=30.1°C, Rain=0.0mm
+2025-05-22 01:26:26,051 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=37.7°C, Min=30.0°C, Rain=10.2mm
+2025-05-22 01:26:26,434 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=39.6°C, Min=30.7°C, Rain=0.0mm
+2025-05-22 01:26:26,853 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=40.9°C, Min=27.4°C, Rain=0.0mm
+2025-05-22 01:26:27,248 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.9°C, Min=28.2°C, Rain=0.0mm
+2025-05-22 01:26:27,672 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=37.8°C, Min=28.6°C, Rain=0.0mm
+2025-05-22 01:26:27,673 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:26:28,058 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:26:28,436 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=33.7°C, Min=27.2°C, Rain=3.0mm
+2025-05-22 01:26:29,150 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.6°C, Min=27.1°C, Rain=6.8mm
+2025-05-22 01:26:29,546 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.9°C, Min=28.6°C, Rain=0.0mm
+2025-05-22 01:26:29,955 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.6°C, Min=27.6°C, Rain=0.0mm
+2025-05-22 01:26:30,408 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.2°C, Min=28.3°C, Rain=4.8mm
+2025-05-22 01:26:30,847 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.2°C, Min=27.5°C, Rain=0.0mm
+2025-05-22 01:26:30,847 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:26:31,425 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:26:31,982 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.9°C, Min=29.1°C, Rain=0.2mm
+2025-05-22 01:26:32,523 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.8°C, Min=28.5°C, Rain=0.2mm
+2025-05-22 01:26:32,887 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.7°C, Min=29.9°C, Rain=0.3mm
+2025-05-22 01:26:33,270 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.8°C, Min=29.0°C, Rain=0.4mm
+2025-05-22 01:26:33,684 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.8°C, Min=27.9°C, Rain=0.2mm
+2025-05-22 01:26:34,062 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.9°C, Min=29.2°C, Rain=0.0mm
+2025-05-22 01:26:34,062 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:26:34,524 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:26:34,890 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.2°C, Min=25.2°C, Rain=0.2mm
+2025-05-22 01:26:35,277 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.2°C, Min=25.9°C, Rain=0.2mm
+2025-05-22 01:26:35,684 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.1°C, Min=24.7°C, Rain=0.1mm
+2025-05-22 01:26:36,100 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.4°C, Min=25.3°C, Rain=0.2mm
+2025-05-22 01:26:36,494 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.5°C, Min=24.5°C, Rain=0.2mm
+2025-05-22 01:26:36,943 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.1°C, Min=22.8°C, Rain=0.3mm
+2025-05-22 01:26:36,944 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:26:37,494 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:26:38,000 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.5°C, Min=25.2°C, Rain=3.0mm
+2025-05-22 01:26:38,421 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.2°C, Min=25.6°C, Rain=2.8mm
+2025-05-22 01:26:38,865 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.3°C, Min=25.2°C, Rain=3.0mm
+2025-05-22 01:26:39,290 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.9°C, Min=24.8°C, Rain=0.0mm
+2025-05-22 01:26:39,727 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.8°C, Min=24.8°C, Rain=6.5mm
+2025-05-22 01:26:40,457 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=26.8°C, Min=24.6°C, Rain=3.9mm
+2025-05-22 01:26:40,458 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:26:40,835 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:26:41,263 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.1°C, Min=25.3°C, Rain=2.3mm
+2025-05-22 01:26:42,028 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.4°C, Min=25.3°C, Rain=3.6mm
+2025-05-22 01:26:42,712 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.6°C, Min=24.8°C, Rain=5.0mm
+2025-05-22 01:26:43,180 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.8°C, Min=25.3°C, Rain=2.7mm
+2025-05-22 01:26:43,737 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=30.6°C, Min=26.7°C, Rain=2.3mm
+2025-05-22 01:26:44,234 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.4°C, Min=25.6°C, Rain=1.8mm
+2025-05-22 01:26:44,269 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:26:44,269 - weather_forecast_service - INFO - Forecast completed in 19.66 seconds. Sleeping for 100.34 seconds.
+2025-05-22 01:28:24,618 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:28:24.618434
+2025-05-22 01:28:24,619 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:28:25,281 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:28:26,010 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.8°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:28:26,784 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.0°C, Min=28.8°C, Rain=9.4mm
+2025-05-22 01:28:27,894 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=40.1°C, Min=28.7°C, Rain=0.0mm
+2025-05-22 01:28:28,539 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.4°C, Min=28.5°C, Rain=0.0mm
+2025-05-22 01:28:29,318 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=35.7°C, Min=31.3°C, Rain=47.6mm
+2025-05-22 01:28:30,350 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=38.7°C, Min=29.4°C, Rain=0.0mm
+2025-05-22 01:28:30,351 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:28:31,059 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:28:31,837 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.7°C, Min=27.0°C, Rain=4.5mm
+2025-05-22 01:28:32,656 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.9°C, Min=26.9°C, Rain=2.9mm
+2025-05-22 01:28:33,361 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.7°C, Min=27.7°C, Rain=2.3mm
+2025-05-22 01:28:34,088 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.3°C, Min=27.5°C, Rain=6.2mm
+2025-05-22 01:28:34,671 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.4°C, Min=25.5°C, Rain=11.5mm
+2025-05-22 01:28:35,332 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.9°C, Min=28.9°C, Rain=3.0mm
+2025-05-22 01:28:35,333 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:28:35,963 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:28:36,574 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.1°C, Min=29.0°C, Rain=0.2mm
+2025-05-22 01:28:37,498 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.4°C, Min=28.6°C, Rain=0.0mm
+2025-05-22 01:28:38,100 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=34.7°C, Min=28.6°C, Rain=0.3mm
+2025-05-22 01:28:38,801 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=37.0°C, Min=28.6°C, Rain=0.1mm
+2025-05-22 01:28:39,835 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.0°C, Min=26.9°C, Rain=0.0mm
+2025-05-22 01:28:40,686 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.2°C, Min=28.0°C, Rain=0.4mm
+2025-05-22 01:28:40,687 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:28:41,296 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:28:41,897 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.5°C, Min=24.8°C, Rain=0.2mm
+2025-05-22 01:28:42,452 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.0°C, Min=25.5°C, Rain=0.2mm
+2025-05-22 01:28:43,264 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.9°C, Min=24.0°C, Rain=0.0mm
+2025-05-22 01:28:43,838 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.1°C, Min=24.5°C, Rain=0.0mm
+2025-05-22 01:28:44,449 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=35.6°C, Min=24.5°C, Rain=0.0mm
+2025-05-22 01:28:44,982 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.6°C, Min=26.1°C, Rain=0.0mm
+2025-05-22 01:28:44,983 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:28:45,737 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:28:46,319 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.4°C, Min=24.7°C, Rain=2.2mm
+2025-05-22 01:28:47,086 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.5°C, Min=24.0°C, Rain=2.2mm
+2025-05-22 01:28:47,978 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=30.3°C, Min=25.5°C, Rain=1.0mm
+2025-05-22 01:28:48,599 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.2°C, Min=24.6°C, Rain=3.3mm
+2025-05-22 01:28:49,349 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=29.6°C, Min=27.3°C, Rain=0.3mm
+2025-05-22 01:28:50,158 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.3°C, Min=27.3°C, Rain=6.0mm
+2025-05-22 01:28:50,159 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:28:50,818 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:28:51,468 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.2°C, Min=25.2°C, Rain=2.3mm
+2025-05-22 01:28:52,014 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.6°C, Min=24.7°C, Rain=2.1mm
+2025-05-22 01:28:52,676 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.1°C, Min=25.6°C, Rain=2.3mm
+2025-05-22 01:28:53,240 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.9°C, Min=24.3°C, Rain=1.1mm
+2025-05-22 01:28:53,929 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.3°C, Min=25.8°C, Rain=1.0mm
+2025-05-22 01:28:54,934 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=30.5°C, Min=25.8°C, Rain=2.4mm
+2025-05-22 01:28:55,030 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:28:55,031 - weather_forecast_service - INFO - Forecast completed in 30.41 seconds. Sleeping for 89.59 seconds.
+2025-05-22 01:30:24,623 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:30:24.623348
+2025-05-22 01:30:24,624 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:30:25,309 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:30:26,025 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:30:26,672 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=37.0°C, Min=29.4°C, Rain=2.4mm
+2025-05-22 01:30:28,197 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=39.2°C, Min=29.0°C, Rain=0.0mm
+2025-05-22 01:30:29,399 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=38.7°C, Min=28.6°C, Rain=0.0mm
+2025-05-22 01:30:30,513 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.4°C, Min=32.3°C, Rain=4.2mm
+2025-05-22 01:30:31,879 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=40.4°C, Min=31.1°C, Rain=0.0mm
+2025-05-22 01:30:31,881 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:30:33,398 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:30:34,439 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.6°C, Min=26.8°C, Rain=2.0mm
+2025-05-22 01:30:35,073 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.3°C, Min=26.8°C, Rain=4.1mm
+2025-05-22 01:30:35,768 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.7°C, Min=25.7°C, Rain=4.7mm
+2025-05-22 01:30:36,521 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.8°C, Min=25.9°C, Rain=2.7mm
+2025-05-22 01:30:37,240 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.5°C, Min=26.9°C, Rain=4.5mm
+2025-05-22 01:30:38,114 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.6°C, Min=26.8°C, Rain=6.2mm
+2025-05-22 01:30:38,115 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:30:38,801 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:30:39,401 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.6°C, Min=29.0°C, Rain=0.1mm
+2025-05-22 01:30:40,452 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.3°C, Min=30.0°C, Rain=0.2mm
+2025-05-22 01:30:41,445 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=34.1°C, Min=27.1°C, Rain=0.4mm
+2025-05-22 01:30:42,184 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=37.2°C, Min=30.5°C, Rain=0.0mm
+2025-05-22 01:30:42,947 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.1°C, Min=28.7°C, Rain=0.3mm
+2025-05-22 01:30:43,648 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.2°C, Min=27.9°C, Rain=0.2mm
+2025-05-22 01:30:43,648 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:30:44,732 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:30:45,677 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.0°C, Min=24.6°C, Rain=0.2mm
+2025-05-22 01:30:46,841 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.0°C, Min=25.4°C, Rain=0.0mm
+2025-05-22 01:30:48,474 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.6°C, Min=26.4°C, Rain=0.5mm
+2025-05-22 01:30:52,538 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.9°C, Min=25.4°C, Rain=0.4mm
+2025-05-22 01:30:53,995 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.2°C, Min=23.2°C, Rain=0.1mm
+2025-05-22 01:30:55,009 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.6°C, Min=23.8°C, Rain=0.2mm
+2025-05-22 01:30:55,010 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:30:55,850 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:30:56,689 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.1°C, Min=24.7°C, Rain=1.8mm
+2025-05-22 01:30:57,626 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.3°C, Min=23.4°C, Rain=1.6mm
+2025-05-22 01:30:59,275 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.1°C, Min=26.6°C, Rain=2.2mm
+2025-05-22 01:31:00,562 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.4°C, Min=23.3°C, Rain=4.0mm
+2025-05-22 01:31:01,436 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.8°C, Min=26.2°C, Rain=1.4mm
+2025-05-22 01:31:02,660 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.7°C, Min=22.9°C, Rain=3.1mm
+2025-05-22 01:31:02,661 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:31:03,767 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:31:04,794 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.6°C, Min=25.2°C, Rain=1.9mm
+2025-05-22 01:31:05,914 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.6°C, Min=24.6°C, Rain=2.1mm
+2025-05-22 01:31:06,640 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.2°C, Min=25.6°C, Rain=1.8mm
+2025-05-22 01:31:07,439 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.6°C, Min=25.9°C, Rain=1.4mm
+2025-05-22 01:31:08,086 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.0°C, Min=26.0°C, Rain=0.0mm
+2025-05-22 01:31:08,932 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.7°C, Min=24.7°C, Rain=1.7mm
+2025-05-22 01:31:09,012 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:31:09,013 - weather_forecast_service - INFO - Forecast completed in 44.39 seconds. Sleeping for 75.61 seconds.
+2025-05-22 01:32:24,630 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:32:24.630484
+2025-05-22 01:32:24,635 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:32:25,593 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:32:26,565 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.4°C, Min=30.3°C, Rain=0.0mm
+2025-05-22 01:32:27,430 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.8°C, Min=29.9°C, Rain=11.6mm
+2025-05-22 01:32:28,115 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=37.0°C, Min=30.1°C, Rain=0.0mm
+2025-05-22 01:32:28,829 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=37.6°C, Min=30.8°C, Rain=0.0mm
+2025-05-22 01:32:29,471 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=37.3°C, Min=31.8°C, Rain=19.5mm
+2025-05-22 01:32:30,469 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=40.8°C, Min=28.5°C, Rain=0.0mm
+2025-05-22 01:32:30,469 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:32:31,501 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:32:32,654 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.3°C, Min=27.2°C, Rain=3.6mm
+2025-05-22 01:32:35,023 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=33.5°C, Min=27.0°C, Rain=2.2mm
+2025-05-22 01:32:36,414 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.0°C, Min=27.3°C, Rain=4.0mm
+2025-05-22 01:32:37,576 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.9°C, Min=26.1°C, Rain=2.2mm
+2025-05-22 01:32:38,656 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=30.1°C, Min=25.2°C, Rain=4.5mm
+2025-05-22 01:32:39,853 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=31.1°C, Min=26.8°C, Rain=1.7mm
+2025-05-22 01:32:39,854 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:32:41,387 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:32:42,488 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.2°C, Min=29.4°C, Rain=0.2mm
+2025-05-22 01:32:43,552 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.1°C, Min=29.0°C, Rain=0.1mm
+2025-05-22 01:32:44,995 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.0°C, Min=30.1°C, Rain=0.3mm
+2025-05-22 01:32:46,245 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.6°C, Min=30.3°C, Rain=0.3mm
+2025-05-22 01:32:47,204 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=37.5°C, Min=29.2°C, Rain=0.2mm
+2025-05-22 01:32:49,361 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.1°C, Min=31.6°C, Rain=0.1mm
+2025-05-22 01:32:49,363 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:32:50,578 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:32:51,960 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.8°C, Min=25.1°C, Rain=0.3mm
+2025-05-22 01:32:52,968 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.2°C, Min=25.0°C, Rain=0.3mm
+2025-05-22 01:32:54,111 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.9°C, Min=23.4°C, Rain=0.2mm
+2025-05-22 01:32:55,286 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.6°C, Min=25.4°C, Rain=0.3mm
+2025-05-22 01:32:56,536 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=37.1°C, Min=26.0°C, Rain=0.1mm
+2025-05-22 01:32:58,094 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=37.8°C, Min=27.3°C, Rain=0.0mm
+2025-05-22 01:32:58,095 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:32:59,681 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:33:02,334 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.8°C, Min=25.4°C, Rain=3.2mm
+2025-05-22 01:33:04,261 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.1°C, Min=24.9°C, Rain=4.1mm
+2025-05-22 01:33:06,345 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.8°C, Min=25.0°C, Rain=3.9mm
+2025-05-22 01:33:08,390 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=29.8°C, Min=24.2°C, Rain=5.2mm
+2025-05-22 01:33:10,504 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.2°C, Min=26.5°C, Rain=5.1mm
+2025-05-22 01:33:12,259 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=29.0°C, Min=26.4°C, Rain=4.5mm
+2025-05-22 01:33:12,259 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:33:13,326 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:33:14,358 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.9°C, Min=25.4°C, Rain=3.0mm
+2025-05-22 01:33:15,461 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.7°C, Min=25.2°C, Rain=2.1mm
+2025-05-22 01:33:17,467 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.1°C, Min=24.7°C, Rain=0.7mm
+2025-05-22 01:33:18,504 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.6°C, Min=24.5°C, Rain=3.4mm
+2025-05-22 01:33:19,838 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=30.1°C, Min=27.0°C, Rain=0.0mm
+2025-05-22 01:33:21,786 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.0°C, Min=25.6°C, Rain=2.9mm
+2025-05-22 01:33:22,001 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:33:22,002 - weather_forecast_service - INFO - Forecast completed in 57.37 seconds. Sleeping for 62.63 seconds.
+2025-05-22 01:34:24,642 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:34:24.642327
+2025-05-22 01:34:24,648 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:34:26,467 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:34:28,293 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.2°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:34:29,888 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.9°C, Min=30.9°C, Rain=4.5mm
+2025-05-22 01:34:31,869 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=39.7°C, Min=29.7°C, Rain=0.0mm
+2025-05-22 01:34:33,041 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=38.0°C, Min=28.5°C, Rain=0.0mm
+2025-05-22 01:34:34,046 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.9°C, Min=27.1°C, Rain=17.7mm
+2025-05-22 01:34:35,439 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.4°C, Min=31.5°C, Rain=0.0mm
+2025-05-22 01:34:35,439 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:34:36,442 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:34:37,415 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.4°C, Min=26.7°C, Rain=4.2mm
+2025-05-22 01:34:38,327 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.9°C, Min=26.5°C, Rain=3.7mm
+2025-05-22 01:34:39,330 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.9°C, Min=27.4°C, Rain=4.3mm
+2025-05-22 01:34:40,321 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.5°C, Min=27.2°C, Rain=5.6mm
+2025-05-22 01:34:41,225 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=35.8°C, Min=26.0°C, Rain=6.9mm
+2025-05-22 01:34:42,312 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=30.6°C, Min=27.9°C, Rain=5.3mm
+2025-05-22 01:34:42,313 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:34:43,247 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:34:44,018 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.6°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:34:45,255 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.3°C, Min=29.0°C, Rain=0.2mm
+2025-05-22 01:34:46,273 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=34.6°C, Min=27.0°C, Rain=0.1mm
+2025-05-22 01:34:47,463 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.6°C, Min=30.4°C, Rain=0.4mm
+2025-05-22 01:34:48,590 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.4°C, Min=31.8°C, Rain=0.1mm
+2025-05-22 01:34:49,630 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.8°C, Min=29.0°C, Rain=0.0mm
+2025-05-22 01:34:49,631 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:34:50,688 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:34:51,817 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.4°C, Min=25.3°C, Rain=0.2mm
+2025-05-22 01:34:52,826 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.4°C, Min=24.9°C, Rain=0.2mm
+2025-05-22 01:34:53,788 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.7°C, Min=24.2°C, Rain=0.2mm
+2025-05-22 01:34:54,920 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.4°C, Min=26.0°C, Rain=0.0mm
+2025-05-22 01:34:55,952 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=35.7°C, Min=23.7°C, Rain=0.4mm
+2025-05-22 01:34:57,085 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=31.1°C, Min=25.5°C, Rain=0.3mm
+2025-05-22 01:34:57,085 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:34:58,174 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:34:59,321 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.4°C, Min=25.3°C, Rain=1.8mm
+2025-05-22 01:35:00,521 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.7°C, Min=24.9°C, Rain=4.1mm
+2025-05-22 01:35:01,719 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=30.6°C, Min=24.5°C, Rain=3.0mm
+2025-05-22 01:35:02,903 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.6°C, Min=24.1°C, Rain=3.5mm
+2025-05-22 01:35:04,159 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.4°C, Min=24.8°C, Rain=6.2mm
+2025-05-22 01:35:05,431 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=31.9°C, Min=23.8°C, Rain=1.5mm
+2025-05-22 01:35:05,432 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:35:06,593 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:35:08,050 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.2°C, Min=25.4°C, Rain=1.9mm
+2025-05-22 01:35:10,460 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.0°C, Min=25.3°C, Rain=2.3mm
+2025-05-22 01:35:12,912 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.1°C, Min=23.6°C, Rain=3.5mm
+2025-05-22 01:35:14,638 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=29.5°C, Min=25.1°C, Rain=0.8mm
+2025-05-22 01:35:15,852 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.7°C, Min=23.1°C, Rain=1.0mm
+2025-05-22 01:35:17,132 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=31.0°C, Min=26.1°C, Rain=5.6mm
+2025-05-22 01:35:17,220 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:35:17,221 - weather_forecast_service - INFO - Forecast completed in 52.58 seconds. Sleeping for 67.42 seconds.
+2025-05-22 01:36:24,651 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:36:24.651535
+2025-05-22 01:36:24,652 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:36:25,428 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:36:26,190 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=37.9°C, Min=29.7°C, Rain=0.0mm
+2025-05-22 01:36:26,833 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.5°C, Min=29.3°C, Rain=12.3mm
+2025-05-22 01:36:27,597 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=37.6°C, Min=30.4°C, Rain=0.0mm
+2025-05-22 01:36:28,458 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=38.5°C, Min=28.6°C, Rain=0.0mm
+2025-05-22 01:36:29,390 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.8°C, Min=29.1°C, Rain=21.0mm
+2025-05-22 01:36:30,205 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=38.6°C, Min=28.3°C, Rain=0.0mm
+2025-05-22 01:36:30,205 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:36:31,371 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:36:32,282 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=33.0°C, Min=27.0°C, Rain=4.4mm
+2025-05-22 01:36:33,222 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=33.7°C, Min=25.7°C, Rain=3.8mm
+2025-05-22 01:36:33,987 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.7°C, Min=27.2°C, Rain=2.5mm
+2025-05-22 01:36:34,763 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.7°C, Min=26.8°C, Rain=4.4mm
+2025-05-22 01:36:35,604 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.8°C, Min=29.6°C, Rain=0.0mm
+2025-05-22 01:36:36,509 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.7°C, Min=24.3°C, Rain=1.1mm
+2025-05-22 01:36:36,510 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:36:37,509 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:36:38,799 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.0°C, Min=29.6°C, Rain=0.1mm
+2025-05-22 01:36:40,039 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.4°C, Min=28.8°C, Rain=0.2mm
+2025-05-22 01:36:40,827 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=34.5°C, Min=28.2°C, Rain=0.2mm
+2025-05-22 01:36:41,894 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.6°C, Min=29.4°C, Rain=0.1mm
+2025-05-22 01:36:43,425 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=35.5°C, Min=27.8°C, Rain=0.0mm
+2025-05-22 01:36:44,293 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.0°C, Min=27.1°C, Rain=0.5mm
+2025-05-22 01:36:44,294 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:36:44,965 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:36:46,289 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.6°C, Min=24.8°C, Rain=0.2mm
+2025-05-22 01:36:47,439 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=36.7°C, Min=24.8°C, Rain=0.3mm
+2025-05-22 01:36:48,498 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.0°C, Min=24.4°C, Rain=0.2mm
+2025-05-22 01:36:50,128 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.3°C, Min=26.4°C, Rain=0.1mm
+2025-05-22 01:36:51,372 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=37.8°C, Min=27.5°C, Rain=0.1mm
+2025-05-22 01:36:52,508 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.6°C, Min=22.3°C, Rain=0.6mm
+2025-05-22 01:36:52,509 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:36:53,724 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:36:55,593 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.2°C, Min=25.7°C, Rain=2.1mm
+2025-05-22 01:36:56,821 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.0°C, Min=23.6°C, Rain=2.3mm
+2025-05-22 01:36:57,946 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.9°C, Min=24.2°C, Rain=2.6mm
+2025-05-22 01:36:58,767 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.8°C, Min=25.9°C, Rain=1.3mm
+2025-05-22 01:36:59,689 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.0°C, Min=25.8°C, Rain=2.8mm
+2025-05-22 01:37:00,668 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.0°C, Min=26.6°C, Rain=3.2mm
+2025-05-22 01:37:00,671 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:37:01,425 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:37:02,202 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.6°C, Min=25.4°C, Rain=2.4mm
+2025-05-22 01:37:02,969 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.0°C, Min=26.6°C, Rain=1.8mm
+2025-05-22 01:37:03,941 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.5°C, Min=25.0°C, Rain=4.4mm
+2025-05-22 01:37:05,557 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.1°C, Min=23.2°C, Rain=0.6mm
+2025-05-22 01:37:06,856 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=30.0°C, Min=24.0°C, Rain=0.2mm
+2025-05-22 01:37:07,864 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=29.9°C, Min=25.5°C, Rain=0.0mm
+2025-05-22 01:37:07,933 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:37:07,934 - weather_forecast_service - INFO - Forecast completed in 43.28 seconds. Sleeping for 76.72 seconds.
+2025-05-22 01:38:24,676 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:38:24.676056
+2025-05-22 01:38:24,678 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:38:26,672 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:38:29,581 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.2°C, Min=29.8°C, Rain=0.0mm
+2025-05-22 01:38:32,742 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.2°C, Min=30.9°C, Rain=14.0mm
+2025-05-22 01:38:34,498 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=39.3°C, Min=30.1°C, Rain=0.0mm
+2025-05-22 01:38:37,240 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=38.0°C, Min=28.6°C, Rain=0.0mm
+2025-05-22 01:38:42,850 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.1°C, Min=29.7°C, Rain=53.5mm
+2025-05-22 01:38:48,372 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.4°C, Min=28.2°C, Rain=0.0mm
+2025-05-22 01:38:48,372 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:38:51,197 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:38:53,650 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=33.1°C, Min=27.4°C, Rain=4.0mm
+2025-05-22 01:38:54,818 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=33.5°C, Min=25.7°C, Rain=2.7mm
+2025-05-22 01:38:55,702 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.8°C, Min=26.4°C, Rain=7.6mm
+2025-05-22 01:38:56,720 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.0°C, Min=26.4°C, Rain=0.0mm
+2025-05-22 01:38:57,764 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.8°C, Min=27.8°C, Rain=9.6mm
+2025-05-22 01:38:59,099 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.2°C, Min=27.5°C, Rain=8.2mm
+2025-05-22 01:38:59,101 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:39:01,101 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:39:01,984 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.5°C, Min=29.1°C, Rain=0.2mm
+2025-05-22 01:39:02,719 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=34.8°C, Min=29.3°C, Rain=0.1mm
+2025-05-22 01:39:03,645 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=34.2°C, Min=28.8°C, Rain=0.3mm
+2025-05-22 01:39:04,465 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.7°C, Min=31.2°C, Rain=0.4mm
+2025-05-22 01:39:05,168 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.5°C, Min=26.7°C, Rain=0.2mm
+2025-05-22 01:39:05,950 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.2°C, Min=28.3°C, Rain=0.2mm
+2025-05-22 01:39:05,950 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:39:06,779 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:39:07,522 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.1°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:39:08,357 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.2°C, Min=24.6°C, Rain=0.3mm
+2025-05-22 01:39:09,486 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.3°C, Min=24.3°C, Rain=0.3mm
+2025-05-22 01:39:10,674 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.4°C, Min=24.6°C, Rain=0.3mm
+2025-05-22 01:39:11,668 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.7°C, Min=23.6°C, Rain=0.5mm
+2025-05-22 01:39:12,942 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.5°C, Min=24.9°C, Rain=0.2mm
+2025-05-22 01:39:12,943 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:39:13,894 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:39:14,686 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.9°C, Min=25.0°C, Rain=2.6mm
+2025-05-22 01:39:15,469 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.3°C, Min=24.9°C, Rain=2.4mm
+2025-05-22 01:39:16,423 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=30.8°C, Min=26.3°C, Rain=1.0mm
+2025-05-22 01:39:17,251 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.1°C, Min=27.2°C, Rain=5.2mm
+2025-05-22 01:39:18,078 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=30.4°C, Min=26.6°C, Rain=4.5mm
+2025-05-22 01:39:18,876 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=30.3°C, Min=25.5°C, Rain=4.2mm
+2025-05-22 01:39:18,877 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:39:19,812 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:39:20,568 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.8°C, Min=24.9°C, Rain=2.5mm
+2025-05-22 01:39:21,325 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.1°C, Min=24.9°C, Rain=1.4mm
+2025-05-22 01:39:22,018 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.3°C, Min=24.3°C, Rain=2.3mm
+2025-05-22 01:39:22,785 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=31.6°C, Min=24.9°C, Rain=2.5mm
+2025-05-22 01:39:23,493 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=32.8°C, Min=22.4°C, Rain=0.2mm
+2025-05-22 01:39:24,151 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.1°C, Min=26.3°C, Rain=0.0mm
+2025-05-22 01:39:24,186 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:39:24,186 - weather_forecast_service - INFO - Forecast completed in 59.51 seconds. Sleeping for 60.49 seconds.
+2025-05-22 01:40:24,688 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:40:24.688967
+2025-05-22 01:40:24,689 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:40:25,594 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:40:26,454 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.0°C, Min=30.0°C, Rain=0.0mm
+2025-05-22 01:40:27,233 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.6°C, Min=29.5°C, Rain=14.1mm
+2025-05-22 01:40:27,979 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=38.4°C, Min=29.8°C, Rain=0.0mm
+2025-05-22 01:40:28,725 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=36.9°C, Min=28.2°C, Rain=0.0mm
+2025-05-22 01:40:29,404 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=38.1°C, Min=30.3°C, Rain=19.6mm
+2025-05-22 01:40:30,194 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=40.9°C, Min=30.0°C, Rain=0.0mm
+2025-05-22 01:40:30,195 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:40:30,948 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:40:31,599 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=33.2°C, Min=26.7°C, Rain=3.5mm
+2025-05-22 01:40:32,322 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.5°C, Min=26.6°C, Rain=5.3mm
+2025-05-22 01:40:33,047 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.1°C, Min=26.3°C, Rain=0.0mm
+2025-05-22 01:40:33,928 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.1°C, Min=25.6°C, Rain=0.9mm
+2025-05-22 01:40:35,273 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.3°C, Min=28.3°C, Rain=3.7mm
+2025-05-22 01:40:36,246 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.3°C, Min=28.2°C, Rain=0.0mm
+2025-05-22 01:40:36,246 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:40:37,386 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:40:38,029 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.0°C, Min=28.7°C, Rain=0.2mm
+2025-05-22 01:40:38,719 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.2°C, Min=30.3°C, Rain=0.1mm
+2025-05-22 01:40:39,460 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.5°C, Min=28.2°C, Rain=0.3mm
+2025-05-22 01:40:40,100 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=34.6°C, Min=30.8°C, Rain=0.4mm
+2025-05-22 01:40:40,758 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.7°C, Min=30.6°C, Rain=0.5mm
+2025-05-22 01:40:41,397 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.9°C, Min=27.3°C, Rain=0.2mm
+2025-05-22 01:40:41,398 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:40:42,034 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:40:42,677 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.0°C, Min=24.6°C, Rain=0.2mm
+2025-05-22 01:40:43,597 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=37.4°C, Min=25.5°C, Rain=0.0mm
+2025-05-22 01:40:46,053 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=35.2°C, Min=26.0°C, Rain=0.4mm
+2025-05-22 01:40:47,025 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=35.1°C, Min=23.1°C, Rain=0.3mm
+2025-05-22 01:40:47,657 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=34.9°C, Min=25.2°C, Rain=0.1mm
+2025-05-22 01:40:48,658 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.5°C, Min=24.0°C, Rain=0.2mm
+2025-05-22 01:40:48,659 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:40:49,609 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:40:50,281 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.3°C, Min=25.0°C, Rain=1.8mm
+2025-05-22 01:40:51,205 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=30.8°C, Min=24.6°C, Rain=2.5mm
+2025-05-22 01:40:52,032 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.7°C, Min=26.6°C, Rain=3.3mm
+2025-05-22 01:40:52,845 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.2°C, Min=27.9°C, Rain=2.7mm
+2025-05-22 01:40:53,586 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=30.3°C, Min=26.0°C, Rain=4.7mm
+2025-05-22 01:40:54,368 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=29.3°C, Min=23.7°C, Rain=2.6mm
+2025-05-22 01:40:54,370 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:40:55,064 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:40:56,221 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.5°C, Min=24.6°C, Rain=3.3mm
+2025-05-22 01:40:57,014 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.3°C, Min=26.4°C, Rain=3.0mm
+2025-05-22 01:40:57,676 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.8°C, Min=24.0°C, Rain=0.7mm
+2025-05-22 01:40:58,284 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.2°C, Min=25.6°C, Rain=1.2mm
+2025-05-22 01:40:59,246 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.5°C, Min=24.6°C, Rain=1.9mm
+2025-05-22 01:41:00,301 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.4°C, Min=28.3°C, Rain=5.5mm
+2025-05-22 01:41:00,378 - weather_forecast_service - INFO - Successfully wrote 42 forecast points to InfluxDB
+2025-05-22 01:41:00,378 - weather_forecast_service - INFO - Forecast completed in 35.69 seconds. Sleeping for 84.31 seconds.
+2025-05-22 01:42:24,697 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:42:24.697744
+2025-05-22 01:42:24,702 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:42:26,286 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:42:28,212 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.1°C, Min=29.8°C, Rain=0.0mm
+2025-05-22 01:42:29,871 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.7°C, Min=30.2°C, Rain=10.1mm
+2025-05-22 01:42:31,222 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=37.5°C, Min=29.5°C, Rain=0.0mm
+2025-05-22 01:42:32,817 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=37.3°C, Min=30.6°C, Rain=0.0mm
+2025-05-22 01:42:34,130 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=37.5°C, Min=31.5°C, Rain=6.4mm
+2025-05-22 01:42:35,330 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=39.4°C, Min=33.9°C, Rain=0.0mm
+2025-05-22 01:42:35,331 - weather_forecast_service - INFO - Predicting weather for Ho Chi Minh City from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:42:36,293 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=32.9°C, Min=27.0°C, Rain=3.7mm
+2025-05-22 01:42:36,916 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=32.5°C, Min=27.2°C, Rain=3.9mm
+2025-05-22 01:42:37,787 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=33.5°C, Min=27.7°C, Rain=1.7mm
+2025-05-22 01:42:38,349 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.1°C, Min=27.8°C, Rain=3.3mm
+2025-05-22 01:42:38,983 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.7°C, Min=26.3°C, Rain=0.0mm
+2025-05-22 01:42:40,060 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.8°C, Min=28.4°C, Rain=0.7mm
+2025-05-22 01:42:41,383 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=32.0°C, Min=26.5°C, Rain=9.3mm
+2025-05-22 01:42:41,384 - weather_forecast_service - INFO - Predicting weather for Hai Phong from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:42:42,954 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=35.2°C, Min=28.9°C, Rain=0.2mm
+2025-05-22 01:42:44,262 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=35.7°C, Min=29.1°C, Rain=0.2mm
+2025-05-22 01:42:45,443 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.3°C, Min=29.8°C, Rain=0.3mm
+2025-05-22 01:42:46,337 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=33.1°C, Min=29.2°C, Rain=0.3mm
+2025-05-22 01:42:47,203 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=37.8°C, Min=27.4°C, Rain=0.0mm
+2025-05-22 01:42:48,156 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.4°C, Min=27.4°C, Rain=0.1mm
+2025-05-22 01:42:49,014 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=35.8°C, Min=28.0°C, Rain=0.0mm
+2025-05-22 01:42:49,014 - weather_forecast_service - INFO - Predicting weather for Thua Thien Hue from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:42:49,957 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=36.0°C, Min=25.0°C, Rain=0.2mm
+2025-05-22 01:42:50,703 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=36.4°C, Min=24.3°C, Rain=0.3mm
+2025-05-22 01:42:51,352 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=35.7°C, Min=25.8°C, Rain=0.2mm
+2025-05-22 01:42:52,021 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=36.9°C, Min=24.9°C, Rain=0.0mm
+2025-05-22 01:42:52,829 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=37.0°C, Min=27.1°C, Rain=0.2mm
+2025-05-22 01:42:53,741 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=36.4°C, Min=26.7°C, Rain=0.4mm
+2025-05-22 01:42:54,719 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=36.4°C, Min=27.0°C, Rain=0.1mm
+2025-05-22 01:42:54,723 - weather_forecast_service - INFO - Predicting weather for Khanh Hoa from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:42:55,540 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.8°C, Min=25.1°C, Rain=2.4mm
+2025-05-22 01:42:56,416 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.6°C, Min=25.0°C, Rain=2.5mm
+2025-05-22 01:42:57,635 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=31.4°C, Min=25.0°C, Rain=4.1mm
+2025-05-22 01:42:58,692 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=31.6°C, Min=25.4°C, Rain=1.4mm
+2025-05-22 01:43:00,335 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=32.6°C, Min=26.2°C, Rain=3.1mm
+2025-05-22 01:43:01,556 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=31.5°C, Min=25.0°C, Rain=0.4mm
+2025-05-22 01:43:02,278 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=34.7°C, Min=24.6°C, Rain=2.1mm
+2025-05-22 01:43:02,280 - weather_forecast_service - INFO - Predicting weather for Can Tho from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:43:02,943 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=31.9°C, Min=25.2°C, Rain=2.2mm
+2025-05-22 01:43:04,011 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=31.8°C, Min=25.3°C, Rain=3.1mm
+2025-05-22 01:43:05,515 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=32.3°C, Min=24.5°C, Rain=2.3mm
+2025-05-22 01:43:06,278 - weather_forecast_service - INFO - Predicted for 2025-05-25 00:00:00: Max=32.2°C, Min=24.8°C, Rain=0.0mm
+2025-05-22 01:43:06,857 - weather_forecast_service - INFO - Predicted for 2025-05-26 00:00:00: Max=33.5°C, Min=25.9°C, Rain=0.8mm
+2025-05-22 01:43:07,470 - weather_forecast_service - INFO - Predicted for 2025-05-27 00:00:00: Max=33.5°C, Min=22.3°C, Rain=1.2mm
+2025-05-22 01:43:08,093 - weather_forecast_service - INFO - Predicted for 2025-05-28 00:00:00: Max=33.1°C, Min=23.0°C, Rain=1.1mm
+2025-05-22 01:43:12,251 - weather_forecast_service - ERROR - Error writing forecast to InfluxDB: <urllib3.connection.HTTPConnection object at 0x000002095060F940>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it
+2025-05-22 01:43:12,254 - weather_forecast_service - INFO - Forecast completed in 47.56 seconds. Sleeping for 72.44 seconds.
+2025-05-22 01:44:24,712 - weather_forecast_service - INFO - Running forecast at 2025-05-22 01:44:24.712313
+2025-05-22 01:44:24,713 - weather_forecast_service - INFO - Predicting weather for Hanoi from 2025-05-22 00:00:00 for 7 days
+2025-05-22 01:44:25,242 - weather_forecast_service - INFO - Predicted for 2025-05-22 00:00:00: Max=38.3°C, Min=29.9°C, Rain=0.0mm
+2025-05-22 01:44:26,520 - weather_forecast_service - INFO - Predicted for 2025-05-23 00:00:00: Max=38.1°C, Min=30.0°C, Rain=0.0mm
+2025-05-22 01:44:29,075 - weather_forecast_service - INFO - Predicted for 2025-05-24 00:00:00: Max=38.3°C, Min=29.9°C, Rain=23.1mm

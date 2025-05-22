@@ -42,24 +42,34 @@ def ask():
     return jsonify({"response": response})
 
 def extract_entities_with_chatgpt(question):
-    """Use ChatGPT to extract location and time information from the question"""
+    """Use ChatGPT to extract location, time information, and specific weather field from the question"""
     
     prompt = f"""
-    Trích xuất thông tin về địa điểm, thời gian và dự báo từ câu hỏi sau về thời tiết ở Việt Nam.
+    Trích xuất thông tin về địa điểm, thời gian, dự báo và trường dữ liệu cụ thể từ câu hỏi sau về thời tiết ở Việt Nam.
     Câu hỏi: "{question}"
     
     Các địa điểm hợp lệ là 63 tỉnh thành của Việt Nam: {', '.join(VIETNAM_PROVINCES)}
+    
+    Các trường dữ liệu thời tiết có thể được hỏi:
+    - temp_c: nhiệt độ (độ C), từ khóa: nhiệt độ, nóng, lạnh, bao nhiêu độ
+    - pm2_5: chỉ số bụi mịn PM2.5, từ khóa: pm2.5, pm2_5, bụi mịn 2.5, chất lượng không khí
+    - pm10: chỉ số bụi PM10, từ khóa: pm10, bụi mịn 10, chất lượng không khí
+    - cloud: độ che phủ mây (%), từ khóa: mây, độ che phủ mây, trời nhiều mây, trời ít mây
+    - humidity: độ ẩm (%), từ khóa: độ ẩm, ẩm ướt, khô ráo
+    - uv: chỉ số tia cực tím, từ khóa: tia uv, tia cực tím, chỉ số uv
     
     Trả về một đối tượng JSON với cấu trúc ví dụ như sau:
     {{
         "locations": ["Địa điểm 1", "Địa điểm 2"], // Danh sách các địa điểm được đề cập trong câu hỏi
         "time_reference": "current", // Một trong các giá trị: current (hiện tại), today (hôm nay), yesterday (hôm qua), specific_date (ngày cụ thể), future (tương lai)
-        "is_forecast": false // true nếu câu hỏi liên quan đến dự báo thời tiết trong tương lai, false nếu hỏi về thời tiết hiện tại hoặc quá khứ
+        "is_forecast": false, // true nếu câu hỏi liên quan đến dự báo thời tiết trong tương lai, false nếu hỏi về thời tiết hiện tại hoặc quá khứ
+        "specific_fields": ["temp_c"] // Danh sách các trường dữ liệu cụ thể được hỏi đến, có thể là temp_c, pm2_5, pm10, hoặc rỗng nếu hỏi chung về thời tiết
     }}
     
     Nếu không tìm thấy địa điểm hợp lệ, trả về danh sách trống cho locations.
     Nếu không tìm thấy tham chiếu thời gian, giả định là "current".
     Nếu câu hỏi chứa các từ khóa như "dự báo", "dự đoán", "sẽ", "mai", "tuần tới", "ngày mai", "sắp tới", "sắp", "tới", "sẽ như thế nào", "thế nào", "ra sao", hoặc các từ ngữ tương tự về thời tiết trong tương lai, hãy đặt is_forecast = true và time_reference = "future".
+    Nếu câu hỏi không đề cập đến trường dữ liệu cụ thể nào, trả về danh sách trống cho specific_fields.
     """
     
     try:
@@ -70,7 +80,7 @@ def extract_entities_with_chatgpt(question):
                 {"role": "user", "content": prompt}
             ],
             temperature=0,
-            max_tokens=200
+            max_tokens=500
         )
         
         result_text = response['choices'][0]['message']['content'].strip()
@@ -97,6 +107,7 @@ def generate_influxdb_query(entities):
     locations = entities.get("locations", [])
     time_reference = entities.get("time_reference", "current")
     is_forecast = entities.get("is_forecast", False)
+    specific_fields = entities.get("specific_fields", [])
     
     # Determine which bucket to use based on whether this is a forecast query
     bucket = "weather_forecast" if is_forecast else "weather"
@@ -137,6 +148,17 @@ def generate_influxdb_query(entities):
     query += """
     |> filter(fn: (r) => r._measurement == "weather")
     """
+    
+    # Filter for specific fields if requested
+    if specific_fields:
+        field_filters = []
+        for field in specific_fields:
+            field_filters.append(f'r._field == "{field}"')
+        
+        field_filter_str = " or ".join(field_filters)
+        query += f"""
+    |> filter(fn: (r) => {field_filter_str})
+        """
     
     # Add location filter if available
     if locations:
@@ -295,6 +317,29 @@ def get_pm10_warning(pm10):
     except (ValueError, TypeError):
         return None
 
+def get_uv_warning(uv):
+    """Generate warning message based on UV index"""
+    if uv is None:
+        return None
+    
+    try:
+        uv_val = float(uv)
+        
+        if 0 <= uv_val <= 2:
+            return "✅ **UV: Thấp** — An toàn cho hầu hết mọi người. Có thể ra ngoài mà không cần bảo vệ đặc biệt."
+        elif 3 <= uv_val <= 5:
+            return "⚠️ **UV: Trung bình** — Nên tìm bóng râm vào giữa trưa. Sử dụng kem chống nắng SPF 30+ khi ra ngoài."
+        elif 6 <= uv_val <= 7:
+            return "⚠️ **UV: Cao** — Giảm thời gian ở ngoài từ 10h-16h. Đeo kính râm, mũ rộng vành và áo dài tay."
+        elif 8 <= uv_val <= 10:
+            return "⚠️ **UV: Rất cao** — Tránh ra ngoài vào giữa trưa. Bắt buộc sử dụng kem chống nắng, mũ và kính râm."
+        elif uv_val >= 11:
+            return "⚠️ **UV: Cực kỳ cao** — Nguy cơ tổn thương da cao. Hạn chế tối đa thời gian ngoài trời. Sử dụng đầy đủ các biện pháp bảo vệ."
+        else:
+            return None
+    except (ValueError, TypeError):
+        return None
+
 def generate_response_with_chatgpt(question, weather_data):
     """Generate a natural language response using ChatGPT"""
     if not weather_data:
@@ -357,6 +402,20 @@ def generate_response_with_chatgpt(question, weather_data):
                     warning = get_pm10_warning(value)
                     if warning:
                         warnings.append(f"*{location}*: {warning}")
+                        
+                elif key == 'humidity':
+                    weather_info += f"  Độ ẩm: {value}%\n"
+                        
+                elif key == 'cloud':
+                    weather_info += f"  Độ che phủ mây: {value}%\n"
+                        
+                elif key == 'uv':
+                    weather_info += f"  Chỉ số UV: {value}\n"
+                    
+                    # Add UV warning if needed
+                    warning = get_uv_warning(value)
+                    if warning:
+                        warnings.append(f"*{location}*: {warning}")
             
             weather_info += "\n"
     
@@ -365,6 +424,19 @@ def generate_response_with_chatgpt(question, weather_data):
     if warnings:
         warnings_text = "\n".join(warnings)
     
+    # Determine which specific fields were requested based on the data available
+    available_fields = set()
+    for location, data in weather_data.items():
+        for time, measurements in data.items():
+            for key in measurements.keys():
+                available_fields.add(key)
+    
+    # Check if this is a general weather query or a specific field query
+    entities = extract_entities_with_chatgpt(question)
+    specific_fields = entities.get("specific_fields", [])
+    is_general_query = len(specific_fields) == 0
+    
+    # Create a prompt based on whether this is a general query or specific query
     prompt = f"""
     Dựa trên câu hỏi của người dùng và dữ liệu thời tiết được cung cấp, hãy tạo một câu trả lời tự nhiên và hữư ích.
     
@@ -373,16 +445,58 @@ def generate_response_with_chatgpt(question, weather_data):
     Dữ liệu thời tiết:
     {weather_info}
     {warnings_text}
-    Trả lời bằng tiếng Việt, cung cấp thông tin hữu ích và dễ hiểu. Nếu người dùng chỉ hỏi nhiệt độ thì trả lời nhiệt độ và lời khuyên liên quan, nếu hỏi về gì thì chỉ cần trả lời về tiêu chí đó không cần trả lời đầy đủ. Nếu có chỉ số chất lượng không khí, hãy giải thích ý nghĩa của nó (ví dụ: tốt, trung bình, kém, v.v.).
     
-    Luôn đưa ra cảnh báo thời tiết nếu có, dựa trên nhiệt độ của các địa điểm.
+    Trả lời bằng tiếng Việt, cung cấp thông tin hữư ích và dễ hiểu.
     """
+    
+    if is_general_query:
+        # For general queries, provide comprehensive information using all available fields
+        prompt += "\nCâu hỏi này là về thời tiết nói chung, hãy cung cấp thông tin đầy đủ về tất cả các khía hậu có trong dữ liệu."
+        
+        # Add specific instructions for each available field in a general query
+        if 'temp_c' in available_fields:
+            prompt += "\nGiải thích về nhiệt độ và đưa ra lời khuyên phù hợp."
+        
+        if 'humidity' in available_fields:
+            prompt += "\nGiải thích về độ ẩm và tác động của nó đến cảm giác thời tiết."
+        
+        if 'cloud' in available_fields:
+            prompt += "\nMô tả về độ che phủ mây và ảnh hưởng của nó."
+        
+        if 'uv' in available_fields:
+            prompt += "\nGiải thích chỉ số UV và đưa ra lời khuyên về bảo vệ da."
+        
+        if 'pm2_5' in available_fields or 'pm10' in available_fields:
+            prompt += "\nGiải thích chất lượng không khí và tác động của nó đến sức khỏe."
+    else:
+        # For specific field queries, focus on the requested fields
+        prompt += "\nQUAN TRỌNG: Câu hỏi này chỉ hỏi về một hoặc một số trường dữ liệu cụ thể. Chỉ trả lời về các trường dữ liệu được hỏi đến. Không đề cập đến các thông tin khác."
+        
+        # Add specific instructions based on requested fields
+        if 'temp_c' in specific_fields and 'temp_c' in available_fields:
+            prompt += "\nCâu hỏi liên quan đến nhiệt độ, hãy đưa ra lời khuyên phù hợp với nhiệt độ đó."
+        
+        if ('pm2_5' in specific_fields or 'pm10' in specific_fields) and ('pm2_5' in available_fields or 'pm10' in available_fields):
+            prompt += "\nCâu hỏi liên quan đến chất lượng không khí, hãy giải thích ý nghĩa của các chỉ số và tác động đến sức khỏe."
+        
+        if 'humidity' in specific_fields and 'humidity' in available_fields:
+            prompt += "\nCâu hỏi liên quan đến độ ẩm, hãy giải thích mức độ độ ẩm và tác động của nó."
+        
+        if 'cloud' in specific_fields and 'cloud' in available_fields:
+            prompt += "\nCâu hỏi liên quan đến độ che phủ mây, hãy mô tả điều kiện mây và ảnh hưởng của nó."
+        
+        if 'uv' in specific_fields and 'uv' in available_fields:
+            prompt += "\nCâu hỏi liên quan đến chỉ số UV, hãy giải thích mức độ UV và đưa ra lời khuyên về bảo vệ da."
+    
+    # Add warning instructions if relevant
+    if warnings:
+        prompt += "\nĐưa ra cảnh báo thời tiết dựa trên dữ liệu được cung cấp."
     
     try:
         response = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "Bạn là trợ lý thời tiết hữu ích, cung cấp thông tin thời tiết chính xác và lời khuyên hữu ích với kiểu thời tiết đó cho người dùng. Luôn đưa ra cảnh báo thời tiết nếu có, dựa trên nhiệt độ."},
+                {"role": "system", "content": "Bạn là trợ lý thời tiết hữư ích, cung cấp thông tin thời tiết chính xác và lời khuyên hữư ích với kiểu thời tiết đó cho người dùng. Luôn đưa ra cảnh báo thời tiết nếu có, dựa trên nhiệt độ."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.7,
