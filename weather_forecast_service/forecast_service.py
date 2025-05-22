@@ -14,7 +14,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 # Import configuration and utilities
 from config import *
-from utils import standardize_province_name, load_and_standardize_historical_data, get_location_coordinates
+from utils import standardize_province_name, load_and_standardize_historical_data
 
 # Configure logging
 logging.basicConfig(
@@ -204,6 +204,10 @@ def predict_for_date(province, date, models, historical_data, i=0):
                     (historical_data['month'] == date.month)
                 ]
                 
+                # Log if no data is found for this province
+                if len(same_month_data) == 0:
+                    logger.warning(f"No historical data for {province} in month {date.month}")
+                
                 if len(same_month_data) > 0:
                     # Use average with small random variation for more realistic forecasts
                     base_value = same_month_data[target].mean()
@@ -245,7 +249,13 @@ def predict_for_date(province, date, models, historical_data, i=0):
             return None
     
     # Log the prediction
-    logger.info(f"Predicted for {date}: Max={predictions.get('max', 'N/A')}°C, Min={predictions.get('min', 'N/A')}°C, Rain={predictions.get('rain', 'N/A')}mm")
+    humidity = predictions.get('humidi', 'N/A')
+    cloud = predictions.get('cloud', 'N/A')
+    logger.info(f"Predicted for {date}: Max={predictions.get('max', 'N/A')}°C, Min={predictions.get('min', 'N/A')}°C, Rain={predictions.get('rain', 'N/A')}mm, Humidity={humidity}%, Cloud={cloud}%")
+    
+    # Ensure humidity and cloud are included in the logs
+    if humidity == 'N/A' or cloud == 'N/A':
+        logger.warning(f"Missing humidity or cloud data for {province} on {date}")
     
     # Return the predictions with the date and province
     return {
@@ -325,23 +335,19 @@ def write_forecast_to_influxdb(client, forecasts):
             # Standardize province name
             province = standardize_province_name(forecast['province'])
             
-            # Get location coordinates
-            lat, lon = get_location_coordinates(province)
-            
             # Create a point for each forecast
             point = Point("weather_forecast")\
                 .tag("location", province)\
                 .time(forecast['date'])\
                 .field("max_temp", float(forecast['max']))\
                 .field("min_temp", float(forecast['min']))\
-                .field("rainfall", float(forecast['rain']))\
-                .field("humidity", float(forecast['humidi']))\
-                .field("cloud_cover", float(forecast['cloud']))
+                .field("rainfall", float(forecast['rain']))
                 
-            # Add coordinates if available
-            if lat is not None and lon is not None:
-                point = point.field("latitude", float(lat))
-                point = point.field("longitude", float(lon))
+            # Ensure humidity and cloud cover are included
+            if 'humidi' in forecast:
+                point = point.field("humidity", float(forecast['humidi']))
+            if 'cloud' in forecast:
+                point = point.field("cloud_cover", float(forecast['cloud']))
             
             # Add a weather condition description based on the forecast
             condition = get_weather_condition(forecast)
@@ -351,7 +357,10 @@ def write_forecast_to_influxdb(client, forecasts):
         
         # Write all points to InfluxDB
         write_api.write(bucket=INFLUXDB_BUCKET, record=points)
-        logger.info(f"Successfully wrote {len(points)} forecast points to InfluxDB")
+        
+        # Log the number of points written for each province
+        provinces_written = set([forecast['province'] for forecast in forecasts])
+        logger.info(f"Successfully wrote {len(points)} forecast points to InfluxDB for {len(provinces_written)} provinces")
         
     except Exception as e:
         logger.error(f"Error writing forecast to InfluxDB: {e}")
@@ -360,6 +369,9 @@ def write_forecast_to_influxdb(client, forecasts):
 def run_forecast_service():
     """Main function to run the forecast service."""
     logger.info("Starting weather forecast service")
+    
+    # Print the list of locations for debugging
+    logger.info(f"Will forecast for {len(LOCATIONS)} locations: {LOCATIONS}")
     
     # Load models and historical data
     models = load_models(MODEL_DIR)
@@ -382,14 +394,23 @@ def run_forecast_service():
             all_forecasts = []
             
             # Generate forecasts for each location
+            logger.info(f"Starting forecasts for {len(LOCATIONS)} locations")
+            location_count = 0
             for location in LOCATIONS:
+                location_count += 1
+                logger.info(f"Processing location {location_count}/{len(LOCATIONS)}: {location}")
                 forecasts = predict_weather(location, models, historical_data, num_days=FORECAST_DAYS)
                 if forecasts:
                     all_forecasts.extend(forecasts)
+                else:
+                    logger.warning(f"No forecast data generated for {location}")
             
             # Write forecasts to InfluxDB
             if all_forecasts:
+                logger.info(f"Writing {len(all_forecasts)} forecast points to InfluxDB for {len(set([f['province'] for f in all_forecasts]))} unique locations")
                 write_forecast_to_influxdb(client, all_forecasts)
+            else:
+                logger.warning("No forecast data generated for any location")
             
             # Calculate time to sleep
             elapsed_time = time.time() - start_time

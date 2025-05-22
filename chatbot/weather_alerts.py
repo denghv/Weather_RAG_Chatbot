@@ -137,8 +137,12 @@ class WeatherAlertSystem:
         # Get latest weather data from InfluxDB
         weather_data = self._get_latest_weather_data()
         
+        # Group locations by warning type
+        temp_warnings = {}  # {warning_text: [locations]}
+        pm25_warnings = {}  # {warning_text: [locations]}
+        pm10_warnings = {}  # {warning_text: [locations]}
+        
         # Process each location's data
-        alerts = []
         for location, data in weather_data.items():
             # Skip if we've already alerted for this data point
             if location in self.last_check_time and data['time'] <= self.last_check_time[location]:
@@ -147,16 +151,16 @@ class WeatherAlertSystem:
             # Update last check time
             self.last_check_time[location] = data['time']
             
-            location_alerts = []
-            
             # Check temperature for warnings
             if 'temp_c' in data:
                 warning = get_temperature_warning(data['temp_c'])
                 if warning:
                     # Only send alerts for dangerous conditions
                     if "Nguy hiểm" in warning or "Cực kỳ nguy hiểm" in warning:
-                        temp_alert = f"Nhiệt độ hiện tại {data['temp_c']}°C - {warning}"
-                        location_alerts.append(temp_alert)
+                        warning_key = f"Nhiệt độ ở mức cảnh báo ({data['temp_c']}°C): {warning.split(' — ')[0]}"
+                        if warning_key not in temp_warnings:
+                            temp_warnings[warning_key] = []
+                        temp_warnings[warning_key].append(location)
             
             # Check PM2.5 for warnings
             if 'pm2_5' in data:
@@ -164,8 +168,10 @@ class WeatherAlertSystem:
                 if warning:
                     # Only send alerts for harmful conditions
                     if "Có hại" in warning or "Rất có hại" in warning or "Nguy hiểm" in warning:
-                        pm25_alert = f"Chỉ số PM2.5 hiện tại {data['pm2_5']} μg/m³ - {warning}"
-                        location_alerts.append(pm25_alert)
+                        warning_key = f"Chỉ số PM2.5 có hại: {warning.split(' — ')[0]}"
+                        if warning_key not in pm25_warnings:
+                            pm25_warnings[warning_key] = []
+                        pm25_warnings[warning_key].append(location)
             
             # Check PM10 for warnings
             if 'pm10' in data:
@@ -173,18 +179,32 @@ class WeatherAlertSystem:
                 if warning:
                     # Only send alerts for harmful conditions
                     if "Có hại" in warning or "Rất có hại" in warning:
-                        pm10_alert = f"Chỉ số PM10 hiện tại {data['pm10']} μg/m³ - {warning}"
-                        location_alerts.append(pm10_alert)
-            
-            # If we have any alerts for this location, add them
-            if location_alerts:
-                location_header = f"**{location}**:"
-                location_alert_text = "\n- " + "\n- ".join(location_alerts)
-                alerts.append(location_header + location_alert_text)
+                        warning_key = f"Chỉ số PM10 có hại: {warning.split(' — ')[0]}"
+                        if warning_key not in pm10_warnings:
+                            pm10_warnings[warning_key] = []
+                        pm10_warnings[warning_key].append(location)
+        
+        # Combine all warnings
+        grouped_alerts = []
+        
+        # Add temperature warnings
+        for warning_text, locations in temp_warnings.items():
+            locations_str = ", ".join(locations)
+            grouped_alerts.append(f"**{warning_text}**\nCác khu vực: {locations_str}")
+        
+        # Add PM2.5 warnings
+        for warning_text, locations in pm25_warnings.items():
+            locations_str = ", ".join(locations)
+            grouped_alerts.append(f"**{warning_text}**\nCác khu vực: {locations_str}")
+        
+        # Add PM10 warnings
+        for warning_text, locations in pm10_warnings.items():
+            locations_str = ", ".join(locations)
+            grouped_alerts.append(f"**{warning_text}**\nCác khu vực: {locations_str}")
         
         # Send alerts if any
-        if alerts:
-            alert_text = "\n\n".join(alerts)
+        if grouped_alerts:
+            alert_text = "\n\n".join(grouped_alerts)
             full_message = f"**CẢNH BÁO THỜI TIẾT TỰ ĐỘNG**\n\n{alert_text}"
             
             # Send via SocketIO to all connected clients

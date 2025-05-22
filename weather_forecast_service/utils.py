@@ -29,8 +29,9 @@ def standardize_province_name(province_name):
     # Convert to string and clean up
     province_name = str(province_name).strip()
     
-    # Direct mapping for common variations
+    # Direct mapping for common variations and all 35 provinces
     mapping = {
+        # Major cities with common variations
         "TP.HCM": "Ho Chi Minh City",
         "TP. HCM": "Ho Chi Minh City",
         "Tp. HCM": "Ho Chi Minh City",
@@ -44,7 +45,38 @@ def standardize_province_name(province_name):
         "Hue": "Thua Thien Hue",
         "Nha Trang": "Khanh Hoa",
         "Cần Thơ": "Can Tho",
-        "Hải Phòng": "Hai Phong"
+        "Hải Phòng": "Hai Phong",
+        
+        # Vietnamese to English mappings for all 35 provinces
+        "An Giang": "An Giang",
+        "Bà Rịa-Vũng Tàu": "Ba Ria-Vung Tau",
+        "Bạc Liêu": "Bac Lieu",
+        "Bến Tre": "Ben Tre",
+        "Bình Định": "Binh Dinh",
+        "Bình Thuận": "Binh Thuan",
+        "Cà Mau": "Ca Mau",
+        "Đắk Lắk": "Dak Lak",
+        "Đồng Nai": "Dong Nai",
+        "Gia Lai": "Gia Lai",
+        "Hải Dương": "Hai Duong",
+        "Hòa Bình": "Hoa Binh",
+        "Kiên Giang": "Kien Giang",
+        "Lâm Đồng": "Lam Dong",
+        "Long An": "Long An",
+        "Nam Định": "Nam Dinh",
+        "Nghệ An": "Nghe An",
+        "Ninh Thuận": "Ninh Thuan",
+        "Phú Thọ": "Phu Tho",
+        "Phú Yên": "Phu Yen",
+        "Quảng Nam": "Quang Nam",
+        "Quảng Ninh": "Quang Ninh",
+        "Sóc Trăng": "Soc Trang",
+        "Thái Nguyên": "Thai Nguyen",
+        "Thanh Hóa": "Thanh Hoa",
+        "Tiền Giang": "Tien Giang",
+        "Trà Vinh": "Tra Vinh",
+        "Vĩnh Long": "Vinh Long",
+        "Yên Bái": "Yen Bai"
     }
     
     # Check if we have a direct mapping
@@ -101,37 +133,4 @@ def load_and_standardize_historical_data(data_path):
     return historical_data
 
 
-def get_location_coordinates(province_name):
-    """
-    Get approximate coordinates for a province in Vietnam.
-    This is a simplified version - in a real application, you'd use a more accurate geocoding service.
-    
-    Args:
-        province_name (str): The standardized province name
-        
-    Returns:
-        tuple: (latitude, longitude) coordinates
-    """
-    # Approximate coordinates for some major provinces
-    coordinates = {
-        "Hanoi": (21.0285, 105.8542),
-        "Ho Chi Minh City": (10.8231, 106.6297),
-        "Da Nang": (16.0544, 108.2022),
-        "Can Tho": (10.0452, 105.7469),
-        "Hai Phong": (20.8449, 106.6881),
-        "Thua Thien Hue": (16.4637, 107.5909),
-        "Khanh Hoa": (12.2388, 109.1967),  # Nha Trang
-        "Ba Ria-Vung Tau": (10.3461, 107.0843),
-        "Lam Dong": (11.9404, 108.4583),  # Da Lat
-    }
-    
-    # Standardize the input province name
-    std_province = standardize_province_name(province_name)
-    
-    # Return coordinates if available, otherwise return a default
-    if std_province in coordinates:
-        return coordinates[std_province]
-    else:
-        # Default to center of Vietnam if province not found
-        logger.warning(f"No coordinates found for province: {std_province}")
-        return (16.0, 108.0)  # Approximate center of Vietnam
+# Removed get_location_coordinates function as it's no longer needed
