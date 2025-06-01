@@ -1,11 +1,13 @@
 import os
 import json
 import datetime
-from flask import Flask, request, jsonify, render_template
+import uuid
+from flask import Flask, request, jsonify, render_template, session
 from influxdb_client import InfluxDBClient
 import openai
 import pytz
 import sys
+import requests
 from flask_socketio import SocketIO
 
 # Add parent directory to path to import provinces
@@ -14,10 +16,17 @@ from provinces import VIETNAM_PROVINCES
 from location_mapping import get_english_location_name
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24).hex())  # Secret key for sessions
 socketio = SocketIO(app, cors_allowed_origins="*")
+
+# Dictionary to store session IDs for clients
+user_sessions = {}
 
 # Initialize OpenAI API key
 openai.api_key = os.environ.get("OPENAI_API_KEY", "")
+
+# External knowledge API URL
+EXTERNAL_KNOWLEDGE_API_URL = "https://n8n.vdx.vn/webhook/6b2af131-7902-44f6-98e2-1ee4203e2934/chat"
 
 # InfluxDB connection
 def get_influxdb_client():
@@ -34,12 +43,105 @@ def index():
 @app.route('/ask', methods=['POST'])
 def ask():
     user_question = request.json.get('question', '')
+    client_id = request.json.get('clientId', request.remote_addr)  # Use client IP if no clientId provided
     
     if not user_question:
         return jsonify({"response": "Vui lòng nhập câu hỏi về thời tiết."})
     
-    response = process_question(user_question)
-    return jsonify({"response": response})
+    # Generate or retrieve session ID for this client
+    if client_id not in user_sessions:
+        # Create a new session ID for this client
+        user_sessions[client_id] = str(uuid.uuid4())
+        print(f"Created new session ID for client {client_id}: {user_sessions[client_id]}")
+    
+    session_id = user_sessions[client_id]
+    print(f"Processing question with sessionId: {session_id} for client: {client_id}")
+    
+    response = process_question(user_question, session_id)
+    return jsonify({"response": response, "sessionId": session_id})
+
+def is_general_knowledge_question(question):
+    """Determine if the question is about general knowledge rather than specific weather data"""
+    prompt = f"""
+    Phân tích câu hỏi sau và xác định xem nó là câu hỏi về dữ liệu thời tiết cụ thể hay là câu hỏi kiến thức chung về thời tiết/môi trường/sức khỏe.
+    
+    Câu hỏi: "{question}"
+    
+    Câu hỏi về dữ liệu thời tiết cụ thể là những câu hỏi yêu cầu thông tin về:
+    - Nhiệt độ, độ ẩm, gió, mây, mưa, tia UV ở một địa điểm cụ thể
+    - Chất lượng không khí, chỉ số bụi mịn (PM2.5, PM10) ở một địa điểm cụ thể
+    - Dự báo thời tiết cho những ngày tới ở một địa điểm cụ thể
+    
+    Câu hỏi kiến thức chung là những câu hỏi về:
+    - Lời khuyên về sức khỏe liên quan đến thời tiết (ví dụ: làm gì khi trời nóng, cách phòng tránh sốc nhiệt)
+    - Tác động của ô nhiễm không khí đến sức khỏe
+    - Giải thích về hiện tượng thời tiết
+    - Các biện pháp phòng tránh tác hại của thời tiết xấu
+    - Kiến thức chung về môi trường, biến đổi khí hậu
+    - Tất cả những tri thức khác không liên quan tới thời tiết 
+    
+    Trả về một đối tượng JSON với cấu trúc như sau:
+    {{
+        "is_general_knowledge": true/false,  // true nếu là câu hỏi kiến thức chung, false nếu là câu hỏi về dữ liệu thời tiết cụ thể
+        "reason": "Lý do ngắn gọn"  // Giải thích ngắn gọn lý do phân loại
+    }}
+    """
+    
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "Bạn là trợ lý hữu ích phân loại câu hỏi về thời tiết."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0,
+            max_tokens=300
+        )
+        
+        result_text = response['choices'][0]['message']['content'].strip()
+        
+        # Extract JSON from the response
+        try:
+            # Find JSON in the response
+            json_start = result_text.find('{')
+            json_end = result_text.rfind('}') + 1
+            if json_start >= 0 and json_end > json_start:
+                json_str = result_text[json_start:json_end]
+                result = json.loads(json_str)
+                return result
+            else:
+                # Default to treating as weather data question if parsing fails
+                return {"is_general_knowledge": False, "reason": "Failed to parse response"}
+        except json.JSONDecodeError:
+            return {"is_general_knowledge": False, "reason": "JSON decode error"}
+    except Exception as e:
+        print(f"Error calling OpenAI API: {e}")
+        return {"is_general_knowledge": False, "reason": f"API error: {str(e)}"}
+
+def forward_to_external_api(question, session_id=None):
+    """Forward the question to the external knowledge API and return the response"""
+    try:
+        # Create a payload with chatInput and sessionId (if provided)
+        payload = {
+            "chatInput": question
+        }
+        
+        # Add sessionId to the payload if provided
+        if session_id:
+            payload["sessionId"] = session_id
+        
+        print(f"Sending to external API: {payload}")
+        response = requests.post(EXTERNAL_KNOWLEDGE_API_URL, json=payload)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        
+        data = response.json()
+        if 'output' in data:
+            return data['output']
+        else:
+            return "Xin lỗi, tôi không thể trả lời câu hỏi này lúc này. Vui lòng thử lại sau."
+    except Exception as e:
+        print(f"Error calling external API: {e}")
+        return f"Xin lỗi, có lỗi khi xử lý câu hỏi của bạn: {str(e)}"
 
 def extract_entities_with_chatgpt(question):
     """Use ChatGPT to extract location, time information, and specific weather field from the question"""
@@ -438,7 +540,7 @@ def generate_response_with_chatgpt(question, weather_data):
     
     # Create a prompt based on whether this is a general query or specific query
     prompt = f"""
-    Dựa trên câu hỏi của người dùng và dữ liệu thời tiết được cung cấp, hãy tạo một câu trả lời tự nhiên và hữư ích.
+    Dựa trên câu hỏi của người dùng và dữ liệu thời tiết được cung cấp, hãy tạo một câu trả lời ngắn gọn, súc tích và chính xác.
     
     Câu hỏi: "{question}"
     
@@ -446,57 +548,31 @@ def generate_response_with_chatgpt(question, weather_data):
     {weather_info}
     {warnings_text}
     
-    Trả lời bằng tiếng Việt, cung cấp thông tin hữư ích và dễ hiểu.
+    Trả lời bằng tiếng Việt, chỉ cung cấp thông tin thời tiết được yêu cầu một cách ngắn gọn và trực tiếp.
     """
     
     if is_general_query:
-        # For general queries, provide comprehensive information using all available fields
-        prompt += "\nCâu hỏi này là về thời tiết nói chung, hãy cung cấp thông tin đầy đủ về tất cả các khía hậu có trong dữ liệu."
+        # For general queries, provide concise information about all available fields
+        prompt += "\nCâu hỏi này là về thời tiết nói chung, hãy cung cấp thông tin ngắn gọn về tất cả các khía cạnh có trong dữ liệu."
         
-        # Add specific instructions for each available field in a general query
-        if 'temp_c' in available_fields:
-            prompt += "\nGiải thích về nhiệt độ và đưa ra lời khuyên phù hợp."
-        
-        if 'humidity' in available_fields:
-            prompt += "\nGiải thích về độ ẩm và tác động của nó đến cảm giác thời tiết."
-        
-        if 'cloud' in available_fields:
-            prompt += "\nMô tả về độ che phủ mây và ảnh hưởng của nó."
-        
-        if 'uv' in available_fields:
-            prompt += "\nGiải thích chỉ số UV và đưa ra lời khuyên về bảo vệ da."
-        
-        if 'pm2_5' in available_fields or 'pm10' in available_fields:
-            prompt += "\nGiải thích chất lượng không khí và tác động của nó đến sức khỏe."
+        # No additional instructions for explanations or advice
     else:
         # For specific field queries, focus on the requested fields
         prompt += "\nQUAN TRỌNG: Câu hỏi này chỉ hỏi về một hoặc một số trường dữ liệu cụ thể. Chỉ trả lời về các trường dữ liệu được hỏi đến. Không đề cập đến các thông tin khác."
         
-        # Add specific instructions based on requested fields
-        if 'temp_c' in specific_fields and 'temp_c' in available_fields:
-            prompt += "\nCâu hỏi liên quan đến nhiệt độ, hãy đưa ra lời khuyên phù hợp với nhiệt độ đó."
-        
-        if ('pm2_5' in specific_fields or 'pm10' in specific_fields) and ('pm2_5' in available_fields or 'pm10' in available_fields):
-            prompt += "\nCâu hỏi liên quan đến chất lượng không khí, hãy giải thích ý nghĩa của các chỉ số và tác động đến sức khỏe."
-        
-        if 'humidity' in specific_fields and 'humidity' in available_fields:
-            prompt += "\nCâu hỏi liên quan đến độ ẩm, hãy giải thích mức độ độ ẩm và tác động của nó."
-        
-        if 'cloud' in specific_fields and 'cloud' in available_fields:
-            prompt += "\nCâu hỏi liên quan đến độ che phủ mây, hãy mô tả điều kiện mây và ảnh hưởng của nó."
-        
-        if 'uv' in specific_fields and 'uv' in available_fields:
-            prompt += "\nCâu hỏi liên quan đến chỉ số UV, hãy giải thích mức độ UV và đưa ra lời khuyên về bảo vệ da."
+        # List the specific fields being requested without additional explanations
+        if specific_fields:
+            prompt += f"\nCác trường dữ liệu được yêu cầu: {', '.join(specific_fields)}"
     
     # Add warning instructions if relevant
     if warnings:
-        prompt += "\nĐưa ra cảnh báo thời tiết dựa trên dữ liệu được cung cấp."
+        prompt += "\nĐưa ra cảnh báo thời tiết ngắn gọn dựa trên dữ liệu được cung cấp."
     
     try:
         response = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "Bạn là trợ lý thời tiết hữư ích, cung cấp thông tin thời tiết chính xác và lời khuyên hữư ích với kiểu thời tiết đó cho người dùng. Luôn đưa ra cảnh báo thời tiết nếu có, dựa trên nhiệt độ."},
+                {"role": "system", "content": "Bạn là trợ lý thời tiết cung cấp thông tin thời tiết chính xác, ngắn gọn và đúng trọng tâm. Chỉ cung cấp dữ liệu thời tiết được yêu cầu mà không đưa ra lời khuyên hay giải thích thêm. Nếu có cảnh báo thời tiết, hãy đề cập ngắn gọn."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.7,
@@ -523,8 +599,18 @@ def generate_response_with_chatgpt(question, weather_data):
             
         return fallback
 
-def process_question(question):
+def process_question(question, session_id=None):
     """Process a user question and return a response"""
+    # First, determine if this is a general knowledge question
+    classification = is_general_knowledge_question(question)
+    print(f"Question classification: {classification}")
+    
+    # If it's a general knowledge question, forward it to the external API
+    if classification.get("is_general_knowledge", False):
+        print(f"Forwarding general knowledge question to external API: {question}")
+        return forward_to_external_api(question, session_id)
+    
+    # Otherwise, process as a weather data question using the existing flow
     # Extract entities from the question
     entities = extract_entities_with_chatgpt(question)
     print(f"Extracted entities: {entities}")
