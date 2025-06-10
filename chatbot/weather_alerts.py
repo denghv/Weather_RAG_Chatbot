@@ -56,14 +56,12 @@ def get_rainfall_warning(precip_mm):
     try:
         precip = float(precip_mm)
         
-        if 11 <= precip <=50:
-            return "⚠️ **Mưa vừa** — Có thể ảnh hưởng đến giao thông, hoạt động ngoài trời."
-        elif 51 <= precip <= 100:
-            return "⚠️ **Mưa lớn** — Cảnh báo ngập lụt cục bộ, hạn chế di chuyển."
+        if 51 <= precip <= 100:
+            return "⚠️ **Cảnh báo (Mưa lớn)** — Cảnh báo ngập lụt cục bộ, hạn chế di chuyển."
         elif 101 <= precip <= 200:
-            return "⚠️ **Mưa rất lớn** — Nguy cơ ngập lụt, sạt lở đất, cần ở trong nhà."
+            return "⚠️ **Nguy hiểm (Mưa rất lớn)** — Nguy cơ ngập lụt, sạt lở đất, cần ở trong nhà."
         elif precip > 200:
-            return "⚠️ **Mưa cực lớn** — Nguy hiểm, ngập lụt nghiêm trọng, sạt lở, cần phải sơ tán."
+            return "⚠️ **Cực kỳ nguy hiểm (Mưa cực lớn)** — Nguy hiểm, ngập lụt nghiêm trọng, sạt lở, cần phải sơ tán."
         else:
             return None
     except (ValueError, TypeError):
@@ -77,14 +75,12 @@ def get_uv_warning(uv):
     try:
         uv = float(uv)
         
-        if 3 <= uv <= 5:
-            return "⚠️ **UV trung bình** — Đeo kính râm, bôi kem chống nắng khi ra ngoài trời lâu."
-        elif 6 <= uv <= 7:
-            return "⚠️ **UV cao** — Đội mũ, đeo kính râm, bôi kem chống nắng, tránh nắng từ 11h-15h."
+        if 6 <= uv <= 7:
+            return "⚠️ **Cảnh báo UV cao** — Đội mũ, đeo kính râm, bôi kem chống nắng, tránh nắng từ 11h-15h."
         elif 8 <= uv <= 10:
-            return "⚠️ **UV rất cao** — Hạn chế ra ngoài, tìm bóng râm, đeo kính râm, bôi kem chống nắng và mặc áo chống nắng."
+            return "⚠️ **Nguy hiểm UV rất cao** — Hạn chế ra ngoài, tìm bóng râm, đeo kính râm, bôi kem chống nắng và mặc áo chống nắng."
         elif uv > 11:
-            return "⚠️ **UV cực kỳ nguy hiểm** — Ở trong nhà, tránh ra ngoài vào giờ cao điểm nắng, bảo vệ da và mắt tối đa."
+            return "⚠️ **Cực kỳ nguy hiểm UV cực cao** — Ở trong nhà, tránh ra ngoài vào giờ cao điểm nắng, bảo vệ da và mắt tối đa."
         else:
             return None
     except (ValueError, TypeError):
@@ -98,18 +94,14 @@ def get_pm25_warning(pm25):
     try:
         pm25_val = float(pm25)
         
-        if 0 <= pm25_val <= 12:
-            return "✅ **PM2.5: Tốt** — Không ảnh hưởng sức khỏe. Sinh hoạt bình thường."
-        elif 13 <= pm25_val <= 35:
-            return "⚠️ **PM2.5: Trung bình** — Nhạy cảm nhẹ. Người già, trẻ nhỏ nên hạn chế hoạt động ngoài trời lâu."
-        elif 36 <= pm25_val <= 55:
-            return "⚠️ **PM2.5: Không tốt cho nhóm nhạy cảm** — Tránh ra ngoài nếu có bệnh hô hấp."
+        if 36 <= pm25_val <= 55:
+            return "⚠️ **PM2.5: Cảnh báo không tốt cho nhóm nhạy cảm** — Tránh ra ngoài nếu có bệnh hô hấp."
         elif 56 <= pm25_val <= 150:
-            return "⚠️ **PM2.5: Có hại cho sức khỏe** — Mọi người nên hạn chế ra ngoài. Đóng cửa, lọc không khí."
+            return "⚠️ **PM2.5: Cảnh báo có hại cho sức khỏe** — Mọi người nên hạn chế ra ngoài. Đóng cửa, lọc không khí."
         elif 151 <= pm25_val <= 250:
-            return "⚠️ **PM2.5: Rất có hại** — Cần ở trong nhà, đeo khẩu trang chuyên dụng (N95) nếu ra ngoài."
+            return "⚠️ **PM2.5: Nguy hiểm rất có hại** — Cần ở trong nhà, đeo khẩu trang chuyên dụng (N95) nếu ra ngoài."
         elif pm25_val > 250:
-            return "⚠️ **PM2.5: Nguy hiểm** — Cảnh báo khẩn cấp. Không ra ngoài. Nguy cơ tử vong nếu tiếp xúc lâu."
+            return "⚠️ **PM2.5: Cực kỳ nguy hiểm** — Cảnh báo khẩn cấp. Không ra ngoài. Nguy cơ tử vong nếu tiếp xúc lâu."
         else:
             return None
     except (ValueError, TypeError):
@@ -123,16 +115,12 @@ def get_pm10_warning(pm10):
     try:
         pm10_val = float(pm10)
         
-        if 0 <= pm10_val <= 54:
-            return "✅ **PM10: Tốt** — Chất lượng không khí tốt, an toàn cho sức khỏe."
-        elif 55 <= pm10_val <= 154:
-            return "⚠️ **PM10: Trung bình** — Chất lượng không khí chấp nhận được, nhưng có thể gây ảnh hưởng cho một số người nhạy cảm."
-        elif 155 <= pm10_val <= 254:
-            return "⚠️ **PM10: Không tốt cho nhóm nhạy cảm** — Người có bệnh hô hấp nên hạn chế ra ngoài trời."
+        if 155 <= pm10_val <= 254:
+            return "⚠️ **PM10: Cảnh báo Không tốt cho nhóm nhạy cảm** — Người có bệnh hô hấp nên hạn chế ra ngoài trời."
         elif 255 <= pm10_val <= 354:
-            return "⚠️ **PM10: Có hại cho sức khỏe** — Mọi người nên hạn chế hoạt động ngoài trời và đeo khẩu trang."
+            return "⚠️ **PM10: Nguy hiểm cho sức khỏe** — Mọi người nên hạn chế hoạt động ngoài trời và đeo khẩu trang."
         elif pm10_val >= 355:
-            return "⚠️ **PM10: Rất có hại** — Tránh ra ngoài trời, đóng cửa sổ và sử dụng máy lọc không khí."
+            return "⚠️ **PM10: Cực kỳ nguy hiểm ** — Tránh ra ngoài trời, đóng cửa sổ và sử dụng máy lọc không khí."
         else:
             return None
     except (ValueError, TypeError):
@@ -181,8 +169,10 @@ class WeatherAlertSystem:
         
         # Group locations by warning type
         temp_warnings = {}  # {warning_text: [locations]}
-        pm25_warnings = {}  # {warning_text: [locations]}
-        pm10_warnings = {}  # {warning_text: [locations]}
+        rainfall_warnings = {}  
+        uv_warnings = {}  
+        pm25_warnings = {}  
+        pm10_warnings = {}  
         
         # Process each location's data
         for location, data in weather_data.items():
@@ -197,31 +187,78 @@ class WeatherAlertSystem:
             if 'temp_c' in data:
                 warning = get_temperature_warning(data['temp_c'])
                 if warning:
-                    # Only send alerts for dangerous conditions
-                    if "Nguy hiểm" in warning or "Cực kỳ nguy hiểm" in warning:
+                    # send alerts for dangerous conditions
+                    if "Cảnh báo" in warning:
                         warning_key = f"Nhiệt độ ở mức cảnh báo ({data['temp_c']}°C): {warning.split(' — ')[0]}"
                         if warning_key not in temp_warnings:
                             temp_warnings[warning_key] = []
                         temp_warnings[warning_key].append(location)
+                    elif "Nguy hiểm" in warning or "Cực kỳ nguy hiểm" in warning:
+                        warning_key = f"Nhiệt độ ở mức nguy hiểm ({data['temp_c']}°C): {warning.split(' — ')[0]}"
+                        if warning_key not in temp_warnings:
+                            temp_warnings[warning_key] = []
+                        temp_warnings[warning_key].append(location)
+
+            # Check rainfall for warnings
+            if 'precip_mm' in data:
+                warning = get_rainfall_warning(data['precip_mm'])
+                if warning:
+                    # send alerts for dangerous conditions
+                    if "Cảnh báo" in warning:
+                        warning_key = f"Lượng mưa ở mức cảnh báo: {warning.split(' — ')[0]}"
+                        if warning_key not in rainfall_warnings:
+                            rainfall_warnings[warning_key] = []
+                        rainfall_warnings[warning_key].append(location)
+                    elif "Nguy hiểm" in warning or "Cực kỳ nguy hiểm" in warning:
+                        warning_key = f"Lượng mưa ở mức nguy hiểm: {warning.split(' — ')[0]}"
+                        if warning_key not in rainfall_warnings:
+                            rainfall_warnings[warning_key] = []
+                        rainfall_warnings[warning_key].append(location)
+
+            # Check uv for warnings
+            if 'uv' in data:
+                warning = get_uv_warning(data['uv'])
+                if warning:
+                    # send alerts for dangerous conditions
+                    if "Cảnh báo" in warning:
+                        warning_key = f"UV ở mức cảnh báo: {warning.split(' — ')[0]}"
+                        if warning_key not in uv_warnings:
+                            uv_warnings[warning_key] = []
+                        uv_warnings[warning_key].append(location)
+                    elif "Nguy hiểm" in warning or "Cực kỳ nguy hiểm" in warning:
+                        warning_key = f"Lượng mưa ở mức nguy hiểm: {warning.split(' — ')[0]}"
+                        if warning_key not in uv_warnings:
+                            uv_warnings[warning_key] = []
+                        uv_warnings[warning_key].append(location)
             
             # Check PM2.5 for warnings
             if 'pm2_5' in data:
                 warning = get_pm25_warning(data['pm2_5'])
                 if warning:
-                    # Only send alerts for harmful conditions
-                    if "Có hại" in warning or "Rất có hại" in warning or "Nguy hiểm" in warning:
-                        warning_key = f"Chỉ số PM2.5 có hại: {warning.split(' — ')[0]}"
+                    #  send alerts for harmful conditions
+                    if "Cảnh báo" in warning:
+                        warning_key = f"Chỉ số PM2.5 cảnh báo: {warning.split(' — ')[0]}"
+                        if warning_key not in pm25_warnings:
+                            pm25_warnings[warning_key] = []
+                        pm25_warnings[warning_key].append(location)
+                    elif "Nguy hiểm" in warning or "Cực kỳ nguy hiểm" in warning:
+                        warning_key = f"Chỉ số PM2.5 ở mức nguy hiểm: {warning.split(' — ')[0]}"
                         if warning_key not in pm25_warnings:
                             pm25_warnings[warning_key] = []
                         pm25_warnings[warning_key].append(location)
             
-            # Check PM10 for warnings
+            # Check PM2.5 for warnings
             if 'pm10' in data:
                 warning = get_pm10_warning(data['pm10'])
                 if warning:
-                    # Only send alerts for harmful conditions
-                    if "Có hại" in warning or "Rất có hại" in warning:
-                        warning_key = f"Chỉ số PM10 có hại: {warning.split(' — ')[0]}"
+                    #  send alerts for harmful conditions
+                    if "Cảnh báo" in warning:
+                        warning_key = f"Chỉ số PM10 cảnh báo: {warning.split(' — ')[0]}"
+                        if warning_key not in pm10_warnings:
+                            pm10_warnings[warning_key] = []
+                        pm10_warnings[warning_key].append(location)
+                    elif "Nguy hiểm" in warning or "Cực kỳ nguy hiểm" in warning:
+                        warning_key = f"Chỉ số PM2.5 ở mức nguy hiểm: {warning.split(' — ')[0]}"
                         if warning_key not in pm10_warnings:
                             pm10_warnings[warning_key] = []
                         pm10_warnings[warning_key].append(location)
@@ -231,6 +268,16 @@ class WeatherAlertSystem:
         
         # Add temperature warnings
         for warning_text, locations in temp_warnings.items():
+            locations_str = ", ".join(locations)
+            grouped_alerts.append(f"**{warning_text}**\nCác khu vực: {locations_str}")
+
+        # Add precip_mm warnings
+        for warning_text, locations in rainfall_warnings.items():
+            locations_str = ", ".join(locations)
+            grouped_alerts.append(f"**{warning_text}**\nCác khu vực: {locations_str}")
+
+        # Add uv warnings
+        for warning_text, locations in uv_warnings.items():
             locations_str = ", ".join(locations)
             grouped_alerts.append(f"**{warning_text}**\nCác khu vực: {locations_str}")
         
@@ -257,18 +304,17 @@ class WeatherAlertSystem:
         """Get the latest weather data for all locations from InfluxDB"""
         client = get_influxdb_client()
         query_api = client.query_api()
-        
-        # Dictionary to store weather data
+
         weather_data = {}
         
         # Fields to query
-        fields = ["temp_c", "pm2_5", "pm10"]
+        fields = ["temp_c", "precip_mm", "uv", "pm2_5", "pm10"]
         
         for field in fields:
             # Query to get the latest data for all locations for this field
             query = f"""
             from(bucket: "weather")
-              |> range(start: -1h)
+              |> range(start: -30m)
               |> filter(fn: (r) => r._measurement == "weather")
               |> filter(fn: (r) => r._field == "{field}")
               |> group(columns: ["location"])
