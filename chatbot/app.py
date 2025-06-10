@@ -10,22 +10,21 @@ import sys
 import requests
 from flask_socketio import SocketIO
 
-# Add parent directory to path to import provinces
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from provinces import VIETNAM_PROVINCES
 from location_mapping import get_english_location_name
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24).hex())  # Secret key for sessions
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", os.urandom(24).hex())  # key for sessions
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-# Dictionary to store session IDs for clients
+# session IDs for clients
 user_sessions = {}
 
-# Initialize OpenAI API key
+# InitOpenAI API key
 openai.api_key = os.environ.get("OPENAI_API_KEY", "")
 
-# External knowledge API URL
+# n8n knowledge API URL
 EXTERNAL_KNOWLEDGE_API_URL = "https://n8n.vdx.vn/webhook/6b2af131-7902-44f6-98e2-1ee4203e2934/chat"
 
 # InfluxDB connection
@@ -43,7 +42,7 @@ def index():
 @app.route('/ask', methods=['POST'])
 def ask():
     user_question = request.json.get('question', '')
-    client_id = request.json.get('clientId', request.remote_addr)  # Use client IP if no clientId provided
+    client_id = request.json.get('clientId', request.remote_addr)  
     
     if not user_question:
         return jsonify({"response": "Vui lòng nhập câu hỏi về thời tiết."})
@@ -67,24 +66,24 @@ def is_general_knowledge_question(question):
     
     Câu hỏi: "{question}"
     
-    Câu hỏi về dữ liệu thời tiết cụ thể là những câu hỏi yêu cầu thông tin về:
-    - Nhiệt độ, độ ẩm, gió, mây, mưa, tia UV ở một địa điểm cụ thể
-    - Chất lượng không khí, chỉ số bụi mịn (PM2.5, PM10) ở một địa điểm cụ thể
-    - Dự báo thời tiết cho những ngày tới ở một địa điểm cụ thể
+    \nCâu hỏi về dữ liệu thời tiết cụ thể là những câu hỏi yêu cầu thông tin về:\n
+    - Nhiệt độ, độ ẩm, gió, mây, mưa, tia UV ở một địa điểm cụ thể\n
+    - Chất lượng không khí, chỉ số bụi mịn (PM2.5, PM10) ở một địa điểm cụ thể\n
+    - Dự báo thời tiết cho những ngày tới ở một địa điểm cụ thể\n
     
-    Câu hỏi kiến thức chung là những câu hỏi về:
-    - Lời khuyên về sức khỏe liên quan đến thời tiết (ví dụ: làm gì khi trời nóng, cách phòng tránh sốc nhiệt)
-    - Tác động của ô nhiễm không khí đến sức khỏe
-    - Giải thích về hiện tượng thời tiết
-    - Các biện pháp phòng tránh tác hại của thời tiết xấu
-    - Kiến thức chung về môi trường, biến đổi khí hậu
-    - Tất cả những tri thức khác không liên quan tới thời tiết 
+    \nCâu hỏi kiến thức chung là những câu hỏi về:\n
+    - Lời khuyên về sức khỏe liên quan đến thời tiết (ví dụ: làm gì khi trời nóng, cách phòng tránh sốc nhiệt)\n
+    - Tác động của ô nhiễm không khí đến sức khỏe\n
+    - Giải thích về hiện tượng thời tiết\n
+    - Các biện pháp phòng tránh tác hại của thời tiết xấu\n
+    - Kiến thức chung về môi trường, biến đổi khí hậu\n
+    - Tất cả những tri thức khác không liên quan tới thời tiết\n
     
-    Trả về một đối tượng JSON với cấu trúc như sau:
-    {{
-        "is_general_knowledge": true/false,  // true nếu là câu hỏi kiến thức chung, false nếu là câu hỏi về dữ liệu thời tiết cụ thể
-        "reason": "Lý do ngắn gọn"  // Giải thích ngắn gọn lý do phân loại
-    }}
+    Trả về một đối tượng JSON với cấu trúc như sau:\n
+    {{\n
+        "is_general_knowledge": true/false,  // true nếu là câu hỏi kiến thức chung, false nếu là câu hỏi về dữ liệu thời tiết cụ thể\n
+        "reason": "Lý do ngắn gọn"  // Giải thích ngắn gọn lý do phân loại\n
+    }}\n
     """
     
     try:
@@ -100,9 +99,9 @@ def is_general_knowledge_question(question):
         
         result_text = response['choices'][0]['message']['content'].strip()
         
-        # Extract JSON from the response
+        # extract JSON from response
         try:
-            # Find JSON in the response
+            # find JSON in the response
             json_start = result_text.find('{')
             json_end = result_text.rfind('}') + 1
             if json_start >= 0 and json_end > json_start:
@@ -110,7 +109,7 @@ def is_general_knowledge_question(question):
                 result = json.loads(json_str)
                 return result
             else:
-                # Default to treating as weather data question if parsing fails
+                # default to treating as weather data question if parsing fails
                 return {"is_general_knowledge": False, "reason": "Failed to parse response"}
         except json.JSONDecodeError:
             return {"is_general_knowledge": False, "reason": "JSON decode error"}
@@ -121,27 +120,25 @@ def is_general_knowledge_question(question):
 def forward_to_external_api(question, session_id=None):
     """Forward the question to the external knowledge API and return the response"""
     try:
-        # Create a payload with chatInput and sessionId (if provided)
+        # create a payload with chatInput and sessionId (if provided)
         payload = {
             "chatInput": question
         }
-        
-        # Add sessionId to the payload if provided
         if session_id:
             payload["sessionId"] = session_id
         
         print(f"Sending to external API: {payload}")
         response = requests.post(EXTERNAL_KNOWLEDGE_API_URL, json=payload)
-        response.raise_for_status()  # Raise an exception for HTTP errors
+        response.raise_for_status()  
         
         data = response.json()
         if 'output' in data:
             return data['output']
         else:
-            return "Xin lỗi, tôi không thể trả lời câu hỏi này lúc này. Vui lòng thử lại sau."
+            return "Xin lỗi vì sự bất tiện nhưng tôi không thể trả lời câu hỏi này lúc này. Vui lòng thử lại sau."
     except Exception as e:
         print(f"Error calling external API: {e}")
-        return f"Xin lỗi, có lỗi khi xử lý câu hỏi của bạn: {str(e)}"
+        return f"Đã có lỗi xảy ra khi xử lý câu hỏi của bạn: {str(e)}"
 
 def extract_entities_with_chatgpt(question):
     """Use ChatGPT to extract location, time information, and specific weather field from the question"""
@@ -150,28 +147,27 @@ def extract_entities_with_chatgpt(question):
     Trích xuất thông tin về địa điểm, thời gian, dự báo và trường dữ liệu cụ thể từ câu hỏi sau về thời tiết ở Việt Nam.
     Câu hỏi: "{question}"
     
-    Các địa điểm hợp lệ là 63 tỉnh thành của Việt Nam: {', '.join(VIETNAM_PROVINCES)}
+    \nCác địa điểm hợp lệ là 63 tỉnh thành của Việt Nam: {', '.join(VIETNAM_PROVINCES)}
     
-    Các trường dữ liệu thời tiết có thể được hỏi:
-    - temp_c: nhiệt độ (độ C), từ khóa: nhiệt độ, nóng, lạnh, bao nhiêu độ
-    - pm2_5: chỉ số bụi mịn PM2.5, từ khóa: pm2.5, pm2_5, bụi mịn 2.5, chất lượng không khí
-    - pm10: chỉ số bụi PM10, từ khóa: pm10, bụi mịn 10, chất lượng không khí
-    - cloud: độ che phủ mây (%), từ khóa: mây, độ che phủ mây, trời nhiều mây, trời ít mây
-    - humidity: độ ẩm (%), từ khóa: độ ẩm, ẩm ướt, khô ráo
-    - uv: chỉ số tia cực tím, từ khóa: tia uv, tia cực tím, chỉ số uv
+    \nCác trường dữ liệu thời tiết có thể được hỏi:
+    - temp_c: nhiệt độ (độ C), từ khóa: nhiệt độ, nóng, lạnh, bao nhiêu độ\n
+    - pm2_5: chỉ số bụi mịn PM2.5, từ khóa: pm2.5, pm2_5, bụi mịn 2.5, chất lượng không khí\n
+    - pm10: chỉ số bụi PM10, từ khóa: pm10, bụi mịn 10, chất lượng không khí\n
+    - cloud: độ che phủ mây (%), từ khóa: mây, độ che phủ mây, trời nhiều mây, trời ít mây\n
+    - humidity: độ ẩm (%), từ khóa: độ ẩm, ẩm ướt, khô ráo\n
+    - uv: chỉ số tia cực tím, từ khóa: tia uv, tia cực tím, chỉ số uv\n
     
-    Trả về một đối tượng JSON với cấu trúc ví dụ như sau:
-    {{
-        "locations": ["Địa điểm 1", "Địa điểm 2"], // Danh sách các địa điểm được đề cập trong câu hỏi
-        "time_reference": "current", // Một trong các giá trị: current (hiện tại), today (hôm nay), yesterday (hôm qua), specific_date (ngày cụ thể), future (tương lai)
-        "is_forecast": false, // true nếu câu hỏi liên quan đến dự báo thời tiết trong tương lai, false nếu hỏi về thời tiết hiện tại hoặc quá khứ
-        "specific_fields": ["temp_c"] // Danh sách các trường dữ liệu cụ thể được hỏi đến, có thể là temp_c, pm2_5, pm10, hoặc rỗng nếu hỏi chung về thời tiết
-    }}
-    
-    Nếu không tìm thấy địa điểm hợp lệ, trả về danh sách trống cho locations.
-    Nếu không tìm thấy tham chiếu thời gian, giả định là "current".
-    Nếu câu hỏi chứa các từ khóa như "dự báo", "dự đoán", "sẽ", "mai", "tuần tới", "ngày mai", "sắp tới", "sắp", "tới", "sẽ như thế nào", "thế nào", "ra sao", hoặc các từ ngữ tương tự về thời tiết trong tương lai, hãy đặt is_forecast = true và time_reference = "future".
-    Nếu câu hỏi không đề cập đến trường dữ liệu cụ thể nào, trả về danh sách trống cho specific_fields.
+    Trả về một đối tượng JSON với cấu trúc ví dụ như sau:\n
+    {{\n
+        "locations": ["Địa điểm 1", "Địa điểm 2"], // Danh sách các địa điểm được đề cập trong câu hỏi\n
+        "time_reference": "current", // Một trong các giá trị: current (hiện tại), today (hôm nay), yesterday (hôm qua), specific_date (ngày cụ thể), future (tương lai)\n
+        "is_forecast": false, // true nếu câu hỏi liên quan đến dự báo thời tiết trong tương lai, false nếu hỏi về thời tiết hiện tại hoặc quá khứ\n
+        "specific_fields": ["temp_c"] // Danh sách các trường dữ liệu cụ thể được hỏi đến, có thể là temp_c, pm2_5, pm10, humidity, cloud, uv hoặc rỗng nếu hỏi chung về thời tiết\n
+    }}\n
+    Nếu không tìm thấy địa điểm hợp lệ, trả về danh sách trống cho locations.\n
+    Nếu không tìm thấy tham chiếu thời gian, giả định là "current".\n
+    Nếu câu hỏi chứa các từ khóa như "dự báo", "dự đoán", "sẽ", "mai", "tuần tới", "ngày mai", "sắp tới", "sắp", "tới", "sẽ như thế nào" hoặc các từ ngữ tương tự về thời tiết trong tương lai, hãy đặt is_forecast = true và time_reference = "future".\n
+    Nếu câu hỏi không đề cập đến trường dữ liệu cụ thể nào, trả về danh sách trống cho specific_fields.\n
     """
     
     try:
@@ -187,9 +183,8 @@ def extract_entities_with_chatgpt(question):
         
         result_text = response['choices'][0]['message']['content'].strip()
         
-        # Extract JSON from the response
+        # extract JSON from the response
         try:
-            # Find JSON in the response
             json_start = result_text.find('{')
             json_end = result_text.rfind('}') + 1
             if json_start >= 0 and json_end > json_start:
@@ -299,7 +294,7 @@ def execute_query(query):
     try:
         result = query_api.query(org=os.environ.get("INFLUXDB_ORG", "my-org"), query=query)
         
-        # Process results
+        # process results
         weather_data = []
         for table in result:
             for record in table.records:
@@ -330,7 +325,7 @@ def format_weather_data(weather_data):
         field = item.get("field")
         value = item.get("value")
         
-        # Format time as string
+        # format time as string
         time_str = time.strftime("%Y-%m-%d %H:%M:%S") if time else "Unknown"
         
         if location not in grouped_data:
@@ -339,108 +334,10 @@ def format_weather_data(weather_data):
         if time_str not in grouped_data[location]:
             grouped_data[location][time_str] = {}
         
-        # Store the field value
+        # store the field value
         grouped_data[location][time_str][field] = value
     
     return grouped_data
-
-def get_temperature_warning(temp_c):
-    """Generate warning message based on temperature"""
-    if temp_c is None:
-        return None
-    
-    try:
-        temp = float(temp_c)
-        
-        if temp < -10:
-            return "⚠️ **Cực kỳ nguy hiểm (Lạnh)** — Cảnh báo hạ thân nhiệt và tê cóng, có thể gây tử vong. Khuyên bạn ở trong nhà, mặc ấm, tránh gió lạnh."
-        elif -10 <= temp <= 0:
-            return "⚠️ **Nguy hiểm (Lạnh)** — Có thể gây hạ thân nhiệt, da tím tái, run rẩy. Bạn nên mặc đủ ấm và hạn chế ra ngoài lâu."
-        elif 1 <= temp <= 17:
-            return "⚠️ **Cảnh báo (Lạnh nhẹ)** — Dễ bị cảm lạnh. Bạn nên giữ ấm khi ra ngoài sáng sớm hoặc ban đêm."
-        elif 18 <= temp <= 32:
-            return "✅ **An toàn** — Nhiệt độ lý tưởng. Chúc bạn một ngày tốt lành!"
-        elif 33 <= temp <= 37:
-            return "⚠️ **Cảnh báo (Nóng nhẹ)** — Có thể gây mất nước, mệt mỏi nhẹ. Bạn nên uống nhiều nước và tránh nắng gắt."
-        elif 38 <= temp <= 41:
-            return "⚠️ **Nguy hiểm (Nóng)** — Có nguy cơ say nắng, kiệt sức. Bạn nên nghỉ ngơi nơi mát và theo dõi sức khỏe."
-        elif temp > 41:
-            return "⚠️ **Cực kỳ nguy hiểm (Nóng)** — Có thể gây đột quỵ nhiệt, nguy hiểm tính mạng. Khẩn cấp cảnh báo bạn tìm nơi mát, uống nước và gọi hỗ trợ y tế nếu có dấu hiệu bất thường."
-        else:
-            return None
-    except (ValueError, TypeError):
-        return None
-
-def get_pm25_warning(pm25):
-    """Generate warning message based on PM2.5 levels"""
-    if pm25 is None:
-        return None
-    
-    try:
-        pm25_val = float(pm25)
-        
-        if 0 <= pm25_val <= 12:
-            return "✅ **PM2.5: Tốt** — Không ảnh hưởng sức khỏe. Sinh hoạt bình thường."
-        elif 13 <= pm25_val <= 35:
-            return "⚠️ **PM2.5: Trung bình** — Nhạy cảm nhẹ. Người già, trẻ nhỏ nên hạn chế hoạt động ngoài trời lâu."
-        elif 36 <= pm25_val <= 55:
-            return "⚠️ **PM2.5: Không tốt cho nhóm nhạy cảm** — Tránh ra ngoài nếu có bệnh hô hấp."
-        elif 56 <= pm25_val <= 150:
-            return "⚠️ **PM2.5: Có hại cho sức khỏe** — Mọi người nên hạn chế ra ngoài. Đóng cửa, lọc không khí."
-        elif 151 <= pm25_val <= 250:
-            return "⚠️ **PM2.5: Rất có hại** — Cần ở trong nhà, đeo khẩu trang chuyên dụng (N95) nếu ra ngoài."
-        elif pm25_val > 250:
-            return "⚠️ **PM2.5: Nguy hiểm** — Cảnh báo khẩn cấp. Không ra ngoài. Nguy cơ tử vong nếu tiếp xúc lâu."
-        else:
-            return None
-    except (ValueError, TypeError):
-        return None
-
-def get_pm10_warning(pm10):
-    """Generate warning message based on PM10 levels"""
-    if pm10 is None:
-        return None
-    
-    try:
-        pm10_val = float(pm10)
-        
-        if 0 <= pm10_val <= 54:
-            return "✅ **PM10: Tốt** — Chất lượng không khí tốt, an toàn cho sức khỏe."
-        elif 55 <= pm10_val <= 154:
-            return "⚠️ **PM10: Trung bình** — Chất lượng không khí chấp nhận được, nhưng có thể gây ảnh hưởng cho một số người nhạy cảm."
-        elif 155 <= pm10_val <= 254:
-            return "⚠️ **PM10: Không tốt cho nhóm nhạy cảm** — Người có bệnh hô hấp nên hạn chế ra ngoài trời."
-        elif 255 <= pm10_val <= 354:
-            return "⚠️ **PM10: Có hại cho sức khỏe** — Mọi người nên hạn chế hoạt động ngoài trời và đeo khẩu trang."
-        elif pm10_val >= 355:
-            return "⚠️ **PM10: Rất có hại** — Tránh ra ngoài trời, đóng cửa sổ và sử dụng máy lọc không khí."
-        else:
-            return None
-    except (ValueError, TypeError):
-        return None
-
-def get_uv_warning(uv):
-    """Generate warning message based on UV index"""
-    if uv is None:
-        return None
-    
-    try:
-        uv_val = float(uv)
-        
-        if 0 <= uv_val <= 2:
-            return "✅ **UV: Thấp** — An toàn cho hầu hết mọi người. Có thể ra ngoài mà không cần bảo vệ đặc biệt."
-        elif 3 <= uv_val <= 5:
-            return "⚠️ **UV: Trung bình** — Nên tìm bóng râm vào giữa trưa. Sử dụng kem chống nắng SPF 30+ khi ra ngoài."
-        elif 6 <= uv_val <= 7:
-            return "⚠️ **UV: Cao** — Giảm thời gian ở ngoài từ 10h-16h. Đeo kính râm, mũ rộng vành và áo dài tay."
-        elif 8 <= uv_val <= 10:
-            return "⚠️ **UV: Rất cao** — Tránh ra ngoài vào giữa trưa. Bắt buộc sử dụng kem chống nắng, mũ và kính râm."
-        elif uv_val >= 11:
-            return "⚠️ **UV: Cực kỳ cao** — Nguy cơ tổn thương da cao. Hạn chế tối đa thời gian ngoài trời. Sử dụng đầy đủ các biện pháp bảo vệ."
-        else:
-            return None
-    except (ValueError, TypeError):
-        return None
 
 def generate_response_with_chatgpt(question, weather_data):
     """Generate a natural language response using ChatGPT"""
@@ -469,11 +366,6 @@ def generate_response_with_chatgpt(question, weather_data):
                 if key == 'temp_c' or key == 'max_temp':
                     temp_label = 'Nhiệt độ' if key == 'temp_c' else 'Nhiệt độ cao nhất'
                     weather_info += f"  {temp_label}: {value}°C\n"
-                    
-                    # Add temperature warning if needed
-                    warning = get_temperature_warning(value)
-                    if warning:
-                        warnings.append(f"*{location}*: {warning}")
                 
                 elif key == 'min_temp':
                     weather_info += f"  Nhiệt độ thấp nhất: {value}°C\n"
@@ -491,40 +383,15 @@ def generate_response_with_chatgpt(question, weather_data):
                     weather_info += f"  Điều kiện thời tiết: {value}\n"
                 elif key == 'pm2_5':
                     weather_info += f"  PM2.5: {value} µg/m³\n"
-                    
-                    # Add air quality warning if needed
-                    warning = get_pm25_warning(value)
-                    if warning:
-                        warnings.append(f"*{location}*: {warning}")
-                        
                 elif key == 'pm10':
                     weather_info += f"  PM10: {value} µg/m³\n"
-                    
-                    # Add air quality warning if needed
-                    warning = get_pm10_warning(value)
-                    if warning:
-                        warnings.append(f"*{location}*: {warning}")
-                        
                 elif key == 'humidity':
-                    weather_info += f"  Độ ẩm: {value}%\n"
-                        
+                    weather_info += f"  Độ ẩm: {value}%\n" 
                 elif key == 'cloud':
-                    weather_info += f"  Độ che phủ mây: {value}%\n"
-                        
+                    weather_info += f"  Độ che phủ mây: {value}%\n" 
                 elif key == 'uv':
                     weather_info += f"  Chỉ số UV: {value}\n"
-                    
-                    # Add UV warning if needed
-                    warning = get_uv_warning(value)
-                    if warning:
-                        warnings.append(f"*{location}*: {warning}")
-            
             weather_info += "\n"
-    
-    # Add warnings to the prompt if any
-    warnings_text = ""
-    if warnings:
-        warnings_text = "\n".join(warnings)
     
     # Determine which specific fields were requested based on the data available
     available_fields = set()
@@ -544,74 +411,52 @@ def generate_response_with_chatgpt(question, weather_data):
     
     Câu hỏi: "{question}"
     
-    Dữ liệu thời tiết:
+    Dữ liệu thời tiết:\n
     {weather_info}
-    {warnings_text}
     
-    Trả lời bằng tiếng Việt, chỉ cung cấp thông tin thời tiết được yêu cầu một cách ngắn gọn và trực tiếp.
+    \n Hãy trả lời bằng tiếng Việt, chỉ cung cấp thông tin thời tiết được yêu cầu một cách ngắn gọn và trực tiếp.
     """
     
     if is_general_query:
         # For general queries, provide concise information about all available fields
-        prompt += "\nCâu hỏi này là về thời tiết nói chung, hãy cung cấp thông tin ngắn gọn về tất cả các khía cạnh có trong dữ liệu."
-        
-        # No additional instructions for explanations or advice
+        prompt += "\nCâu hỏi này là về thời tiết nói chung, hãy cung cấp thông tin ngắn gọn về tất cả các khía cạnh có trong dữ liệu. Các trường thông tin trình bày dễ nhìn, cách dòng ví dụ như sau:Hà Nội vào lúc HH:MM ngày DD/MM/YYYY:• Điều kiện: Mưa vừa\n • Nhiệt độ cao nhất: 39.5°C\n • Nhiệt độ thấp nhất: 28.5°C\n • Lượng mưa: 7.4 mm\n • Độ ẩm: 76.8%\n • Độ che phủ mây: 38.8%\n• PM2.5:..\nPM10:.."
+
     else:
         # For specific field queries, focus on the requested fields
-        prompt += "\nQUAN TRỌNG: Câu hỏi này chỉ hỏi về một hoặc một số trường dữ liệu cụ thể. Chỉ trả lời về các trường dữ liệu được hỏi đến. Không đề cập đến các thông tin khác."
-        
-        # List the specific fields being requested without additional explanations
+        prompt += "\nQUAN TRỌNG: Câu hỏi này chỉ hỏi về một hoặc một số trường dữ liệu cụ thể. Chỉ trả lời về các trường dữ liệu được hỏi đến. Không đề cập đến các thông tin khác. "
+
         if specific_fields:
             prompt += f"\nCác trường dữ liệu được yêu cầu: {', '.join(specific_fields)}"
-    
-    # Add warning instructions if relevant
-    if warnings:
-        prompt += "\nĐưa ra cảnh báo thời tiết ngắn gọn dựa trên dữ liệu được cung cấp."
     
     try:
         response = openai.ChatCompletion.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": "Bạn là trợ lý thời tiết cung cấp thông tin thời tiết chính xác, ngắn gọn và đúng trọng tâm. Chỉ cung cấp dữ liệu thời tiết được yêu cầu mà không đưa ra lời khuyên hay giải thích thêm. Nếu có cảnh báo thời tiết, hãy đề cập ngắn gọn."},
+                {"role": "system", "content": "Bạn là trợ lý thời tiết cung cấp thông tin thời tiết chính xác, ngắn gọn và đúng trọng tâm. Chỉ cung cấp dữ liệu thời tiết được yêu cầu mà không đưa ra lời khuyên hay giải thích thêm"},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.7,
+            temperature=0.3,
             max_tokens=800
         )
         
         response_text = response['choices'][0]['message']['content'].strip()
         
-        # If no warnings in response but we have warnings, add them explicitly
-        if warnings and not any(warning.split(":")[0].strip("*" ) in response_text for warning in warnings):
-            response_text += "\n\n**Cảnh báo thời tiết:**\n" + "\n".join(warnings)
-            
         return response_text
     except Exception as e:
         print(f"Error calling OpenAI API: {e}")
-        
-        # Fallback response if API call fails
-        fallback = "Xin lỗi, tôi không thể tạo câu trả lời chi tiết lúc này. Dưới đây là dữ liệu thời tiết:\n\n"
-        fallback += weather_info
-        
-        # Add warnings to fallback response
-        if warnings:
-            fallback += "\n\n**Cảnh báo thời tiết:**\n" + "\n".join(warnings)
-            
-        return fallback
 
 def process_question(question, session_id=None):
     """Process a user question and return a response"""
-    # First, determine if this is a general knowledge question
+    # determine if this is a general knowledge question
     classification = is_general_knowledge_question(question)
     print(f"Question classification: {classification}")
     
-    # If it's a general knowledge question, forward it to the external API
+    # If general knowledge question, forward it to the external API
     if classification.get("is_general_knowledge", False):
         print(f"Forwarding general knowledge question to external API: {question}")
         return forward_to_external_api(question, session_id)
     
     # Otherwise, process as a weather data question using the existing flow
-    # Extract entities from the question
     entities = extract_entities_with_chatgpt(question)
     print(f"Extracted entities: {entities}")
     
@@ -737,7 +582,7 @@ def handle_disconnect():
 alert_system = None
 
 if __name__ == '__main__':
-    # Import weather_alerts module sau khi app đã được tạo để tránh circular import
+    # Import weather_alerts module 
     import weather_alerts
     
     # Initialize the alert system

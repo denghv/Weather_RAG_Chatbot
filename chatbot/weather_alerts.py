@@ -29,20 +29,62 @@ def get_temperature_warning(temp_c):
     try:
         temp = float(temp_c)
         
-        if temp < -10:
+        if temp < 5:
             return "⚠️ **Cực kỳ nguy hiểm (Lạnh)** — Cảnh báo hạ thân nhiệt và tê cóng, có thể gây tử vong. Khuyên bạn ở trong nhà, mặc ấm, tránh gió lạnh."
-        elif -10 <= temp <= 0:
+        elif 5 <= temp <= 10:
             return "⚠️ **Nguy hiểm (Lạnh)** — Có thể gây hạ thân nhiệt, da tím tái, run rẩy. Bạn nên mặc đủ ấm và hạn chế ra ngoài lâu."
-        elif 1 <= temp <= 17:
+        elif 11 <= temp <= 17:
             return "⚠️ **Cảnh báo (Lạnh nhẹ)** — Dễ bị cảm lạnh. Bạn nên giữ ấm khi ra ngoài sáng sớm hoặc ban đêm."
-        elif 18 <= temp <= 32:
-            return "✅ **An toàn** — Nhiệt độ lý tưởng. Chúc bạn một ngày tốt lành!"
-        elif 33 <= temp <= 37:
+        # elif 18 <= temp <= 33:
+        #     return "✅ **An toàn** — Nhiệt độ lý tưởng."
+        elif 33 <= temp <= 38:
             return "⚠️ **Cảnh báo (Nóng nhẹ)** — Có thể gây mất nước, mệt mỏi nhẹ. Bạn nên uống nhiều nước và tránh nắng gắt."
-        elif 38 <= temp <= 41:
+        elif 39 <= temp <= 41:
             return "⚠️ **Nguy hiểm (Nóng)** — Có nguy cơ say nắng, kiệt sức. Bạn nên nghỉ ngơi nơi mát và theo dõi sức khỏe."
         elif temp > 41:
             return "⚠️ **Cực kỳ nguy hiểm (Nóng)** — Có thể gây đột quỵ nhiệt, nguy hiểm tính mạng. Khẩn cấp cảnh báo bạn tìm nơi mát, uống nước và gọi hỗ trợ y tế nếu có dấu hiệu bất thường."
+        else:
+            return None
+    except (ValueError, TypeError):
+        return None
+
+def get_rainfall_warning(precip_mm):
+    """Generate warning message based on rainfall"""
+    if precip_mm is None:
+        return None
+    
+    try:
+        precip = float(precip_mm)
+        
+        if 11 <= precip <=50:
+            return "⚠️ **Mưa vừa** — Có thể ảnh hưởng đến giao thông, hoạt động ngoài trời."
+        elif 51 <= precip <= 100:
+            return "⚠️ **Mưa lớn** — Cảnh báo ngập lụt cục bộ, hạn chế di chuyển."
+        elif 101 <= precip <= 200:
+            return "⚠️ **Mưa rất lớn** — Nguy cơ ngập lụt, sạt lở đất, cần ở trong nhà."
+        elif precip > 200:
+            return "⚠️ **Mưa cực lớn** — Nguy hiểm, ngập lụt nghiêm trọng, sạt lở, cần phải sơ tán."
+        else:
+            return None
+    except (ValueError, TypeError):
+        return None
+
+def get_uv_warning(uv):
+    """Generate warning message based on UV index"""
+    if uv is None:
+        return None
+    
+    try:
+        uv = float(uv)
+        
+        if 3 <= uv <= 5:
+            return "⚠️ **UV trung bình** — Đeo kính râm, bôi kem chống nắng khi ra ngoài trời lâu."
+        elif 6 <= uv <= 7:
+            return "⚠️ **UV cao** — Đội mũ, đeo kính râm, bôi kem chống nắng, tránh nắng từ 11h-15h."
+        elif 8 <= uv <= 10:
+            return "⚠️ **UV rất cao** — Hạn chế ra ngoài, tìm bóng râm, đeo kính râm, bôi kem chống nắng và mặc áo chống nắng."
+        elif uv > 11:
+            return "⚠️ **UV cực kỳ nguy hiểm** — Ở trong nhà, tránh ra ngoài vào giờ cao điểm nắng, bảo vệ da và mắt tối đa."
         else:
             return None
     except (ValueError, TypeError):

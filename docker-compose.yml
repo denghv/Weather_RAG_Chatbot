@@ -93,7 +93,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=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
       - INFLUXDB_URL=http://influxdb:8086
       - INFLUXDB_TOKEN=my-token
       - INFLUXDB_ORG=my-org
