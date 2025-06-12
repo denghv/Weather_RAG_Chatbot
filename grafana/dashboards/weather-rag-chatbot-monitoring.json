@@ -1,0 +1,323 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 0 },
+      "id": 2,
+      "title": "CPU Usage",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+       },
+      "targets": [
+        {
+          "expr": "sum(rate(container_cpu_usage_seconds_total{name=~\"$container\"}[5m])) by (name) * 100",
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "custom": { "fillOpacity": 10, "lineWidth": 2 }
+        }
+      }
+    },
+    {
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "id": 4,
+      "title": "Memory Usage",
+      "type": "timeseries",
+       "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+       },
+      "targets": [
+        {
+          "expr": "sum(container_memory_usage_bytes{name=~\"$container\"}) by (name)",
+          "legendFormat": "{{name}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+           "custom": { "fillOpacity": 10, "lineWidth": 2 }
+        }
+      }
+    },
+    {
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "id": 6,
+      "title": "Network I/O",
+      "type": "timeseries",
+       "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+       },
+      "targets": [
+        {
+          "expr": "sum(rate(container_network_receive_bytes_total{name=~\"$container\"}[5m])) by (name)",
+          "legendFormat": "{{name}} - receive",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(container_network_transmit_bytes_total{name=~\"$container\"}[5m])) by (name)",
+          "legendFormat": "{{name}} - transmit",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+           "custom": { "fillOpacity": 10, "lineWidth": 2 }
+        }
+      }
+    },
+    {
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+      "id": 8,
+      "title": "Disk I/O",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(container_fs_reads_bytes_total{name=~\"$container\"}[5m])) by (name)",
+          "legendFormat": "{{name}} - reads",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(container_fs_writes_bytes_total{name=~\"$container\"}[5m])) by (name)",
+          "legendFormat": "{{name}} - writes",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "custom": { "fillOpacity": 10, "lineWidth": 2 }
+        }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 24 },
+      "id": 10,
+      "panels": [],
+      "title": "InfluxDB Service",
+      "type": "row"
+    },
+    {
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 25 },
+      "id": 12,
+      "title": "InfluxDB Write Rate",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(influxdb_http_api_requests_total{path=\"/api/v2/write\", job=\"influxdb\"}[5m])) by (instance)",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": { "fillOpacity": 10, "lineWidth": 2 }
+        }
+      }
+    },
+    {
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 25 },
+      "id": 14,
+      "title": "InfluxDB Query Rate",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(influxdb_http_api_requests_total{path=\"/api/v2/query\", job=\"influxdb\"}[5m])) by (instance)",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "custom": { "fillOpacity": 10, "lineWidth": 2 }
+        }
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 33 },
+      "id": 16,
+      "panels": [],
+      "title": "Kafka Service",
+      "type": "row"
+    },
+    {
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 34 },
+      "id": 18,
+      "title": "Kafka Messages In Per Second",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_messagesin_total{job='kafka'}[5m])) by (instance)",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "cps",
+          "custom": { "fillOpacity": 10, "lineWidth": 2 }
+        }
+      }
+    },
+    {
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 34 },
+      "id": 20,
+      "title": "Kafka Bytes In/Out Per Second",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_bytesin_total{job='kafka'}[5m])) by (instance)",
+          "legendFormat": "{{instance}} - In",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(kafka_server_brokertopicmetrics_bytesout_total{job='kafka'}[5m])) by (instance)",
+          "legendFormat": "{{instance}} - Out",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "Bps",
+          "custom": { "fillOpacity": 10, "lineWidth": 2 }
+        }
+      }
+    },
+    {
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 42 },
+      "id": 22,
+      "title": "Kafka Under-replicated Partitions",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "targets": [
+        {
+          "expr": "sum(kafka_server_replica_manager_underreplicatedpartitions{job='kafka'}) by (instance)",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": { "fillOpacity": 10, "lineWidth": 2, "lineInterpolation": "stepAfter" }
+        }
+      }
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 36,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(container_cpu_usage_seconds_total{container_label_com_docker_compose_project=\"weather_rag_chatbot\"}, name)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "container",
+        "options": [],
+        "query": {
+          "query": "label_values(container_cpu_usage_seconds_total{container_label_com_docker_compose_project=\"weather_rag_chatbot\"}, name)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Weather RAG Chatbot Monitoring",
+  "uid": "weather-rag-chatbot-monitoring",
+  "version": 2
+}

@@ -226,7 +226,7 @@ class WeatherAlertSystem:
                             uv_warnings[warning_key] = []
                         uv_warnings[warning_key].append(location)
                     elif "Nguy hiểm" in warning or "Cực kỳ nguy hiểm" in warning:
-                        warning_key = f"Lượng mưa ở mức nguy hiểm: {warning.split(' — ')[0]}"
+                        warning_key = f"UV ở mức nguy hiểm: {warning.split(' — ')[0]}"
                         if warning_key not in uv_warnings:
                             uv_warnings[warning_key] = []
                         uv_warnings[warning_key].append(location)
@@ -258,7 +258,7 @@ class WeatherAlertSystem:
                             pm10_warnings[warning_key] = []
                         pm10_warnings[warning_key].append(location)
                     elif "Nguy hiểm" in warning or "Cực kỳ nguy hiểm" in warning:
-                        warning_key = f"Chỉ số PM2.5 ở mức nguy hiểm: {warning.split(' — ')[0]}"
+                        warning_key = f"Chỉ số PM10 ở mức nguy hiểm: {warning.split(' — ')[0]}"
                         if warning_key not in pm10_warnings:
                             pm10_warnings[warning_key] = []
                         pm10_warnings[warning_key].append(location)
