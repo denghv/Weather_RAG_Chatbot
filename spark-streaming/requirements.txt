@@ -1,4 +1,0 @@
-pyspark==3.3.0
-kafka-python==2.0.2
-py4j==0.10.9.5
-pyarrow==10.0.1

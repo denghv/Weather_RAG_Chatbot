@@ -32,3 +32,13 @@ var/
 # OS
 .DS_Store
 Thumbs.db
+
+# Kafka data
+kafka*/data/
+kafka*/logs/
+kafka*/__consumer_offsets*/
+kafka*/meta.properties
+kafka*/partition.metadata
+kafka*/recovery-point-offset-checkpoint
+kafka*/replication-offset-checkpoint
+kafka*/cleaner-offset-checkpoint

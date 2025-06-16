@@ -3,6 +3,7 @@ import time
 import requests
 import logging
 import os
+import random
 from kafka import KafkaProducer
 from provinces import VIETNAM_PROVINCES
 
@@ -28,21 +29,19 @@ def create_kafka_producer():
     
     for attempt in range(max_retries):
         try:
+            # Cấu hình producer với partitioner ngẫu nhiên
             producer = KafkaProducer(
-                bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
+                bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS.split(','),
                 value_serializer=lambda v: json.dumps(v).encode('utf-8'),
-                key_serializer=lambda k: k.encode('utf-8') if k else None,
-                retries=5,
-                request_timeout_ms=30000,  # 30 seconds timeout
-                max_block_ms=60000,  # 60 seconds max block
-                acks='all'
+                key_serializer=lambda k: k.encode('utf-8'),
+                # Sử dụng RoundRobinPartitioner để phân phối đều giữa các partition
+                partitioner=lambda key, all_partitions, available: random.choice(all_partitions)
             )
-            logger.info(f"Successfully connected to Kafka at {KAFKA_BOOTSTRAP_SERVERS}")
+            logger.info(f"Successfully connected to Kafka brokers: {KAFKA_BOOTSTRAP_SERVERS}")
             return producer
         except Exception as e:
-            logger.warning(f"Attempt {attempt+1}/{max_retries} failed to connect to Kafka: {e}")
             if attempt < max_retries - 1:
-                logger.info(f"Retrying in {retry_delay} seconds...")
+                logger.warning(f"Failed to connect to Kafka (attempt {attempt+1}/{max_retries}): {e}")
                 time.sleep(retry_delay)
             else:
                 logger.error(f"Failed to connect to Kafka after {max_retries} attempts: {e}")
@@ -84,7 +83,7 @@ def produce_weather_data():
                     weather_data = fetch_weather_data(province)
                     
                     if weather_data:
-                        # Use province name as the message key for partitioning
+                        # Vẫn giữ province làm key nhưng partitioner sẽ phân phối ngẫu nhiên
                         future = producer.send(KAFKA_TOPIC, key=province, value=weather_data)
                         # Wait for the message to be delivered
                         record_metadata = future.get(timeout=10)
