@@ -1,38 +1,92 @@
 version: '3'
 
 services:
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    ports:
-      - "2181:2181"
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-      - TZ=Asia/Ho_Chi_Minh
-    volumes:
-      - zookeeper_data:/bitnami/zookeeper
-    networks:
-      - weather-network
-
-  kafka:
-    image: bitnami/kafka:latest
+  kafka1:
+    image: confluentinc/cp-kafka:7.8.0
+    hostname: kafka1
+    container_name: kafka1
     ports:
       - "9092:9092"
+      - "9093:9093"
     environment:
-      - KAFKA_CFG_NODE_ID=1
-      - KAFKA_CFG_PROCESS_ROLES=broker,controller
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_KRAFT_CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk
-      - TZ=Asia/Ho_Chi_Minh
+      KAFKA_NODE_ID: 1
+      KAFKA_BROKER_ID: 1
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka1:9092,CONTROLLER://kafka1:9093'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka1:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      TZ: Asia/Ho_Chi_Minh
     volumes:
-      - kafka_data:/bitnami/kafka
+      - ./kafka1/data:/var/lib/kafka/data
     networks:
-      - weather-network
+      - kafka-net
+
+  kafka2:
+    image: confluentinc/cp-kafka:7.8.0
+    hostname: kafka2
+    container_name: kafka2
+    ports:
+      - "9094:9092"
+      - "9095:9093"
+    environment:
+      KAFKA_NODE_ID: 2
+      KAFKA_BROKER_ID: 2
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka2:9092,CONTROLLER://kafka2:9093'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka2:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      TZ: Asia/Ho_Chi_Minh
+    volumes:
+      - ./kafka2/data:/var/lib/kafka/data
+    networks:
+      - kafka-net
+
+  kafka3:
+    image: confluentinc/cp-kafka:7.8.0
+    hostname: kafka3
+    container_name: kafka3
+    ports:
+      - "9096:9092"
+      - "9097:9093"
+    environment:
+      KAFKA_NODE_ID: 3
+      KAFKA_BROKER_ID: 3
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka3:9092,CONTROLLER://kafka3:9093'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka3:9092'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      TZ: Asia/Ho_Chi_Minh
+    volumes:
+      - ./kafka3/data:/var/lib/kafka/data
+    networks:
+      - kafka-net
 
   influxdb:
     image: influxdb:2.7
@@ -52,26 +106,30 @@ services:
       - influxdb_data:/var/lib/influxdb2
     networks:
       - weather-network
+      - kafka-net
 
   weather-producer:
     build: .
     environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_BOOTSTRAP_SERVERS=kafka1:9092,kafka2:9092,kafka3:9092
       - KAFKA_TOPIC=weather-data
       - WEATHER_API_KEY=ea8aa08895454e78b10145125253003
       - TZ=Asia/Ho_Chi_Minh
     depends_on:
-      - kafka
+      - kafka1
+      - kafka2
+      - kafka3
     restart: on-failure:10
     networks:
       - weather-network
+      - kafka-net
 
   weather-consumer:
     build:
       context: .
       dockerfile: Dockerfile.consumer
     environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - KAFKA_BOOTSTRAP_SERVERS=kafka1:9092,kafka2:9092,kafka3:9092
       - KAFKA_TOPIC=weather-data
       - KAFKA_GROUP_ID=weather-influxdb-consumer
       - INFLUXDB_URL=http://influxdb:8086
@@ -80,11 +138,14 @@ services:
       - INFLUXDB_BUCKET=weather
       - TZ=Asia/Ho_Chi_Minh
     depends_on:
-      - kafka
+      - kafka1
+      - kafka2
+      - kafka3
       - influxdb
     restart: on-failure:10
     networks:
       - weather-network
+      - kafka-net
 
   chatbot:
     build:
@@ -105,82 +166,7 @@ services:
     networks:
       - weather-network
 
-  namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
-    container_name: namenode
-    ports:
-      - "9870:9870"
-      - "9000:9000"
-    volumes:
-      - hadoop_namenode:/hadoop/dfs/name
-    environment:
-      - CLUSTER_NAME=weather-hadoop
-      - TZ=Asia/Ho_Chi_Minh
-    env_file:
-      - ./hadoop.env
-    networks:
-      - weather-network
 
-  datanode:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    container_name: datanode
-    volumes:
-      - hadoop_datanode:/hadoop/dfs/data
-    environment:
-      - SERVICE_PRECONDITION=namenode:9870
-      - TZ=Asia/Ho_Chi_Minh
-    env_file:
-      - ./hadoop.env
-    depends_on:
-      - namenode
-    networks:
-      - weather-network
-
-  spark-master:
-    image: bde2020/spark-master:3.3.0-hadoop3.3
-    container_name: spark-master
-    ports:
-      - "8080:8080"
-      - "7077:7077"
-    environment:
-      - TZ=Asia/Ho_Chi_Minh
-    networks:
-      - weather-network
-
-  spark-worker:
-    image: bde2020/spark-worker:3.3.0-hadoop3.3
-    container_name: spark-worker
-    depends_on:
-      - spark-master
-    environment:
-      - SPARK_MASTER=spark://spark-master:7077
-      - SPARK_WORKER_CORES=2
-      - SPARK_WORKER_MEMORY=2G
-      - TZ=Asia/Ho_Chi_Minh
-    networks:
-      - weather-network
-
-  spark-streaming:
-    build:
-      context: ./spark-streaming
-    container_name: spark-streaming
-    environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - KAFKA_TOPIC=weather-data
-      - HDFS_URL=hdfs://namenode:8020
-      - HDFS_PATH=/weather-data
-      - CHECKPOINT_LOCATION=/checkpoints/weather-data
-      - BATCH_INTERVAL_SECONDS=60
-      - PROVINCE_COUNT=10
-      - TZ=Asia/Ho_Chi_Minh
-    depends_on:
-      - kafka
-      - namenode
-      - datanode
-      - spark-master
-    networks:
-      - weather-network
-      
   weather-forecast-service:
     build:
       context: .
@@ -260,22 +246,111 @@ services:
     networks:
       - weather-network
 
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_DOMAIN=minio
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - weather-network
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
+      /usr/bin/mc mb --ignore-existing myminio/weather-aggregates;
+      /usr/bin/mc anonymous set download myminio/weather-aggregates;
+      exit 0;
+      "
+    networks:
+      - weather-network
+
+  spark-master:
+    image: bitnami/spark:3.5.1
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - TZ=Asia/Ho_Chi_Minh
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    networks:
+      - weather-network
+
+  spark-worker:
+    image: bitnami/spark:3.5.1
+    container_name: spark-worker
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - TZ=Asia/Ho_Chi_Minh
+    depends_on:
+      - spark-master
+    networks:
+      - weather-network
+
+  weather-aggregator:
+    build:
+      context: ./weather-aggregator
+      dockerfile: Dockerfile
+    container_name: weather-aggregator
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - KAFKA_BOOTSTRAP_SERVERS=kafka1:9092,kafka2:9092,kafka3:9092
+      - KAFKA_TOPIC=weather-data
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_BUCKET=weather-aggregates
+      - CHECKPOINT_LOCATION=/tmp/checkpoints/weather-aggregator
+      - TZ=Asia/Ho_Chi_Minh
+    depends_on:
+      - spark-master
+      - kafka1
+      - kafka2
+      - kafka3
+      - minio
+      - createbuckets
+    networks:
+      - weather-network
+      - kafka-net
+
+
+
 networks:
   weather-network:
     driver: bridge
+  kafka-net:
+    driver: bridge
 
 volumes:
-  zookeeper_data:
-    driver: local
-  kafka_data:
-    driver: local
   influxdb_data:
-    driver: local
-  hadoop_namenode:
-    driver: local
-  hadoop_datanode:
     driver: local
   prometheus_data:
     driver: local
   grafana_data:
+    driver: local
+  minio_data:
     driver: local

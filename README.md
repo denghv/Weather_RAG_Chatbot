@@ -1,19 +1,19 @@
 # Weather RAG Chatbot
 
-A comprehensive system for collecting, processing, and querying weather data from 63 provinces in Vietnam using WeatherAPI, Kafka, InfluxDB, Hadoop, and Spark. The system includes a natural language chatbot for querying weather information.
+A comprehensive system for collecting, processing, and querying weather data from 63 provinces in Vietnam using WeatherAPI, Kafka, and InfluxDB. The system includes a natural language chatbot for querying weather information.
 
 ## Components
 
 ### Data Collection and Storage
-- **Zookeeper**: Coordination service for Kafka
-- **Kafka**: Message broker for streaming weather data
-- **InfluxDB**: Time series database for real-time weather data queries
-- **Hadoop (HDFS)**: Distributed file system for long-term storage and batch processing
+- **Kafka Cluster**: 3-broker Kafka cluster using KRaft mode (no Zookeeper required) for high-availability message streaming
+- **InfluxDB**: Time series database for real-time weather data queries and storage
+- **MinIO**: Object storage for aggregated weather data (daily max/min values)
+- **Spark Cluster**: Apache Spark for stream processing and windowed aggregations
 
 ### Data Processing
 - **Weather Producer**: Python service that fetches weather data every 10 minutes
-- **Weather Consumer**: Python service that reads data from Kafka and writes to InfluxDB
-- **Spark Streaming**: Apache Spark application that processes data from Kafka and stores it in Hadoop
+- **Weather Consumer**: Python service that reads data from Kafka cluster and writes to InfluxDB
+- **Weather Aggregator**: Spark Streaming service that performs windowed aggregation (daily max/min) and stores results in MinIO
 
 ### User Interface
 - **Weather RAG Chatbot**: Flask-based web application that uses OpenAI's GPT models to answer natural language questions about weather data
@@ -22,43 +22,43 @@ A comprehensive system for collecting, processing, and querying weather data fro
 
 ### Data Flow
 1. Weather data is fetched from WeatherAPI.com by the producer service every 10 minutes
-2. Data is published to a Kafka topic named "weather-data"
+2. Data is published to a Kafka cluster (3 brokers) topic named "weather-data" with replication factor 3
 3. Each province's data is sent as a separate message with the province name as the key
 4. The data flows in two parallel paths:
-   - **Real-time path**: The consumer service reads messages from Kafka and writes them to InfluxDB for real-time queries
-   - **Batch processing path**: Spark Streaming reads the same data from Kafka, processes it in micro-batches, and stores it in Hadoop HDFS for long-term storage and analysis
+   - **Real-time path**: The consumer service reads messages from Kafka cluster and writes them to InfluxDB for real-time queries
+   - **Aggregation path**: The weather aggregator (Spark Streaming) performs windowed aggregation to calculate daily max/min values and stores results in MinIO
 5. The Weather RAG Chatbot queries InfluxDB to answer user questions about current and historical weather data
 
 ### Data Processing Details
 - All timestamps are converted to Asia/Ho_Chi_Minh timezone (UTC+7) before storage
-- Spark Streaming aggregates data for all 63 provinces in Vietnam before storing in HDFS
-- Data in HDFS is stored in Parquet format with Snappy compression for efficient storage and querying
+- The system processes approximately 63 weather records every 10 minutes (one per province)
+- Real-time data is stored in InfluxDB for immediate queries and historical analysis
+- Daily aggregations (max/min values) are calculated using Spark Streaming with 1-day windows and stored in MinIO
+- Windowed aggregation uses outputMode = "update" to continuously update daily max/min values as new data arrives
 
 ## Setup and Running
 
 1. Make sure you have Docker and Docker Compose installed
 2. Clone this repository
-3. Run the core system (Kafka, InfluxDB, data collection):
+3. Run the system:
    ```bash
+   # Start Kafka cluster first
+   docker-compose up -d kafka1 kafka2 kafka3
+
+   # Wait for cluster to be ready, then start all services
    docker-compose up -d
    ```
-4. Run the Hadoop and Spark components:
-   ```bash
-   .\start_hadoop_spark.bat
-   ```
-5. Access the chatbot web interface at http://localhost:5000
-6. To check the status of all services:
+4. Access the chatbot web interface at http://localhost:5000
+5. To check the status of all services:
    ```bash
    docker-compose ps
    ```
-7. To view logs from a specific service (e.g., the consumer):
+6. To view logs from a specific service (e.g., the consumer):
    ```bash
    docker logs weather_rag_chatbot-weather-consumer-1
    ```
 
 ### Accessing Component UIs
-- **Hadoop NameNode UI**: http://localhost:9870
-- **Spark Master UI**: http://localhost:8080
 - **InfluxDB API**: http://localhost:8086 (for direct API access, no UI component)
 
 ## Using the Weather RAG Chatbot
@@ -88,60 +88,7 @@ The Weather RAG Chatbot provides a natural language interface to query weather d
 4. It queries InfluxDB for the requested weather data
 5. It formats the data and generates a natural language response using GPT
 
-## Querying Data from Hadoop HDFS
 
-The weather data stored in Hadoop HDFS is organized in Parquet files partitioned by time windows. This data is ideal for batch processing and historical analysis.
-
-### Accessing HDFS Data
-
-1. Connect to the namenode container:
-   ```bash
-   docker exec -it namenode bash
-   ```
-
-2. List the weather data directory:
-   ```bash
-   hdfs dfs -ls /weather-data
-   ```
-
-3. View a specific partition:
-   ```bash
-   hdfs dfs -ls /weather-data/window=2025-05-03T15:00:00.000Z
-   ```
-
-4. Copy data to local filesystem for analysis:
-   ```bash
-   hdfs dfs -copyToLocal /weather-data/window=2025-05-03T15:00:00.000Z /tmp/weather-data
-   ```
-
-### Using Spark for Data Analysis
-
-You can use Spark to analyze the weather data stored in HDFS:
-
-1. Connect to the Spark master container:
-   ```bash
-   docker exec -it spark-master bash
-   ```
-
-2. Start the PySpark shell:
-   ```bash
-   pyspark
-   ```
-
-3. Read the Parquet data:
-   ```python
-   df = spark.read.parquet("hdfs://namenode:8020/weather-data")
-   df.printSchema()
-   ```
-
-4. Perform analysis:
-   ```python
-   # Show the average temperature by location
-   df.select("location", "temp_c").groupBy("location").avg("temp_c").show()
-   
-   # Find the locations with the highest air quality (lowest PM2.5)
-   df.select("location", "pm2_5").orderBy("pm2_5").show(10)
-   ```
 
 ## Querying Data from InfluxDB
 
@@ -189,6 +136,46 @@ influx query 'from(bucket:"weather")
 
 This will display timestamps in your local timezone instead of UTC. Note that the data itself is stored correctly with the proper timestamps - it's just being displayed in UTC format when you query it directly from InfluxDB without the timeShift function.
 
+## Kafka Cluster Management
+
+The system now uses a 3-broker Kafka cluster with KRaft mode (no Zookeeper required) for high availability and fault tolerance.
+
+### Cluster Configuration:
+- **kafka1**: Port 9092 (client), 9093 (controller)
+- **kafka2**: Port 9094 (client), 9095 (controller)
+- **kafka3**: Port 9096 (client), 9097 (controller)
+- **Replication Factor**: 3
+- **Min In-Sync Replicas**: 2
+
+### Management Script:
+Use the provided PowerShell script for easy cluster management:
+```powershell
+# Start Kafka cluster
+.\manage-kafka-cluster.ps1 start
+
+# Check cluster status
+.\manage-kafka-cluster.ps1 status
+
+# Create weather-data topic
+.\manage-kafka-cluster.ps1 create-topic
+
+# View all available commands
+.\manage-kafka-cluster.ps1 help
+```
+
+For detailed information about the Kafka upgrade, see [KAFKA_UPGRADE_README.md](./KAFKA_UPGRADE_README.md).
+
+## System Simplification
+
+The system has been simplified by removing Hadoop HDFS and Apache Spark components. All data is now stored and queried directly from InfluxDB, providing:
+
+- **Simplified Architecture**: Fewer components to manage
+- **Better Performance**: Reduced resource usage and faster startup
+- **Easier Maintenance**: Single source of truth for all weather data
+- **Real-time Queries**: Direct access to time-series data
+
+For details about the Hadoop removal, see [HADOOP_REMOVAL_README.md](./HADOOP_REMOVAL_README.md).
+
 ## Configuration
 
 You can modify the following environment variables in the docker-compose.yml file:
@@ -199,7 +186,7 @@ You can modify the following environment variables in the docker-compose.yml fil
 - `TZ`: Timezone setting (default: Asia/Ho_Chi_Minh)
 
 ### Weather Consumer
-- `KAFKA_BOOTSTRAP_SERVERS`: Kafka connection string
+- `KAFKA_BOOTSTRAP_SERVERS`: Kafka cluster connection string (default: kafka1:9092,kafka2:9092,kafka3:9092)
 - `KAFKA_TOPIC`: The Kafka topic to consume from
 - `INFLUXDB_URL`: InfluxDB connection URL
 - `INFLUXDB_TOKEN`: Authentication token for InfluxDB
@@ -225,11 +212,4 @@ You can modify the following environment variables in the docker-compose.yml fil
 - `INFLUXDB_ORG`: Organization name in InfluxDB
 - `INFLUXDB_BUCKET`: Bucket name for querying weather data
 
-### Spark Streaming
-- `KAFKA_BOOTSTRAP_SERVERS`: Kafka connection string
-- `KAFKA_TOPIC`: The Kafka topic to consume from
-- `HDFS_URL`: HDFS URL (default: hdfs://namenode:8020)
-- `HDFS_PATH`: Path in HDFS to store data (default: /weather-data)
-- `CHECKPOINT_LOCATION`: Location for Spark checkpoints
-- `BATCH_INTERVAL_SECONDS`: Micro-batch interval in seconds (default: 600)
-- `PROVINCE_COUNT`: Number of provinces to collect before storing (default: 63)
+
