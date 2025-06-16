@@ -1,0 +1,7 @@
+pyspark==3.5.1
+kafka-python==2.0.2
+minio==7.1.17
+pandas==2.0.3
+pyarrow==12.0.1
+pytz==2023.3
+
