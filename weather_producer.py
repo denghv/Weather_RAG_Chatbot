@@ -29,13 +29,16 @@ def create_kafka_producer():
     
     for attempt in range(max_retries):
         try:
-            # Cấu hình producer với partitioner ngẫu nhiên
             producer = KafkaProducer(
                 bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS.split(','),
                 value_serializer=lambda v: json.dumps(v).encode('utf-8'),
                 key_serializer=lambda k: k.encode('utf-8'),
-                # Sử dụng RoundRobinPartitioner để phân phối đều giữa các partition
-                partitioner=lambda key, all_partitions, available: random.choice(all_partitions)
+                # RoundRobinPartitioner để phân phối đều giữa các partition
+                partitioner=lambda key, all_partitions, available: random.choice(all_partitions),
+                retries=5,  
+                retry_backoff_ms=1000,  
+                request_timeout_ms=30000,  # request timeout
+                acks="1"  
             )
             logger.info(f"Successfully connected to Kafka brokers: {KAFKA_BOOTSTRAP_SERVERS}")
             return producer
@@ -83,16 +86,22 @@ def produce_weather_data():
                     weather_data = fetch_weather_data(province)
                     
                     if weather_data:
-                        # Vẫn giữ province làm key nhưng partitioner sẽ phân phối ngẫu nhiên
-                        future = producer.send(KAFKA_TOPIC, key=province, value=weather_data)
-                        # Wait for the message to be delivered
-                        record_metadata = future.get(timeout=10)
-                        logger.info(f"Sent weather data for {province} to Kafka topic={record_metadata.topic}, partition={record_metadata.partition}, offset={record_metadata.offset}")
+                        try:
+                            # province làm key, partitioner ngẫu nhiên
+                            future = producer.send(KAFKA_TOPIC, key=province, value=weather_data)
+                            record_metadata = future.get(timeout=10)
+                            logger.info(f"Sent weather data for {province} to Kafka topic={record_metadata.topic}, partition={record_metadata.partition}, offset={record_metadata.offset}")
+                        except Exception as e:
+                            logger.error(f"Error sending data for {province} to Kafka: {e}")
+                            # tiếp tục với province tiếp theo
+                            continue
                         
                         # Add a small delay between API calls to avoid rate limiting
                         time.sleep(1)
                 except Exception as e:
                     logger.error(f"Error processing {province}: {e}")
+                    # Tiếp tục với province tiếp theo
+                    continue
             
             logger.info("Completed fetching weather data for all provinces")
             producer.flush()  # Ensure all messages are sent before closing

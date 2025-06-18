@@ -19,10 +19,13 @@ services:
       KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
       KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
       CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      # Giảm replication factor xuống 2 thay vì 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      KAFKA_MIN_INSYNC_REPLICAS: 2
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 2
+      # Giảm min.insync.replicas xuống 1
+      KAFKA_MIN_INSYNC_REPLICAS: 1
+      # Thêm cấu hình để tự động tạo topic
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
       TZ: Asia/Ho_Chi_Minh
     volumes:
@@ -278,7 +281,7 @@ services:
       - weather-network
 
   spark-master:
-    image: bitnami/spark:3.5.1
+    image: bitnami/spark:3.5.3
     container_name: spark-master
     environment:
       - SPARK_MODE=master
@@ -294,7 +297,7 @@ services:
       - weather-network
 
   spark-worker:
-    image: bitnami/spark:3.5.1
+    image: bitnami/spark:3.5.3
     container_name: spark-worker
     environment:
       - SPARK_MODE=worker
