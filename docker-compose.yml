@@ -1,93 +1,51 @@
-version: '3'
+# version: '3'
 
 services:
-  kafka1:
+  kafka:
     image: confluentinc/cp-kafka:7.8.0
-    hostname: kafka1
-    container_name: kafka1
+    hostname: kafka
+    container_name: kafka
     ports:
       - "9092:9092"
-      - "9093:9093"
     environment:
-      KAFKA_NODE_ID: 1
       KAFKA_BROKER_ID: 1
-      KAFKA_PROCESS_ROLES: 'broker,controller'
-      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
-      KAFKA_LISTENERS: 'PLAINTEXT://kafka1:9092,CONTROLLER://kafka1:9093'
-      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka1:9092'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
-      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9093
       KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
-      CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
-      # Giảm replication factor xuống 2 thay vì 3
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_DEFAULT_REPLICATION_FACTOR: 2
-      # Giảm min.insync.replicas xuống 1
-      KAFKA_MIN_INSYNC_REPLICAS: 1
-      # Thêm cấu hình để tự động tạo topic
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO"
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+      KAFKA_TOOLS_LOG4J_LOGLEVEL: INFO
       TZ: Asia/Ho_Chi_Minh
-    volumes:
-      - ./kafka1/data:/var/lib/kafka/data
+    # No local volume mapping for Kafka data
+    restart: always
+    depends_on:
+      - zookeeper
     networks:
       - kafka-net
 
-  kafka2:
-    image: confluentinc/cp-kafka:7.8.0
-    hostname: kafka2
-    container_name: kafka2
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.8.0
+    hostname: zookeeper
+    container_name: zookeeper
     ports:
-      - "9094:9092"
-      - "9095:9093"
+      - "2181:2181"
     environment:
-      KAFKA_NODE_ID: 2
-      KAFKA_BROKER_ID: 2
-      KAFKA_PROCESS_ROLES: 'broker,controller'
-      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
-      KAFKA_LISTENERS: 'PLAINTEXT://kafka2:9092,CONTROLLER://kafka2:9093'
-      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka2:9092'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
-      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
-      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
-      CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      KAFKA_MIN_INSYNC_REPLICAS: 2
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_MAX_CLIENT_CNXNS: 60
+      ZOOKEEPER_LOG4J_ROOT_LOGLEVEL: INFO
       TZ: Asia/Ho_Chi_Minh
-    volumes:
-      - ./kafka2/data:/var/lib/kafka/data
-    networks:
-      - kafka-net
-
-  kafka3:
-    image: confluentinc/cp-kafka:7.8.0
-    hostname: kafka3
-    container_name: kafka3
-    ports:
-      - "9096:9092"
-      - "9097:9093"
-    environment:
-      KAFKA_NODE_ID: 3
-      KAFKA_BROKER_ID: 3
-      KAFKA_PROCESS_ROLES: 'broker,controller'
-      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka1:9093,2@kafka2:9093,3@kafka3:9093'
-      KAFKA_LISTENERS: 'PLAINTEXT://kafka3:9092,CONTROLLER://kafka3:9093'
-      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka3:9092'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT'
-      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
-      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
-      CLUSTER_ID: 'EmptNWtoR4GGWx-BH6nGLQ'
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
-      KAFKA_MIN_INSYNC_REPLICAS: 2
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-      TZ: Asia/Ho_Chi_Minh
-    volumes:
-      - ./kafka3/data:/var/lib/kafka/data
+    # No local volume mapping for Zookeeper data
+    restart: always
     networks:
       - kafka-net
 
@@ -114,14 +72,12 @@ services:
   weather-producer:
     build: .
     environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka1:9092,kafka2:9092,kafka3:9092
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_TOPIC=weather-data
       - WEATHER_API_KEY=ea8aa08895454e78b10145125253003
       - TZ=Asia/Ho_Chi_Minh
     depends_on:
-      - kafka1
-      - kafka2
-      - kafka3
+      - kafka
     restart: on-failure:10
     networks:
       - weather-network
@@ -132,7 +88,7 @@ services:
       context: .
       dockerfile: Dockerfile.consumer
     environment:
-      - KAFKA_BOOTSTRAP_SERVERS=kafka1:9092,kafka2:9092,kafka3:9092
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_TOPIC=weather-data
       - KAFKA_GROUP_ID=weather-influxdb-consumer
       - INFLUXDB_URL=http://influxdb:8086
@@ -141,9 +97,7 @@ services:
       - INFLUXDB_BUCKET=weather
       - TZ=Asia/Ho_Chi_Minh
     depends_on:
-      - kafka1
-      - kafka2
-      - kafka3
+      - kafka
       - influxdb
     restart: on-failure:10
     networks:
@@ -155,7 +109,7 @@ services:
       context: .
       dockerfile: ./chatbot/Dockerfile
     ports:
-      - "5000:5000"
+      - "8501:8501"
     environment:
       - OPENAI_API_KEY=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
       - INFLUXDB_URL=http://influxdb:8086
@@ -321,7 +275,7 @@ services:
     container_name: weather-aggregator
     environment:
       - SPARK_MASTER=spark://spark-master:7077
-      - KAFKA_BOOTSTRAP_SERVERS=kafka1:9092,kafka2:9092,kafka3:9092
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_TOPIC=weather-data
       - MINIO_ENDPOINT=http://minio:9000
       - MINIO_ACCESS_KEY=minioadmin
@@ -331,9 +285,7 @@ services:
       - TZ=Asia/Ho_Chi_Minh
     depends_on:
       - spark-master
-      - kafka1
-      - kafka2
-      - kafka3
+      - kafka
       - minio
       - createbuckets
     networks:
