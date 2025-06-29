@@ -8,6 +8,24 @@ import socket
 from confluent_kafka import Producer
 from provinces import VIETNAM_PROVINCES
 
+# Location name correction mapping
+LOCATION_CORRECTIONS = {
+    "An Long": "Long An",
+    "Ap Binh Quang": "Quang Binh",
+    "Ap Binh Thuan": "Binh Thuan",
+    "Buon Bubo Dak Nong": "Dak Nong",
+    "Dong Lam": "Lam Dong",
+    "Goc Nghe": "Nghe An",
+    "Hoa Khanh": "Khanh Hoa",
+    "Hue": "Thua Thien Hue",
+    "Kien": "Kien Giang",
+    "Lak Lak": "Dak Lak",
+    "Ninh Quang": "Quang Ninh",
+    "Thuan Ninh": "Ninh Thuan",
+    "Tien Tien": "Tien Giang",
+    "Yen Hung": "Hung Yen"
+}
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
@@ -130,6 +148,14 @@ async def fetch_all_weather_data():
         logger.info(f"Successfully fetched weather data for {len(valid_results)}/{len(VIETNAM_PROVINCES)} provinces")
         return valid_results
 
+def correct_location_name(location_name):
+    """Correct location name based on predefined mapping."""
+    if location_name in LOCATION_CORRECTIONS:
+        corrected_name = LOCATION_CORRECTIONS[location_name]
+        logger.info(f"Corrected location name from '{location_name}' to '{corrected_name}'")
+        return corrected_name
+    return location_name
+
 async def produce_weather_data_async():
     """Fetch weather data for all provinces asynchronously and send to Kafka."""
     while True:
@@ -169,6 +195,13 @@ async def produce_weather_data_async():
                     location = weather_data.get('location', {})
                     current = weather_data.get('current', {})
                     air_quality = current.get('air_quality', {})
+                    
+                    # Kiểm tra và sửa tên location nếu cần
+                    location_name = location.get('name')
+                    if location_name:
+                        corrected_name = correct_location_name(location_name)
+                        if corrected_name != location_name:
+                            location['name'] = corrected_name
                     
                     logger.info(f"Sending weather data for {province} - {location.get('name', 'Unknown')}:")
                     logger.info(f"  Temperature: {current.get('temp_c')}°C")
