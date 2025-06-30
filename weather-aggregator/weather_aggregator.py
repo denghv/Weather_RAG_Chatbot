@@ -34,7 +34,7 @@ logging.basicConfig(
 logger = logging.getLogger("WeatherAggregator")
 
 # Environment variables
-KAFKA_BOOTSTRAP_SERVERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS", "kafka1:9092,kafka2:9092,kafka3:9092")
+KAFKA_BOOTSTRAP_SERVERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")
 KAFKA_TOPIC = os.environ.get("KAFKA_TOPIC", "weather-data")
 MINIO_ENDPOINT = os.environ.get("MINIO_ENDPOINT", "http://minio:9000")
 MINIO_ACCESS_KEY = os.environ.get("MINIO_ACCESS_KEY", "minioadmin")
@@ -45,6 +45,7 @@ CHECKPOINT_LOCATION = os.environ.get("CHECKPOINT_LOCATION", "/tmp/checkpoints/we
 def define_weather_schema():
     """Define the schema for weather data from Kafka"""
     return StructType([
+        StructField("province", StringType(), True),
         StructField("location", StructType([
             StructField("name", StringType(), True),
             StructField("region", StringType(), True),
@@ -97,29 +98,28 @@ def define_weather_schema():
     ])
 
 def create_spark_session():
-    """Create and configure Spark session with MinIO support"""
-    logger.info("Creating Spark session with Kafka and MinIO integration")
+    """Create and configure Spark session with MinIO support for local mode"""
+    logger.info("Creating Spark session with Kafka and MinIO integration in local mode")
 
     return (SparkSession.builder
             .appName("WeatherAggregator")
+            .master("local[*]")  # Sử dụng tất cả các core có sẵn trong local mode
             .config("spark.sql.session.timeZone", "Asia/Ho_Chi_Minh")
             .config("spark.sql.streaming.schemaInference", "true")
             .config("spark.sql.streaming.stateStore.providerClass",
                    "org.apache.spark.sql.execution.streaming.state.HDFSBackedStateStoreProvider")
-            .config("spark.sql.adaptive.enabled", "true")
-            .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
-            .config("spark.jars.packages",
-                   "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,"
-                   "org.apache.hadoop:hadoop-aws:3.3.4,"
-                   "com.amazonaws:aws-java-sdk-bundle:1.12.262")
+            .config("spark.sql.adaptive.enabled", "false")  # Disable adaptive query execution for streaming
+            .config("spark.sql.shuffle.partitions", "2")  # Reduce shuffle partitions for small data
+            .config("spark.default.parallelism", "2")  # Set default parallelism to match cores
             .config("spark.hadoop.fs.s3a.endpoint", MINIO_ENDPOINT)
             .config("spark.hadoop.fs.s3a.access.key", MINIO_ACCESS_KEY)
             .config("spark.hadoop.fs.s3a.secret.key", MINIO_SECRET_KEY)
             .config("spark.hadoop.fs.s3a.path.style.access", "true")
             .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
             .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false")
-            .config("spark.executor.memory", "2g")
             .config("spark.driver.memory", "1g")
+            .config("spark.driver.host", "0.0.0.0")  # Ensure driver binds to all interfaces
+            .config("spark.network.timeout", "120s")  # Increase network timeout
             .getOrCreate())
 
 def process_weather_data():
@@ -150,9 +150,10 @@ def process_weather_data():
         logger.info("Connected to Kafka, parsing data...")
 
         # Parse JSON data from Kafka
+        # Lưu ý: confluent-kafka producer gửi dữ liệu dưới dạng JSON string được mã hóa UTF-8
         parsed_df = (kafka_df
                      .select(
-                         col("key").cast("string").alias("province_key"),
+                         # Không cần sử dụng key vì province đã được thêm vào dữ liệu JSON
                          from_json(col("value").cast("string"), schema).alias("data"),
                          col("timestamp").alias("kafka_timestamp")
                      ))
@@ -160,7 +161,7 @@ def process_weather_data():
         # Extract required fields
         weather_data = (parsed_df
                         .select(
-                            col("province_key"),
+                            col("data.province").alias("province"),
                             col("kafka_timestamp"),
                             col("data.location.name").alias("location_name"),
                             col("data.location.region").alias("region"),
@@ -190,6 +191,7 @@ def process_weather_data():
                             .withWatermark("kafka_timestamp", "1 hour")
                             .groupBy(
                                 window(col("kafka_timestamp"), "1 day"),
+                                col("province"),
                                 col("location_name"),
                                 col("region"),
                                 col("country")
@@ -239,6 +241,7 @@ def process_weather_data():
                          date_format(col("window.start"), "yyyy-MM-dd").alias("date"),
                          col("window.start").alias("window_start"),
                          col("window.end").alias("window_end"),
+                         col("province"),
                          col("location_name"),
                          col("region"),
                          col("country"),
@@ -267,9 +270,10 @@ def process_weather_data():
         logger.info("Setting up MinIO write stream")
         query = (output_df
                  .writeStream
-                 .outputMode("update")  # Sử dụng update mode để ghi đè khi có giá trị mới
-                 .foreachBatch(write_to_minio)
+                 .trigger(processingTime='1 minute')  # Process data in 1-minute batches
+                 .outputMode("update")  # Use update mode to overwrite when new values arrive
                  .option("checkpointLocation", CHECKPOINT_LOCATION)
+                 .foreachBatch(write_to_minio)
                  .start())
 
         logger.info("Stream processing started, waiting for termination")
@@ -292,21 +296,36 @@ def write_to_minio(batch_df, batch_id):
         count = batch_df.count()
         logger.info(f"Processing batch {batch_id} with {count} aggregated records")
 
-        # Write to MinIO with partitioning by date and location
+        # Write to MinIO with partitioning by date, province and location
         output_path = f"s3a://{MINIO_BUCKET}/daily-aggregates"
-
-        (batch_df
-         .coalesce(1)  # Reduce number of files
-         .write
-         .mode("overwrite")  # Overwrite existing data for the same date/location
-         .partitionBy("date", "location_name")
-         .parquet(output_path))
-
-        logger.info(f"Successfully wrote batch {batch_id} to MinIO at {output_path}")
+        
+        try:
+            # First try to write the data
+            (batch_df
+             .coalesce(1)  # Reduce number of files
+             .write
+             .mode("overwrite")  # Overwrite existing data for the same date/province/location
+             .partitionBy("date", "province", "location_name")
+             .parquet(output_path))
+            
+            logger.info(f"Successfully wrote batch {batch_id} to MinIO at {output_path}")
+        except Exception as write_error:
+            # If writing fails, try to write to a simpler path without partitioning
+            logger.warning(f"Error writing partitioned data: {str(write_error)}. Trying simplified approach...")
+            simple_path = f"s3a://{MINIO_BUCKET}/daily-aggregates-batch-{batch_id}"
+            
+            (batch_df
+             .coalesce(1)
+             .write
+             .mode("overwrite")
+             .parquet(simple_path))
+            
+            logger.info(f"Successfully wrote batch {batch_id} to MinIO at {simple_path} using simplified approach")
 
     except Exception as e:
         logger.error(f"Error processing batch {batch_id}: {str(e)}")
-        raise
+        # Log the error but don't raise to keep the stream running
+        # This allows the job to continue even if one batch fails
 
 def main():
     """Main function to run the Weather Aggregator"""
@@ -316,13 +335,28 @@ def main():
     logger.info("Waiting for Kafka and MinIO services to start...")
     time.sleep(30)
 
-    try:
-        process_weather_data()
-    except Exception as e:
-        logger.error(f"Error in weather aggregator: {e}")
-        raise
+    # Retry mechanism for the main process
+    max_retries = 3
+    retry_count = 0
+    
+    while retry_count < max_retries:
+        try:
+            process_weather_data()
+            break  # If successful, exit the loop
+        except Exception as e:
+            retry_count += 1
+            logger.error(f"Error in weather aggregator (attempt {retry_count}/{max_retries}): {e}")
+            if retry_count < max_retries:
+                logger.info(f"Retrying in 10 seconds...")
+                time.sleep(10)
+            else:
+                logger.error("Maximum retry attempts reached. Exiting.")
+                raise
 
 if __name__ == "__main__":
     main()
+
+
+
 
 

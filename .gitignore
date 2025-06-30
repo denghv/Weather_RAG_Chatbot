@@ -42,3 +42,9 @@ kafka*/partition.metadata
 kafka*/recovery-point-offset-checkpoint
 kafka*/replication-offset-checkpoint
 kafka*/cleaner-offset-checkpoint
+
+
+weather_forecast_service/forecast_service.log
+
+# Credentials
+chatbot/credentials.json

@@ -1,7 +1,6 @@
-pyspark==3.5.1
-kafka-python==2.0.2
-minio==7.1.17
-pandas==2.0.3
-pyarrow==12.0.1
+pyspark==3.5.3
+confluent-kafka==2.3.0
+minio==7.1.15
+pandas==1.5.3
+pyarrow==11.0.0
 pytz==2023.3
-

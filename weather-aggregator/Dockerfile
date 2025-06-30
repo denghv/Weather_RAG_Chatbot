@@ -1,18 +1,32 @@
-FROM bitnami/spark:3.5.1
+FROM bitnami/spark:3.5.3
 
 USER root
 
-# Sao chép requirements.txt và cài đặt dependencies
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r /app/requirements.txt
+# Cài đặt các công cụ build cần thiết
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    gcc \
+    g++ \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Thêm các JAR cần thiết
+# Cập nhật pip và setuptools trước
+RUN pip install --upgrade pip setuptools wheel
+
+# Cài đặt các dependencies Python trực tiếp thay vì qua requirements.txt
+# Sử dụng phiên bản pandas mới hơn (2.2.0) thay vì 1.5.3
+RUN pip install --no-cache-dir --only-binary=:all: \
+    pyspark==3.5.3 \
+    confluent-kafka==2.3.0 \
+    minio==7.1.15 \
+    pandas==2.2.0 \
+    pyarrow==14.0.1 \
+    pytz==2023.3
+
+# Tạo thư mục jars nếu chưa tồn tại
 RUN mkdir -p /opt/bitnami/spark/jars
-ADD https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.1/spark-sql-kafka-0-10_2.12-3.5.1.jar /opt/bitnami/spark/jars/
-ADD https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.5.1/kafka-clients-3.5.1.jar /opt/bitnami/spark/jars/
-ADD https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar /opt/bitnami/spark/jars/
-ADD https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar /opt/bitnami/spark/jars/
-ADD https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar /opt/bitnami/spark/jars/
 
 # Sao chép script Python và script khởi động
 COPY weather_aggregator.py start.sh /app/
@@ -22,7 +36,4 @@ WORKDIR /app
 
 # Chạy script khởi động
 ENTRYPOINT ["/app/start.sh"]
-
-
-
 
