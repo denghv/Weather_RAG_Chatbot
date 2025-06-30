@@ -12,6 +12,7 @@ COPY chatbot/weather_alerts.py .
 COPY chatbot/forecast_handler.py .
 COPY chatbot/templates/ ./templates/
 COPY chatbot/location_mapping.py .
+COPY chatbot/credentials.json .
 
 # Copy provinces.py file
 COPY provinces.py .

@@ -8,6 +8,8 @@ import openai
 import pytz
 import sys
 import requests
+import psycopg2
+import psycopg2.extras
 from flask_socketio import SocketIO
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -34,6 +36,48 @@ def get_influxdb_client():
         token=os.environ.get("INFLUXDB_TOKEN", "my-token"),
         org=os.environ.get("INFLUXDB_ORG", "my-org")
     )
+
+# PostgreSQL connection
+def get_postgres_connection():
+    try:
+        # Load credentials from JSON file
+        credentials_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'credentials.json')
+        with open(credentials_path, 'r') as f:
+            credentials = json.load(f)
+            
+        # Connect to PostgreSQL
+        conn = psycopg2.connect(
+            host=credentials['POSTGRES_HOST'],
+            port=credentials['POSTGRES_PORT'],
+            database=credentials['POSTGRES_DB'],
+            user=credentials['POSTGRES_USER'],
+            password=credentials['POSTGRES_PASS']
+        )
+        return conn
+    except Exception as e:
+        print(f"Error connecting to PostgreSQL: {e}")
+        return None
+        
+# Save message to PostgreSQL
+def save_message_to_postgres(session_id, message_data):
+    try:
+        conn = get_postgres_connection()
+        if not conn:
+            print("Failed to connect to PostgreSQL")
+            return False
+            
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO n8n_weather_chat_histories (session_id, message) VALUES (%s, %s)",
+            (session_id, json.dumps(message_data))
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return True
+    except Exception as e:
+        print(f"Error saving message to PostgreSQL: {e}")
+        return False
 
 @app.route('/')
 def index():
@@ -440,13 +484,22 @@ def generate_response_with_chatgpt(question, weather_data):
         )
         
         response_text = response['choices'][0]['message']['content'].strip()
-        
         return response_text
     except Exception as e:
         print(f"Error calling OpenAI API: {e}")
 
 def process_question(question, session_id=None):
     """Process a user question and return a response"""
+    # Save user's question to PostgreSQL
+    if session_id:
+        user_message = {
+            "type": "human",
+            "content": question,
+            "additional_kwargs": {},
+            "response_metadata": {}
+        }
+        save_message_to_postgres(session_id, user_message)
+    
     # determine if this is a general knowledge question
     classification = is_general_knowledge_question(question)
     print(f"Question classification: {classification}")
@@ -454,7 +507,21 @@ def process_question(question, session_id=None):
     # If general knowledge question, forward it to the external API
     if classification.get("is_general_knowledge", False):
         print(f"Forwarding general knowledge question to external API: {question}")
-        return forward_to_external_api(question, session_id)
+        response = forward_to_external_api(question, session_id)
+        
+        # Save system's response to PostgreSQL
+        if session_id:
+            system_message = {
+                "type": "ai",
+                "content": response,
+                "tool_calls": [],
+                "additional_kwargs": {},
+                "response_metadata": {},
+                "invalid_tool_calls": []
+            }
+            save_message_to_postgres(session_id, system_message)
+            
+        return response
     
     # Otherwise, process as a weather data question using the existing flow
     entities = extract_entities_with_chatgpt(question)
@@ -567,6 +634,18 @@ def process_question(question, session_id=None):
         
         # Generate response
         response = generate_response_with_chatgpt(question, formatted_data)
+    
+    # Save system's response to PostgreSQL
+    if session_id:
+        system_message = {
+            "type": "ai",
+            "content": response,
+            "tool_calls": [],
+            "additional_kwargs": {},
+            "response_metadata": {},
+            "invalid_tool_calls": []
+        }
+        save_message_to_postgres(session_id, system_message)
     
     return response
 
