@@ -51,37 +51,50 @@ def check_kafka_connection():
 
 def create_kafka_consumer():
     """Create and return a Kafka consumer instance with retry logic."""
-    max_retries = 10
+    max_retries = 5
     retry_delay = 5  # seconds
+    retry_count = 0
     
-    for attempt in range(max_retries):
+    while retry_count < max_retries:
         try:
-            # Cấu hình consumer sử dụng confluent-kafka
-            conf = {
+            # Cấu hình consumer
+            config = {
                 'bootstrap.servers': KAFKA_BOOTSTRAP_SERVERS,
                 'group.id': KAFKA_GROUP_ID,
-                'auto.offset.reset': 'earliest',
-                'enable.auto.commit': False,
-                'max.poll.interval.ms': 300000,  # 5 minutes
-                'session.timeout.ms': 30000,
-                'request.timeout.ms': 60000
+                'auto.offset.reset': 'earliest',  # Đọc từ đầu nếu không có offset đã commit
+                'enable.auto.commit': False,      # Tắt auto commit để xử lý thủ công
+                'max.poll.interval.ms': 300000,   # 5 phút
+                'session.timeout.ms': 60000,      # 1 phút
+                'request.timeout.ms': 30000       # 30 giây
             }
             
-            consumer = Consumer(conf)
+            # Tạo consumer
+            consumer = Consumer(config)
             
-            # Subscribe to topic
+            # Subscribe vào topic
             consumer.subscribe([KAFKA_TOPIC])
             
-            # Test connection with a poll call
-            consumer.poll(0)
-            logger.info(f"Successfully connected to Kafka at {KAFKA_BOOTSTRAP_SERVERS}")
+            # Lấy thông tin về các partition của topic
+            metadata = consumer.list_topics(KAFKA_TOPIC, timeout=10)
+            if KAFKA_TOPIC in metadata.topics:
+                partitions = metadata.topics[KAFKA_TOPIC].partitions
+                logger.info(f"Kafka consumer subscribed to topic {KAFKA_TOPIC} with {len(partitions)} partitions")
+                for partition_id in partitions:
+                    logger.info(f"  - Partition {partition_id}")
+            else:
+                logger.warning(f"Topic {KAFKA_TOPIC} not found in metadata")
+            
             return consumer
-        except KafkaException as e:
-            if attempt < max_retries - 1:
-                logger.warning(f"Failed to connect to Kafka (attempt {attempt+1}/{max_retries}): {e}")
+            
+        except Exception as e:
+            retry_count += 1
+            logger.error(f"Attempt {retry_count}/{max_retries} to create Kafka consumer failed: {e}")
+            
+            if retry_count < max_retries:
+                logger.info(f"Retrying in {retry_delay} seconds...")
                 time.sleep(retry_delay)
             else:
-                logger.error(f"Failed to connect to Kafka after {max_retries} attempts: {e}")
+                logger.error("Max retries reached. Failed to create Kafka consumer.")
                 raise
 
 def create_influxdb_client():
@@ -186,10 +199,34 @@ def process_weather_data():
             
             # Process messages
             running = True
+            message_count = 0
+            expected_messages = 63  # Số lượng tỉnh thành dự kiến
+            
+            # Thời gian bắt đầu xử lý batch
+            batch_start_time = time.time()
+            
             while running:
                 try:
-                    # Poll for messages
-                    msg = consumer.poll(timeout=1.0)
+                    # Poll for messages with timeout
+                    # Tăng timeout để đảm bảo có đủ thời gian đọc tất cả messages
+                    msg = consumer.poll(timeout=5.0)
+                    
+                    # Kiểm tra nếu đã nhận đủ số lượng message dự kiến
+                    if message_count >= expected_messages:
+                        logger.info(f"Received all {expected_messages} expected messages. Waiting for next batch...")
+                        # Đợi 10 phút trước khi bắt đầu batch mới
+                        time.sleep(600)
+                        message_count = 0
+                        batch_start_time = time.time()
+                        continue
+                    
+                    # Kiểm tra nếu đã quá thời gian chờ cho một batch (15 phút)
+                    current_time = time.time()
+                    if current_time - batch_start_time > 900:  # 15 phút = 900 giây
+                        logger.warning(f"Batch timeout reached. Only received {message_count}/{expected_messages} messages. Starting new batch.")
+                        message_count = 0
+                        batch_start_time = current_time
+                        continue
                     
                     if msg is None:
                         # No message available, continue polling
@@ -208,6 +245,9 @@ def process_weather_data():
                     raw_bytes = msg.value()
                     province = msg.key().decode('utf-8') if msg.key() else ''
                     
+                    # Log thông tin về partition và key
+                    logger.info(f"Consumer received: {province} from partition {msg.partition()}")
+                    
                     try:
                         # Decode bytes to string and parse JSON
                         if raw_bytes is not None:
@@ -220,6 +260,19 @@ def process_weather_data():
                         
                         # Add province to weather data for use in point creation
                         weather_json['province'] = province
+                        
+                        # Log thông tin về partition và key hash
+                        if province:
+                            # Lấy số lượng partitions từ consumer
+                            metadata = consumer.list_topics(KAFKA_TOPIC, timeout=5)
+                            if KAFKA_TOPIC in metadata.topics:
+                                num_partitions = len(metadata.topics[KAFKA_TOPIC].partitions)
+                                partition_hash = hash(province) % num_partitions
+                                logger.info(f"Key: {province}, hash = {partition_hash}, actual partition = {msg.partition()}")
+                                
+                                # Kiểm tra xem hash có khớp với partition thực tế không
+                                if partition_hash != msg.partition():
+                                    logger.warning(f"Hash partition mismatch for {province}: expected {partition_hash}, got {msg.partition()}")
                         
                         location = weather_json.get('location', {})
                         current = weather_json.get('current', {})
@@ -255,12 +308,17 @@ def process_weather_data():
                         if point:
                             # Write to InfluxDB
                             write_api.write(bucket=INFLUXDB_BUCKET, record=point)
-                            logger.info(f"Successfully wrote data for {location_name} to InfluxDB")
+                            logger.info(f"Successfully wrote data for {location_display} to InfluxDB")
+                            
+                            # Tăng số lượng message đã xử lý
+                            message_count += 1
+                            logger.info(f"Processed {message_count}/{expected_messages} messages in current batch")
                         
-                        # Commit offset
+                        # Commit offset sau mỗi message
                         consumer.commit(msg)
                         
-                        # Flush to make sure the message is committed
+                        # Đảm bảo không có message nào bị bỏ sót bằng cách poll thêm
+                        # nhưng không đợi (timeout=0)
                         consumer.poll(0)
                         
                     except json.JSONDecodeError as e:
@@ -301,37 +359,30 @@ if __name__ == "__main__":
         logger.info("Weather data consumer starting...")
         
         # Kiểm tra kết nối Kafka trước khi bắt đầu
-        max_retries = 30
-        retry_delay = 5
-        max_retry_delay = 30
-        current_delay = retry_delay
-        
-        for attempt in range(max_retries):
-            logger.info(f"Checking Kafka connection, attempt {attempt+1}/{max_retries}")
-            if check_kafka_connection():
-                logger.info("Successfully connected to Kafka broker")
-                break
-            else:
-                logger.warning(f"Cannot connect to Kafka broker, retrying in {current_delay} seconds...")
-                time.sleep(current_delay)
-                # Tăng thời gian chờ giữa các lần thử (progressive backoff)
-                if current_delay < max_retry_delay:
-                    current_delay = min(current_delay + 5, max_retry_delay)
-                if attempt == max_retries - 1:
-                    logger.error("Failed to connect to Kafka broker after maximum retries")
-        
-        # Check InfluxDB connection
+        if not check_kafka_connection():
+            logger.error("Cannot connect to Kafka. Exiting...")
+            sys.exit(1)
+            
+        # Kiểm tra kết nối InfluxDB
         try:
-            influxdb_client = create_influxdb_client()
-            logger.info("Successfully connected to InfluxDB")
-            influxdb_client.close()
+            client = create_influxdb_client()
+            health = client.health()
+            logger.info(f"InfluxDB health check: {health.status}")
+            client.close()
         except Exception as e:
-            logger.error(f"Failed to connect to InfluxDB: {e}")
-            logger.warning("Will retry connection during processing")
+            logger.error(f"InfluxDB health check failed: {e}")
+            sys.exit(1)
         
+        # Hiển thị thông tin về consumer group và instance ID
+        logger.info(f"Consumer Group ID: {KAFKA_GROUP_ID}")
+        logger.info(f"Consumer Instance: {socket.gethostname()}")
+        
+        # Bắt đầu xử lý dữ liệu thởi tiết
         process_weather_data()
+        
     except KeyboardInterrupt:
-        logger.info("Weather data consumer stopped by user")
+        logger.info("Interrupted by user, shutting down...")
+        sys.exit(0)
     except Exception as e:
-        logger.error(f"Error in weather data consumer: {e}")
-        raise
+        logger.error(f"Unexpected error: {e}")
+        sys.exit(1)

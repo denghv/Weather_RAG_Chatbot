@@ -5,7 +5,7 @@ import os
 import asyncio
 import aiohttp
 import socket
-from confluent_kafka import Producer
+from confluent_kafka import Producer, AdminClient
 from provinces import VIETNAM_PROVINCES
 
 # Location name correction mapping
@@ -157,55 +157,54 @@ def correct_location_name(location_name):
     return location_name
 
 async def produce_weather_data_async():
-    """Fetch weather data for all provinces asynchronously and send to Kafka."""
+    """Produce weather data to Kafka topic."""
     while True:
         try:
             # Kiểm tra kết nối Kafka trước khi tạo producer
             if not check_kafka_connection():
-                logger.error("Cannot connect to Kafka. Waiting before retry...")
+                logger.warning("Kafka connection not available. Waiting 30 seconds before retry...")
                 await asyncio.sleep(30)
                 continue
-                
-            producer = None
-            try:
-                producer = create_kafka_producer()
-            except Exception as e:
-                logger.error(f"Failed to create Kafka producer: {e}")
-                await asyncio.sleep(30)
-                continue
-                
-            logger.info("Starting to fetch weather data for all provinces asynchronously...")
             
-            # Fetch all weather data asynchronously
+            # Tạo Kafka producer
+            producer = create_kafka_producer()
+            logger.info(f"Successfully created Kafka producer")
+            
+            # Lấy số lượng partitions của topic
+            admin_client = AdminClient({'bootstrap.servers': KAFKA_BOOTSTRAP_SERVERS})
+            topic_metadata = admin_client.list_topics(timeout=10)
+            
+            if KAFKA_TOPIC in topic_metadata.topics:
+                num_partitions = len(topic_metadata.topics[KAFKA_TOPIC].partitions)
+                logger.info(f"Topic {KAFKA_TOPIC} has {num_partitions} partitions")
+            else:
+                # Nếu topic chưa tồn tại, giả định 6 partitions
+                num_partitions = 6
+                logger.warning(f"Topic {KAFKA_TOPIC} not found. Assuming {num_partitions} partitions")
+            
+            # Lấy dữ liệu thời tiết cho tất cả các tỉnh
             weather_data_dict = await fetch_all_weather_data()
             
-            # Send data to Kafka
+            # Đếm số lượng tin nhắn đã gửi thành công
             success_count = 0
+            
+            # Theo dõi phân phối partition
+            partition_distribution = {i: 0 for i in range(num_partitions)}
+            
+            # Gửi dữ liệu thời tiết cho từng tỉnh
             for province, weather_data in weather_data_dict.items():
                 try:
-                    # Đảm bảo weather_data là dict
-                    if not isinstance(weather_data, dict):
-                        logger.warning(f"Invalid weather data for {province}, skipping")
-                        continue
-                        
-                    # Thêm province vào dữ liệu
-                    weather_data['province'] = province
-                    
-                    # Log chi tiết các trường thông tin quan trọng
+                    # Log chi tiết dữ liệu thời tiết
                     location = weather_data.get('location', {})
                     current = weather_data.get('current', {})
                     air_quality = current.get('air_quality', {})
                     
-                    # Kiểm tra và sửa tên location nếu cần
-                    location_name = location.get('name')
-                    if location_name:
-                        corrected_name = correct_location_name(location_name)
-                        if corrected_name != location_name:
-                            location['name'] = corrected_name
+                    location_name = location.get('name', '')
+                    logger.info(f"Sending weather data for {province} - {location_name}:")
+                    logger.info(f"  Time: {current.get('last_updated', '')}")
                     
-                    logger.info(f"Sending weather data for {province} - {location.get('name', 'Unknown')}:")
                     logger.info(f"  Temperature: {current.get('temp_c')}°C")
-                    logger.info(f"  Condition: {current.get('condition', {}).get('text', 'Unknown')}")
+                    logger.info(f"  Condition: {current.get('condition', {}).get('text', '')}")
                     logger.info(f"  Wind: {current.get('wind_kph')} kph, {current.get('wind_dir')}")
                     logger.info(f"  Humidity: {current.get('humidity')}%")
                     logger.info(f"  Precipitation: {current.get('precip_mm')} mm")
@@ -218,13 +217,27 @@ async def produce_weather_data_async():
                     else:
                         logger.info(f"  No air quality data available")
                     
+                    # Thêm tên tỉnh vào dữ liệu thời tiết
+                    weather_data['province'] = province
+                    
                     # Chuyển dữ liệu thành JSON string
                     json_data = json.dumps(weather_data)
                     
-                    # Gửi dữ liệu đến Kafka sử dụng confluent-kafka
+                    # Sử dụng tên tỉnh làm key để đảm bảo phân phối đều
+                    key = province.encode('utf-8')
+                    
+                    # Tính toán partition dự kiến dựa trên key
+                    partition_hash = hash(province) % num_partitions
+                    partition_distribution[partition_hash] += 1
+                    
+                    # Log thông tin phân phối
+                    logger.info(f"Sent province: {province}, key hash = {partition_hash} (partition {partition_hash}/{num_partitions})")
+                    
+                    # Gửi dữ liệu đến Kafka sử dụng confluent-kafka với key
                     try:
                         producer.produce(
                             topic=KAFKA_TOPIC,
+                            key=key,
                             value=json_data.encode('utf-8'),
                             callback=delivery_callback
                         )
@@ -236,6 +249,9 @@ async def produce_weather_data_async():
                         logger.error(f"Error sending data for {province}: {e}")
                 except Exception as e:
                     logger.error(f"Error processing data for {province}: {e}")
+            
+            # Hiển thị phân phối partition
+            logger.info(f"Partition distribution: {partition_distribution}")
             
             # Đảm bảo tất cả dữ liệu được gửi đi
             if producer:
@@ -256,10 +272,6 @@ async def produce_weather_data_async():
             logger.error(f"Error in produce_weather_data_async: {e}")
             logger.info("Retrying in 30 seconds...")
             await asyncio.sleep(30)  # Wait 30 seconds before retrying
-
-def produce_weather_data():
-    """Run the async event loop for weather data production."""
-    asyncio.run(produce_weather_data_async())
 
 if __name__ == "__main__":
     try:
