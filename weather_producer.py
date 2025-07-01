@@ -5,10 +5,11 @@ import os
 import asyncio
 import aiohttp
 import socket
-from confluent_kafka import Producer, AdminClient
+from confluent_kafka import Producer
+from confluent_kafka.admin import AdminClient
 from provinces import VIETNAM_PROVINCES
 
-# Location name correction mapping
+# location name correction mapping
 LOCATION_CORRECTIONS = {
     "An Long": "Long An",
     "Ap Binh Quang": "Quang Binh",
@@ -26,7 +27,7 @@ LOCATION_CORRECTIONS = {
     "Yen Hung": "Hung Yen"
 }
 
-# Configure logging
+# logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -89,7 +90,7 @@ def create_kafka_producer():
     
     for attempt in range(max_retries):
         try:
-            # Sử dụng confluent-kafka
+            #confluent-kafka
             conf = {
                 'bootstrap.servers': KAFKA_BOOTSTRAP_SERVERS,
                 'client.id': 'weather-producer',
@@ -182,13 +183,13 @@ async def produce_weather_data_async():
                 num_partitions = 6
                 logger.warning(f"Topic {KAFKA_TOPIC} not found. Assuming {num_partitions} partitions")
             
-            # Lấy dữ liệu thời tiết cho tất cả các tỉnh
+            # dữ liệu thời tiết cho tất cả các tỉnh
             weather_data_dict = await fetch_all_weather_data()
             
-            # Đếm số lượng tin nhắn đã gửi thành công
+            # số lượng tin nhắn đã gửi thành công
             success_count = 0
             
-            # Theo dõi phân phối partition
+            # phân phối partition
             partition_distribution = {i: 0 for i in range(num_partitions)}
             
             # Gửi dữ liệu thời tiết cho từng tỉnh
@@ -297,7 +298,7 @@ if __name__ == "__main__":
                 if attempt == max_retries - 1:
                     logger.error("Failed to connect to Kafka broker after maximum retries")
         
-        produce_weather_data()
+        asyncio.run(produce_weather_data_async())
     except KeyboardInterrupt:
         logger.info("Weather data producer stopped by user")
     except Exception as e:
