@@ -74,7 +74,7 @@ services:
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - KAFKA_TOPIC=weather-data
-      - WEATHER_API_KEY=ea8aa08895454e78b10145125253003
+      - WEATHER_API_KEY='YOUR_WEATHER_API_KEY'
       - TZ=Asia/Ho_Chi_Minh
     depends_on:
       - kafka
@@ -111,7 +111,7 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY='YOUR_OPEN_AI_KEY_HERE'
       - INFLUXDB_URL=http://influxdb:8086
       - FLASK_APP=app.py
       - FLASK_ENV=production
