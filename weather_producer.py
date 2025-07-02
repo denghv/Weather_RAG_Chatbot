@@ -35,7 +35,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Weather API configuration
-WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY', 'ea8aa08895454e78b10145125253003')
+WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY', 'YOUR_WEATHER_API_KEY_HERE')
 WEATHER_API_URL = "http://api.weatherapi.com/v1/current.json"
 
 # Kafka configuration
