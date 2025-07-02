@@ -27,7 +27,7 @@ user_sessions = {}
 openai.api_key = os.environ.get("OPENAI_API_KEY", "")
 
 # n8n knowledge API URL
-EXTERNAL_KNOWLEDGE_API_URL = "https://n8n.vdx.vn/webhook/6b2af131-7902-44f6-98e2-1ee4203e2934/chat"
+EXTERNAL_KNOWLEDGE_API_URL = "n8n_EXTERNAL_API_URL_HERE"
 
 # InfluxDB connection
 def get_influxdb_client():
